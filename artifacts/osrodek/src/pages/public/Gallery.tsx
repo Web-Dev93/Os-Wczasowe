@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useListGallery } from "@workspace/api-client-react";
-import galleryImg1 from "@assets/generated_images/gallery1.jpg";
-import galleryImg2 from "@assets/generated_images/gallery2.jpg";
+const galleryImg1 = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
+const galleryImg2 = "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80";
 
 export default function Gallery() {
   const { data: photos, isLoading } = useListGallery();

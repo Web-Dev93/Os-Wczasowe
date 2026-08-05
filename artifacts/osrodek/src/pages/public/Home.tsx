@@ -1,181 +1,374 @@
 import React from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { useGetSettings, useListRooms } from "@workspace/api-client-react";
+import { useGetSettings, useListRooms, useListGallery } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Users, BedDouble, ChevronRight } from "lucide-react";
-import heroImg from "@assets/generated_images/hero.jpg";
+import { HeroSlider } from "@/components/HeroSlider";
+import {
+  Users, BedDouble, ChevronRight, Sun, Shield, Heart, Star,
+  Waves, MapPin, Clock
+} from "lucide-react";
+
+/* ── animation variants ─────────────────────────────────── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: (delay = 0) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }
+  }),
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+
+/* ── stats ──────────────────────────────────────────────── */
+const STATS = [
+  { icon: BedDouble, value: "4",    label: "pokoje & apartamenty" },
+  { icon: MapPin,    value: "5 min", label: "spacerem do plaży"    },
+  { icon: Clock,     value: "15+",  label: "lat tradycji"          },
+  { icon: Waves,     value: "500+", label: "zadowolonych gości"    },
+];
+
+/* ── why-us ─────────────────────────────────────────────── */
+const WHY = [
+  { icon: Sun,    text: "Słoneczna lokalizacja tuż przy Bałtyku"              },
+  { icon: Heart,  text: "Domowa atmosfera i indywidualne podejście"            },
+  { icon: Shield, text: "Bezpieczny, spokojny teren — idealny dla rodzin"     },
+  { icon: Star,   text: "Starannie odnowione wnętrza z morskim klimatem"      },
+];
 
 export default function Home() {
-  const { data: settings, isLoading: isSettingsLoading } = useGetSettings();
-  const { data: rooms, isLoading: isRoomsLoading } = useListRooms();
+  const { data: settings } = useGetSettings();
+  const { data: rooms }    = useListRooms();
+  const { data: gallery }  = useListGallery();
 
-  if (isSettingsLoading || isRoomsLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Ładowanie...</div>;
-  }
-
-  const featuredRooms = rooms?.slice(0, 3) || [];
+  const featuredRooms  = rooms?.slice(0, 3)   || [];
+  const galleryPreview = gallery?.slice(0, 6)  || FALLBACK_GALLERY;
 
   return (
-    <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/40 z-10" />
-        <img 
-          src={settings?.heroImageUrl || heroImg} 
-          alt="Ośrodek" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        
-        <div className="relative z-20 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 drop-shadow-lg"
-          >
-            {settings?.tagline || "Twój nadmorski odpoczynek"}
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl drop-shadow-md font-medium"
-          >
-            {settings?.description?.substring(0, 120) || "Poczuj piasek pod stopami i sól we włosach. Idealne miejsce na relaks z dala od zgiełku."}
-          </motion.p>
-          
+    <div className="w-full overflow-x-hidden">
+
+      {/* ════════════════════════════════ HERO ══ */}
+      <HeroSlider
+        tagline={settings?.tagline}
+        description={settings?.description}
+        heroImageUrl={settings?.heroImageUrl}
+      />
+
+      {/* ════════════════════════════════ STATS BAR ══ */}
+      <section className="relative bg-primary py-0">
+        <div className="container mx-auto px-4 max-w-5xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
+            className="grid grid-cols-2 md:grid-cols-4 divide-x divide-primary-foreground/15"
           >
-            <Button asChild size="lg" className="h-14 px-8 text-lg rounded-full">
-              <Link href="/rezerwacja">Zarezerwuj teraz</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 text-lg rounded-full bg-white/10 text-white border-white/30 hover:bg-white hover:text-black">
-              <Link href="/pokoje">Zobacz pokoje</Link>
-            </Button>
+            {STATS.map(({ icon: Icon, value, label }) => (
+              <motion.div
+                key={label}
+                variants={fadeUp}
+                className="flex flex-col items-center gap-2 py-8 px-4 text-primary-foreground"
+              >
+                <Icon className="w-6 h-6 opacity-70 mb-1" />
+                <span className="text-3xl md:text-4xl font-serif font-bold tracking-tight leading-none">
+                  {value}
+                </span>
+                <span className="text-xs uppercase tracking-widest opacity-65 text-center">
+                  {label}
+                </span>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Featured Rooms */}
-      <section className="py-24 bg-background">
+      {/* ════════════════════════════════ ROOMS ══ */}
+      <section className="py-28 bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">Nasze Pokoje</h2>
-            <div className="h-1 w-24 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Przytulne i komfortowe wnętrza zaprojektowane z myślą o Twoim pełnym relaksie po dniu pełnym słońca.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredRooms.map((room, index) => (
-              <motion.div 
+          {/* heading */}
+          <motion.div
+            className="text-center mb-20"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">
+              Noclegi
+            </motion.p>
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-5">
+              Nasze Pokoje
+            </motion.h2>
+            <motion.div variants={fadeUp} className="h-px w-24 bg-primary/30 mx-auto mb-6" />
+            <motion.p variants={fadeUp} className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">
+              Każdy pokój to oddzielny świat — cichy, zadbany, z nutą morza.
+            </motion.p>
+          </motion.div>
+
+          {/* cards */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={stagger}
+          >
+            {featuredRooms.map((room) => (
+              <motion.div
                 key={room.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                variants={fadeUp}
+                className="card-lift group rounded-3xl overflow-hidden bg-card border border-border/60 shadow-sm flex flex-col"
               >
+                {/* image */}
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={room.coverPhotoUrl || "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=800"} 
-                    alt={room.name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  <img
+                    src={room.coverPhotoUrl || FALLBACK_ROOM}
+                    alt={room.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
-                  <div className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-primary">
-                    Od {room.pricePerNight} zł
+                  {/* price badge */}
+                  <div className="absolute top-4 right-4 bg-primary text-primary-foreground text-sm font-bold px-3.5 py-1.5 rounded-full shadow-lg">
+                    od {room.pricePerNight} zł
+                  </div>
+                  {/* capacity badge */}
+                  <div className="absolute bottom-4 left-4 bg-black/40 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5" /> max {room.capacity} os.
                   </div>
                 </div>
-                
+
+                {/* body */}
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-serif font-bold mb-2 text-card-foreground group-hover:text-primary transition-colors">{room.name}</h3>
-                  
-                  <div className="flex gap-4 text-muted-foreground text-sm mb-4">
-                    <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> max {room.capacity} osób</span>
-                    <span className="flex items-center gap-1.5"><BedDouble className="w-4 h-4" /> {room.minNights ? `min ${room.minNights} noce` : '1 noc'}</span>
-                  </div>
-                  
-                  <p className="text-muted-foreground text-sm line-clamp-2 mb-6 flex-1">
-                    {room.description || "Brak opisu."}
+                  <h3 className="text-xl font-serif font-bold mb-2 group-hover:text-primary transition-colors duration-200">
+                    {room.name}
+                  </h3>
+                  <p className="text-muted-foreground text-sm line-clamp-2 mb-6 leading-relaxed flex-1">
+                    {room.description || "Przytulny pokój w morskim stylu."}
                   </p>
-                  
-                  <Button asChild variant="ghost" className="mt-auto w-full group/btn justify-between hover:bg-primary hover:text-primary-foreground">
-                    <Link href={`/pokoj/${room.id}`}>
-                      <span>Szczegóły</span>
-                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
+
+                  {/* amenity pills */}
+                  {room.amenities && room.amenities.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {room.amenities.slice(0, 3).map((a) => (
+                        <span key={a} className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded-full">
+                          {a}
+                        </span>
+                      ))}
+                      {room.amenities.length > 3 && (
+                        <span className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded-full">
+                          +{room.amenities.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex gap-3 mt-auto">
+                    <Button asChild size="sm" className="flex-1 rounded-full">
+                      <Link href={`/rezerwacja?pokoj=${room.id}`}>Rezerwuj</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="sm" className="rounded-full group/btn">
+                      <Link href={`/pokoj/${room.id}`}>
+                        <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             ))}
-          </div>
-          
-          <div className="mt-16 text-center">
-            <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-              <Link href="/pokoje">Zobacz wszystkie pokoje</Link>
+          </motion.div>
+
+          <div className="mt-14 text-center">
+            <Button asChild size="lg" variant="outline" className="rounded-full px-10 h-13 text-base hover:scale-105 transition-transform">
+              <Link href="/pokoje">Wszystkie pokoje <ChevronRight className="w-4 h-4 ml-1" /></Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Info Section */}
-      <section className="py-24 bg-muted/30">
+      {/* ════════════════════════════════ WHY US ══ */}
+      <section className="py-28 bg-muted/30">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+            {/* text side */}
+            <motion.div
+              className="space-y-8"
+              initial="hidden"
+              whileInView="show"
               viewport={{ once: true }}
-              className="space-y-6"
+              variants={stagger}
             >
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground">Dlaczego warto do nas przyjechać?</h2>
-              <div className="h-1 w-16 bg-primary rounded-full"></div>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Jesteśmy małym, rodzinnym ośrodkiem z duszą. Wiele pokoleń spędzało tu swoje najpiękniejsze wakacje. Stawiamy na ciszę, bliskość natury i domową atmosferę, której nie znajdziesz w wielkich hotelach.
-              </p>
-              <ul className="space-y-3 mt-6">
-                {[
-                  "Kameralna atmosfera i prywatność",
-                  "Zaledwie kilka minut od piaszczystej plaży",
-                  "Piękne, odnowione wnętrza z morskim klimatem",
-                  "Bezpieczny teren idealny dla rodzin z dziećmi"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-muted-foreground">
-                    <div className="mt-1 bg-primary/10 p-1 rounded-full text-primary">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium">
+                Dlaczego my?
+              </motion.p>
+              <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-serif font-bold leading-tight">
+                Małe miejsce,<br />
+                <span className="text-primary">wielkie wakacje</span>
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-muted-foreground text-lg leading-relaxed">
+                Jesteśmy ośrodkiem z historią — małym, rodzinnym i z duszą. Tu nie ma anonimowości wielkich hoteli. Tu pamiętamy Twoje imię, ulubiony pokój i jak lubisz kawę.
+              </motion.p>
+
+              <motion.div variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                {WHY.map(({ icon: Icon, text }) => (
+                  <motion.div
+                    key={text}
+                    variants={fadeUp}
+                    className="flex items-start gap-3 p-4 rounded-2xl bg-background border border-border/50 hover:border-primary/30 hover:shadow-sm transition-all duration-200"
+                  >
+                    <div className="mt-0.5 w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4" />
                     </div>
-                    {item}
-                  </li>
+                    <p className="text-sm text-foreground/80 leading-relaxed">{text}</p>
+                  </motion.div>
                 ))}
-              </ul>
+              </motion.div>
+
+              <motion.div variants={fadeUp}>
+                <Button asChild size="lg" className="rounded-full px-8 hover:scale-105 transition-transform">
+                  <Link href="/kontakt">Skontaktuj się z nami</Link>
+                </Button>
+              </motion.div>
             </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+
+            {/* image side */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="aspect-[4/5] rounded-3xl overflow-hidden relative z-10 shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800" 
-                  alt="Nasz ośrodek" 
-                  className="w-full h-full object-cover"
-                />
+              {/* stacked photo effect */}
+              <div className="relative">
+                <div className="absolute -bottom-4 -right-4 w-full aspect-[4/5] rounded-3xl bg-primary/8 rotate-3" />
+                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
+                  <img
+                    src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=80"
+                    alt="Bałtyk"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                {/* floating card */}
+                <div className="float-anim absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-2xl p-5 shadow-2xl max-w-[180px]">
+                  <div className="text-3xl font-serif font-bold leading-none mb-1">15+</div>
+                  <div className="text-xs opacity-75 uppercase tracking-wider">lat na rynku</div>
+                </div>
               </div>
-              <div className="absolute -bottom-6 -left-6 w-3/4 aspect-square bg-primary/10 rounded-3xl -z-10"></div>
-              <div className="absolute -top-6 -right-6 w-1/2 aspect-square bg-secondary rounded-full -z-10 blur-3xl opacity-50"></div>
             </motion.div>
+
           </div>
         </div>
       </section>
+
+      {/* ════════════════════════════════ GALLERY STRIP ══ */}
+      {galleryPreview.length > 0 && (
+        <section className="py-24 bg-background">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <motion.div
+              className="flex items-end justify-between mb-10"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={stagger}
+            >
+              <div>
+                <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-2">
+                  Galeria
+                </motion.p>
+                <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-serif font-bold">
+                  Poczuj klimat
+                </motion.h2>
+              </div>
+              <motion.div variants={fadeUp}>
+                <Button asChild variant="outline" className="rounded-full hidden sm:flex">
+                  <Link href="/galeria">Cała galeria <ChevronRight className="w-4 h-4 ml-1" /></Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="gallery-strip"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {galleryPreview.map((photo) => (
+                <Link key={photo.id} href="/galeria" className="gallery-strip-item">
+                  <img src={photo.url} alt={photo.caption || ""} loading="lazy" />
+                  {photo.caption && (
+                    <div className="caption">
+                      <span className="text-white text-sm font-medium">{photo.caption}</span>
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════ CTA ══ */}
+      <section className="relative py-32 overflow-hidden bg-primary">
+        {/* decorative circles */}
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-primary-foreground/5 pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-[320px] h-[320px] rounded-full bg-primary-foreground/5 pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-4xl relative z-10 text-center">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.p variants={fadeUp} className="text-primary-foreground/60 text-sm uppercase tracking-[0.25em] font-medium mb-4">
+              Zarezerwuj już dziś
+            </motion.p>
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-primary-foreground leading-tight mb-6">
+              Morze czeka.<br />Czy Ty jesteś gotowy?
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-primary-foreground/70 text-xl mb-12 max-w-lg mx-auto">
+              Wolnych terminów ubywa szybko — sprawdź dostępność i zarezerwuj swój idealny pobyt.
+            </motion.p>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="h-14 px-10 text-base rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 hover:scale-105 transition-transform shadow-2xl"
+              >
+                <Link href="/rezerwacja">Sprawdź dostępność</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="h-14 px-10 text-base rounded-full border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:scale-105 transition-transform"
+              >
+                <Link href="/kontakt">Zadzwoń do nas</Link>
+              </Button>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
     </div>
   );
 }
+
+/* ── fallbacks ───────────────────────────────────────────── */
+const FALLBACK_ROOM = "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80";
+const FALLBACK_GALLERY = [
+  { id: 1, url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80", caption: "Plaża o zachodzie słońca", sortOrder: 0 },
+  { id: 2, url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80", caption: "Spokojne morze", sortOrder: 1 },
+  { id: 3, url: "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=600&q=80", caption: "Wydmy", sortOrder: 2 },
+  { id: 4, url: "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=600&q=80", caption: "Molo", sortOrder: 3 },
+  { id: 5, url: "https://images.unsplash.com/photo-1530053969600-caed2596d242?w=600&q=80", caption: "Lato nad morzem", sortOrder: 4 },
+  { id: 6, url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80", caption: "Wieczór", sortOrder: 5 },
+];
