@@ -3,20 +3,23 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API dla systemu ośrodka nadmorskiego
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: public
+    description: Publiczne endpointy dla gości
+  - name: admin
+    description: Panel administratora
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +27,528 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ─── PUBLIC ───────────────────────────────────────────────────────────────────
+
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [public]
+      summary: Pobierz ustawienia strony (publiczne)
+      responses:
+        "200":
+          description: Ustawienia strony
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
+  /rooms:
+    get:
+      operationId: listRooms
+      tags: [public]
+      summary: Lista aktywnych pokoi/apartamentów
+      responses:
+        "200":
+          description: Lista pokoi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Room"
+
+  /rooms/{id}:
+    get:
+      operationId: getRoom
+      tags: [public]
+      summary: Szczegóły pokoju
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Pokój
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "404":
+          description: Nie znaleziono
+
+  /gallery:
+    get:
+      operationId: listGallery
+      tags: [public]
+      summary: Galeria zdjęć ośrodka
+      responses:
+        "200":
+          description: Lista zdjęć
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryPhoto"
+
+  /availability:
+    get:
+      operationId: getAvailability
+      tags: [public]
+      summary: Dostępność pokoju
+      parameters:
+        - name: roomId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Bloki zajętości
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AvailabilityBlock"
+
+  /inquiries:
+    post:
+      operationId: submitInquiry
+      tags: [public]
+      summary: Wyślij zapytanie / prośbę o rezerwację
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryInput"
+      responses:
+        "201":
+          description: Zapytanie zostało wysłane
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        "400":
+          description: Błędne dane
+
+  # ─── ADMIN AUTH ───────────────────────────────────────────────────────────────
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Logowanie administratora
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Zalogowano
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Nieprawidłowe dane
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Wylogowanie
+      responses:
+        "200":
+          description: Wylogowano
+
+  /admin/me:
+    get:
+      operationId: adminGetMe
+      tags: [admin]
+      summary: Aktualny administrator
+      responses:
+        "200":
+          description: Zalogowany admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Niezalogowany
+
+  # ─── ADMIN SETTINGS ──────────────────────────────────────────────────────────
+
+  /admin/settings:
+    get:
+      operationId: adminGetSettings
+      tags: [admin]
+      summary: Pobierz ustawienia (admin)
+      responses:
+        "200":
+          description: Ustawienia
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+    put:
+      operationId: adminUpdateSettings
+      tags: [admin]
+      summary: Zaktualizuj ustawienia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettingsInput"
+      responses:
+        "200":
+          description: Zaktualizowane ustawienia
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
+  # ─── ADMIN ROOMS ─────────────────────────────────────────────────────────────
+
+  /admin/rooms:
+    get:
+      operationId: adminListRooms
+      tags: [admin]
+      summary: Lista wszystkich pokoi (admin)
+      responses:
+        "200":
+          description: Pokoje
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Room"
+    post:
+      operationId: adminCreateRoom
+      tags: [admin]
+      summary: Dodaj nowy pokój
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "201":
+          description: Nowy pokój
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+
+  /admin/rooms/{id}:
+    get:
+      operationId: adminGetRoom
+      tags: [admin]
+      summary: Szczegóły pokoju (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Pokój
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "404":
+          description: Nie znaleziono
+    put:
+      operationId: adminUpdateRoom
+      tags: [admin]
+      summary: Zaktualizuj pokój
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "200":
+          description: Zaktualizowany pokój
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+    delete:
+      operationId: adminDeleteRoom
+      tags: [admin]
+      summary: Usuń pokój
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Usunięto
+
+  /admin/rooms/{id}/photos:
+    post:
+      operationId: adminAddRoomPhoto
+      tags: [admin]
+      summary: Dodaj zdjęcie do pokoju
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoInput"
+      responses:
+        "201":
+          description: Zdjęcie dodane
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomPhoto"
+
+  /admin/rooms/{id}/photos/{photoId}:
+    delete:
+      operationId: adminDeleteRoomPhoto
+      tags: [admin]
+      summary: Usuń zdjęcie pokoju
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Usunięto
+
+  # ─── ADMIN GALLERY ───────────────────────────────────────────────────────────
+
+  /admin/gallery:
+    get:
+      operationId: adminListGallery
+      tags: [admin]
+      summary: Galeria zdjęć (admin)
+      responses:
+        "200":
+          description: Zdjęcia galerii
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryPhoto"
+    post:
+      operationId: adminAddGalleryPhoto
+      tags: [admin]
+      summary: Dodaj zdjęcie do galerii
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoInput"
+      responses:
+        "201":
+          description: Zdjęcie dodane
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryPhoto"
+
+  /admin/gallery/{id}:
+    delete:
+      operationId: adminDeleteGalleryPhoto
+      tags: [admin]
+      summary: Usuń zdjęcie z galerii
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Usunięto
+
+  # ─── ADMIN BOOKINGS ──────────────────────────────────────────────────────────
+
+  /admin/bookings:
+    get:
+      operationId: adminListBookings
+      tags: [admin]
+      summary: Lista wszystkich rezerwacji i zapytań
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [pending, confirmed, cancelled]
+      responses:
+        "200":
+          description: Rezerwacje
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+
+  /admin/bookings/{id}:
+    get:
+      operationId: adminGetBooking
+      tags: [admin]
+      summary: Szczegóły rezerwacji
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Rezerwacja
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+    put:
+      operationId: adminUpdateBooking
+      tags: [admin]
+      summary: Zaktualizuj status rezerwacji
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingUpdate"
+      responses:
+        "200":
+          description: Zaktualizowana rezerwacja
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+    delete:
+      operationId: adminDeleteBooking
+      tags: [admin]
+      summary: Usuń rezerwację
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Usunięto
+
+  # ─── ADMIN AVAILABILITY ──────────────────────────────────────────────────────
+
+  /admin/availability:
+    get:
+      operationId: adminListAvailability
+      tags: [admin]
+      summary: Lista bloków dostępności
+      parameters:
+        - name: roomId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Bloki dostępności
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AvailabilityBlock"
+    post:
+      operationId: adminCreateAvailability
+      tags: [admin]
+      summary: Zablokuj termin / oznacz jako zajęty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvailabilityInput"
+      responses:
+        "201":
+          description: Blok dodany
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilityBlock"
+
+  /admin/availability/{id}:
+    delete:
+      operationId: adminDeleteAvailability
+      tags: [admin]
+      summary: Usuń blok dostępności
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Usunięto
+
+  # ─── ADMIN STATS ─────────────────────────────────────────────────────────────
+
+  /admin/stats:
+    get:
+      operationId: adminGetStats
+      tags: [admin]
+      summary: Statystyki dashboardu
+      responses:
+        "200":
+          description: Statystyki
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +559,373 @@ components:
       required:
         - status
 
+    # ─── SETTINGS ─────────────────────────────────────────────────────────────
+
+    SiteSettings:
+      type: object
+      required:
+        - id
+        - resortName
+        - theme
+        - bookingMode
+      properties:
+        id:
+          type: number
+        resortName:
+          type: string
+        tagline:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        address:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        website:
+          type: ["string", "null"]
+        whatsapp:
+          type: ["string", "null"]
+        facebook:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        heroImageUrl:
+          type: ["string", "null"]
+        theme:
+          type: string
+          enum: [professional, exclusive, fun, family, rustic, modern]
+        bookingMode:
+          type: string
+          enum: [inquiry, online, both]
+        checkInTime:
+          type: ["string", "null"]
+        checkOutTime:
+          type: ["string", "null"]
+        adminPassword:
+          type: ["string", "null"]
+
+    SiteSettingsInput:
+      type: object
+      properties:
+        resortName:
+          type: string
+          minLength: 1
+        tagline:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        whatsapp:
+          type: string
+        facebook:
+          type: string
+        logoUrl:
+          type: string
+        heroImageUrl:
+          type: string
+        theme:
+          type: string
+          enum: [professional, exclusive, fun, family, rustic, modern]
+        bookingMode:
+          type: string
+          enum: [inquiry, online, both]
+        checkInTime:
+          type: string
+        checkOutTime:
+          type: string
+        adminPassword:
+          type: string
+
+    # ─── AUTH ────────────────────────────────────────────────────────────────
+
+    LoginInput:
+      type: object
+      required: [password]
+      properties:
+        password:
+          type: string
+          minLength: 1
+
+    AdminUser:
+      type: object
+      required: [isAdmin]
+      properties:
+        isAdmin:
+          type: boolean
+
+    # ─── ROOM ────────────────────────────────────────────────────────────────
+
+    Room:
+      type: object
+      required:
+        - id
+        - name
+        - capacity
+        - pricePerNight
+        - isActive
+        - sortOrder
+        - amenities
+        - photos
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        capacity:
+          type: number
+        pricePerNight:
+          type: number
+        minNights:
+          type: number
+        isActive:
+          type: boolean
+        sortOrder:
+          type: number
+        coverPhotoUrl:
+          type: ["string", "null"]
+        amenities:
+          type: array
+          items:
+            type: string
+        photos:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoomPhoto"
+
+    RoomInput:
+      type: object
+      required: [name, capacity, pricePerNight]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        capacity:
+          type: number
+          minimum: 1
+        pricePerNight:
+          type: number
+          minimum: 0
+        minNights:
+          type: number
+          minimum: 1
+        isActive:
+          type: boolean
+        sortOrder:
+          type: number
+        coverPhotoUrl:
+          type: string
+        amenities:
+          type: array
+          items:
+            type: string
+
+    RoomPhoto:
+      type: object
+      required: [id, roomId, url, sortOrder]
+      properties:
+        id:
+          type: number
+        roomId:
+          type: number
+        url:
+          type: string
+        caption:
+          type: ["string", "null"]
+        sortOrder:
+          type: number
+
+    PhotoInput:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          minLength: 1
+        caption:
+          type: string
+
+    # ─── GALLERY ─────────────────────────────────────────────────────────────
+
+    GalleryPhoto:
+      type: object
+      required: [id, url, sortOrder]
+      properties:
+        id:
+          type: number
+        url:
+          type: string
+        caption:
+          type: ["string", "null"]
+        sortOrder:
+          type: number
+
+    # ─── BOOKINGS ────────────────────────────────────────────────────────────
+
+    Booking:
+      type: object
+      required:
+        - id
+        - guestName
+        - guestEmail
+        - guestPhone
+        - checkIn
+        - checkOut
+        - guestsCount
+        - status
+        - type
+        - createdAt
+      properties:
+        id:
+          type: number
+        roomId:
+          type: ["number", "null"]
+        roomName:
+          type: ["string", "null"]
+        guestName:
+          type: string
+        guestEmail:
+          type: string
+        guestPhone:
+          type: string
+        checkIn:
+          type: string
+          format: date
+        checkOut:
+          type: string
+          format: date
+        guestsCount:
+          type: number
+        message:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+        type:
+          type: string
+          enum: [inquiry, booking]
+        adminNotes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    InquiryInput:
+      type: object
+      required: [guestName, guestEmail, guestPhone, checkIn, checkOut, guestsCount]
+      properties:
+        roomId:
+          type: number
+        guestName:
+          type: string
+          minLength: 1
+        guestEmail:
+          type: string
+          minLength: 1
+        guestPhone:
+          type: string
+          minLength: 1
+        checkIn:
+          type: string
+          format: date
+        checkOut:
+          type: string
+          format: date
+        guestsCount:
+          type: number
+          minimum: 1
+        message:
+          type: string
+        type:
+          type: string
+          enum: [inquiry, booking]
+
+    BookingUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+        adminNotes:
+          type: string
+
+    # ─── AVAILABILITY ────────────────────────────────────────────────────────
+
+    AvailabilityBlock:
+      type: object
+      required: [id, roomId, dateFrom, dateTo, status]
+      properties:
+        id:
+          type: number
+        roomId:
+          type: number
+        dateFrom:
+          type: string
+          format: date
+        dateTo:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [blocked, booked]
+        note:
+          type: ["string", "null"]
+
+    AvailabilityInput:
+      type: object
+      required: [roomId, dateFrom, dateTo, status]
+      properties:
+        roomId:
+          type: number
+        dateFrom:
+          type: string
+          format: date
+        dateTo:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [blocked, booked]
+        note:
+          type: string
+
+    # ─── STATS ───────────────────────────────────────────────────────────────
+
+    DashboardStats:
+      type: object
+      required:
+        - totalRooms
+        - activeRooms
+        - totalBookings
+        - pendingBookings
+        - confirmedBookings
+        - cancelledBookings
+        - recentBookings
+      properties:
+        totalRooms:
+          type: number
+        activeRooms:
+          type: number
+        totalBookings:
+          type: number
+        pendingBookings:
+          type: number
+        confirmedBookings:
+          type: number
+        cancelledBookings:
+          type: number
+        recentBookings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Booking"
