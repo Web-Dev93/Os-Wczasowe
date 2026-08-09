@@ -50,41 +50,41 @@
 }
 
 :root {
-  /* Craftsman Vibe for main landing page */
-  --background: 40 25% 97%; /* #FDFBF7 */
-  --foreground: 0 0% 10%; /* #1A1A1A */
+  /* ☀ Ocean & Sand — letni klimat nadmorski */
+  --background: 195 40% 97%;    /* jasny błękit nieba */
+  --foreground: 210 30% 12%;    /* głęboki granat */
   
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 10%;
-  --card-border: 40 10% 85%;
+  --card-foreground: 210 30% 12%;
+  --card-border: 195 20% 88%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 10%;
-  --popover-border: 40 10% 85%;
+  --popover-foreground: 210 30% 12%;
+  --popover-border: 195 20% 88%;
   
-  --primary: 0 0% 10%; 
-  --primary-foreground: 40 25% 97%;
+  --primary: 199 88% 36%;        /* turkusowy ocean */
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 40 15% 90%;
-  --secondary-foreground: 0 0% 10%;
+  --secondary: 38 55% 92%;       /* ciepły piasek */
+  --secondary-foreground: 30 30% 22%;
   
-  --muted: 40 15% 93%;
-  --muted-foreground: 0 0% 40%;
+  --muted: 195 20% 93%;
+  --muted-foreground: 210 15% 44%;
   
-  --accent: 40 15% 90%;
-  --accent-foreground: 0 0% 10%;
+  --accent: 38 88% 55%;          /* złote słońce */
+  --accent-foreground: 30 50% 15%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   
-  --border: 40 10% 85%;
-  --input: 40 10% 85%;
-  --ring: 0 0% 10%;
+  --border: 195 18% 86%;
+  --input: 195 18% 86%;
+  --ring: 199 88% 36%;
 
   --app-font-sans: 'DM Sans', sans-serif;
-  --app-font-serif: 'Playfair Display', serif;
+  --app-font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
   
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
 .dark {
