@@ -359,7 +359,9 @@ html.theme-exclusive {
   --muted: 25 6% 9%;
   --muted-foreground: 38 8% 55%;
   --primary: 38 52% 50%;
-  --primary-foreground: 25 8% 4%;
+  /* LIGHT primary-foreground — sekcje bg-primary mają CIEMNE tło (patrz section.bg-primary override),
+     więc text-primary-foreground musi być jasny */
+  --primary-foreground: 38 18% 91%;
 }
 
 /* — Typografia bazowa — */
@@ -444,11 +446,11 @@ html.theme-exclusive header a[href="/osrodek/rezerwacja"]:hover {
   color: hsl(38 52% 70%) !important;
 }
 
-/* — Hero: wyśrodkowany pionowo — */
+/* — Hero: wyśrodkowany pionowo (padding-bottom zostawia miejsce na dots) — */
 html.theme-exclusive .hero-content {
   justify-content: center !important;
-  padding-bottom: 0 !important;
-  padding-top: 3rem !important;
+  padding-top: 0 !important;
+  padding-bottom: 5rem !important;
 }
 
 html.theme-exclusive .hero-overlay {
@@ -538,23 +540,16 @@ html.theme-exclusive .hero-actions a:last-child:hover {
   color: rgba(255,255,255,0.95) !important;
 }
 
-/* — Stats bar — */
-html.theme-exclusive .bg-primary.py-10,
-html.theme-exclusive .bg-primary.py-12 {
-  background: hsl(25 8% 6%) !important;
-  border-top: 1px solid hsl(38 52% 50% / 0.12);
-  border-bottom: 1px solid hsl(38 52% 50% / 0.12);
-}
-html.theme-exclusive .bg-primary.py-10 *,
-html.theme-exclusive .bg-primary.py-12 * {
-  color: hsl(38 18% 88%) !important;
-}
-html.theme-exclusive .bg-primary.py-10 .text-4xl,
-html.theme-exclusive .bg-primary.py-10 .text-5xl,
-html.theme-exclusive .bg-primary.py-12 .text-4xl,
-html.theme-exclusive .bg-primary.py-12 .text-5xl {
-  color: hsl(38 52% 58%) !important;
+/* — Stats bar (section.bg-primary → dark bg; liczby złote) — */
+html.theme-exclusive section.bg-primary .text-3xl,
+html.theme-exclusive section.bg-primary .text-4xl,
+html.theme-exclusive section.bg-primary .text-5xl {
+  color: hsl(38 52% 60%) !important;
   font-weight: 300 !important;
+}
+html.theme-exclusive section.bg-primary .uppercase.tracking-widest {
+  color: hsl(38 18% 65%) !important;
+  font-weight: 400 !important;
 }
 
 /* — Karty pokoi — */
