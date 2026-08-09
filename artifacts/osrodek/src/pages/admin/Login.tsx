@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Lock } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
@@ -19,12 +19,24 @@ export default function AdminLogin() {
   const { data: user, isLoading } = useAdminGetMe({ query: { retry: false } });
   const loginMutation = useAdminLogin();
   const { toast } = useToast();
+  const [demoLoading, setDemoLoading] = React.useState(false);
 
+  // Redirect if already logged in
   React.useEffect(() => {
-    if (user) {
-      setLocation("/admin");
-    }
+    if (user) setLocation("/admin");
   }, [user, setLocation]);
+
+  // Auto-login in demo mode (?demo=1 in URL)
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("demo") !== "1") return;
+
+    setDemoLoading(true);
+    fetch("/api/admin/demo-login", { method: "POST", credentials: "include" })
+      .then((r) => r.json())
+      .then(() => setLocation("/admin"))
+      .catch(() => setDemoLoading(false));
+  }, [setLocation]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -44,7 +56,13 @@ export default function AdminLogin() {
     });
   };
 
-  if (isLoading) return null;
+  if (isLoading || demoLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

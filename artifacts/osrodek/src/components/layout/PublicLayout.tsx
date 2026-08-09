@@ -155,7 +155,12 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="container mx-auto px-4 max-w-6xl mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-primary-foreground/50 text-sm">
           <span>&copy; {new Date().getFullYear()} {settings?.resortName || "Ośrodek Nadmorski"}. Wszelkie prawa zastrzeżone.</span>
-          <a href="/admin" className="text-primary-foreground/30 hover:text-primary-foreground/60 transition-colors text-xs tracking-wide">
+          <a
+            href={typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "1"
+              ? "/admin/login?demo=1"
+              : "/admin"}
+            className="text-primary-foreground/30 hover:text-primary-foreground/60 transition-colors text-xs tracking-wide"
+          >
             Panel administratora →
           </a>
         </div>

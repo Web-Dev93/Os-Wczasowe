@@ -57,7 +57,7 @@ export function Hero() {
               href="#kontakt"
               className="bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105"
             >
-              Chcę taką stronę
+              Kup teraz
             </a>
           </div>
         </motion.div>

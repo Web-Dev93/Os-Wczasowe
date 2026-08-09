@@ -76,7 +76,7 @@ export function StylesShowcase() {
     setActiveIdx(idx);
   }
 
-  const iframeSrc = `/?theme=${s.themeKey}`;
+  const iframeSrc = `/?theme=${s.themeKey}&demo=1`;
   const containerHeight = Math.round(SITE_HEIGHT * scale);
 
   return (
@@ -183,7 +183,7 @@ export function StylesShowcase() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
           <a
-            href={`/?theme=${s.themeKey}`}
+            href={`/?theme=${s.themeKey}&demo=1`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-8 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
@@ -197,7 +197,7 @@ export function StylesShowcase() {
             href="#kontakt"
             className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
           >
-            Ten styl jest mój — chcę taką stronę!
+            Kup teraz — ten styl jest mój!
           </a>
         </div>
       </div>

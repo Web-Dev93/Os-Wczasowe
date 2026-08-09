@@ -267,43 +267,44 @@ html.theme-rustic {
 
 html.theme-modern {
   --background: 0 0% 100%;
-  --foreground: 0 0% 10%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 10%;
+  --foreground: 0 0% 8%;
+  --border: 0 0% 88%;
+  --input: 0 0% 88%;
+  --ring: 0 0% 8%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 10%;
-  --card-border: 0 0% 90%;
+  --card-foreground: 0 0% 8%;
+  --card-border: 0 0% 88%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 10%;
-  --popover-border: 0 0% 90%;
+  --popover-foreground: 0 0% 8%;
+  --popover-border: 0 0% 88%;
   
   /* Black / White minimal */
-  --primary: 0 0% 10%;
+  --primary: 0 0% 8%;
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 10%;
+  --secondary: 0 0% 95%;
+  --secondary-foreground: 0 0% 8%;
   
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 40%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 10%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 0 0% 38%;
+  --accent: 0 0% 95%;
+  --accent-foreground: 0 0% 8%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
   --sidebar: 0 0% 100%;
-  --sidebar-foreground: 0 0% 10%;
-  --sidebar-border: 0 0% 90%;
-  --sidebar-primary: 0 0% 10%;
+  --sidebar-foreground: 0 0% 8%;
+  --sidebar-border: 0 0% 88%;
+  --sidebar-primary: 0 0% 8%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 96%;
-  --sidebar-accent-foreground: 0 0% 10%;
-  --sidebar-ring: 0 0% 10%;
+  --sidebar-accent: 0 0% 95%;
+  --sidebar-accent-foreground: 0 0% 8%;
+  --sidebar-ring: 0 0% 8%;
 
   --radius: 0rem;
-  --app-font-sans: 'Geist', sans-serif;
-  --app-font-serif: 'Geist', sans-serif;
+  /* Outfit — geometric, clean, loaded via Google Fonts */
+  --app-font-sans: 'Outfit', sans-serif;
+  --app-font-serif: 'Outfit', sans-serif;
 }
 
 @layer base {
@@ -317,6 +318,170 @@ html.theme-modern {
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   THEME-SPECIFIC TYPOGRAPHY & VISUAL PERSONALITIES
+   ═══════════════════════════════════════════════════════ */
+
+/* ── PROFESSIONAL (Nadmorski) ─────────────────────────── 
+   Klasyczny, zaufany, navy & biel. Cormorant Garamond 
+   dodaje elegancji nagłówkom, DM Sans czytelność treści. */
+html.theme-professional h1,
+html.theme-professional h2,
+html.theme-professional h3 {
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+html.theme-professional h1 {
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-style: italic;
+}
+html.theme-professional .text-primary {
+  font-weight: 600;
+}
+
+/* ── EXCLUSIVE (Luksus) ───────────────────────────────── 
+   Ciemne tło, złoto, Playfair Display w kursywie.
+   Ultra-szeroki tracking na małych etykietach.
+   Sharp 0px radius wszędzie. Klimat Cannes / Dubaj. */
+html.theme-exclusive h1,
+html.theme-exclusive h2,
+html.theme-exclusive h3 {
+  font-style: italic;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+html.theme-exclusive h1 {
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+}
+/* Uppercase labels — bardzo duży tracking */
+html.theme-exclusive p.uppercase,
+html.theme-exclusive span.uppercase,
+html.theme-exclusive div.uppercase {
+  letter-spacing: 0.35em;
+  font-size: 0.65em;
+  font-weight: 400;
+  font-family: var(--app-font-sans);
+}
+/* Przyciski — linia zamiast pełnego tła */
+html.theme-exclusive .btn-outline,
+html.theme-exclusive [data-variant="outline"] {
+  border-width: 1px;
+}
+
+/* ── FUN (Żywiołowy) ──────────────────────────────────── 
+   Turkus + koral, Bricolage Grotesque na grubości 700.
+   Wszystko: bold, okrągłe (1.5rem), energetyczne.
+   Klimat beach bar, surf, letnia impreza. */
+html.theme-fun h1,
+html.theme-fun h2,
+html.theme-fun h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  line-height: 1.05;
+}
+html.theme-fun h1 {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+}
+html.theme-fun p.uppercase,
+html.theme-fun span.uppercase {
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  font-size: 0.7em;
+}
+html.theme-fun body {
+  font-weight: 500;
+}
+
+/* ── FAMILY (Rodzinny) ────────────────────────────────── 
+   Ciepłe kolory, Plus Jakarta Sans zaokrąglone.
+   Teksty grubsze, bardziej "friendly".
+   Klimat: rodzinne wakacje, dzieci na plaży, lody. */
+html.theme-family h1,
+html.theme-family h2,
+html.theme-family h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+html.theme-family h1 {
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+}
+html.theme-family body {
+  font-weight: 400;
+  line-height: 1.7;
+}
+html.theme-family p.uppercase,
+html.theme-family span.uppercase {
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: 0.72em;
+}
+
+/* ── RUSTIC (Rustykalna natura) ───────────────────────── 
+   Ziemia, drewno, Fraunces w kursywie. Ciepłe brązy.
+   Fraunces ma charakter — oldstyle, optyczne. 
+   Klimat: domek letniskowy, las, cisza. */
+html.theme-rustic h1,
+html.theme-rustic h2,
+html.theme-rustic h3 {
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  font-variation-settings: "WONK" 1;
+}
+html.theme-rustic h1 {
+  font-size: clamp(2rem, 4.5vw, 4rem);
+}
+html.theme-rustic body {
+  font-weight: 400;
+  line-height: 1.75;
+}
+html.theme-rustic p.uppercase,
+html.theme-rustic span.uppercase {
+  letter-spacing: 0.2em;
+  font-size: 0.68em;
+  font-family: var(--app-font-sans);
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* ── MODERN (Minimalistyczny) ─────────────────────────── 
+   Czarno-biały, Outfit na 300 dla nagłówków.
+   Bardzo ciasny tracking w nagłówkach, zero ozdobników.
+   Klimat: design hotel, architektura, sztuka. */
+html.theme-modern h1,
+html.theme-modern h2,
+html.theme-modern h3 {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  text-transform: none;
+}
+html.theme-modern h1 {
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  font-weight: 300;
+}
+html.theme-modern h4,
+html.theme-modern h5,
+html.theme-modern h6 {
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.8em;
+}
+html.theme-modern p.uppercase,
+html.theme-modern span.uppercase {
+  letter-spacing: 0.4em;
+  font-weight: 300;
+  font-size: 0.6em;
+}
+html.theme-modern body {
+  font-weight: 300;
+  letter-spacing: -0.005em;
 }
 
 /* ===================== HERO SLIDER ===================== */

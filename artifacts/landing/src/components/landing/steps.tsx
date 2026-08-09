@@ -5,8 +5,8 @@ const STEPS = [
   {
     icon: Palette,
     num: "01",
-    title: "Wybierz styl i napisz",
-    desc: "Spośród 5 stylów wybierasz ten, który pasuje do klimatu Twojego ośrodka — i wypełniasz formularz kontaktowy. Zero zobowiązań.",
+    title: "Wybierz styl i kup",
+    desc: "Spośród 5 stylów wybierasz ten, który pasuje do Twojego ośrodka. Klikasz \u201eKup teraz\u201d i podajesz dane do faktury \u2014 gotowe.",
   },
   {
     icon: Upload,
@@ -17,7 +17,7 @@ const STEPS = [
   {
     icon: Key,
     num: "03",
-    title: "Gotowe — klucze do adminki",
+    title: "Gotowe w 24 godziny",
     desc: "Twoja strona działa i przyjmuje gości. Dostajesz hasło do panelu admina. Od teraz rządzisz sam — bez żadnych miesięcznych opłat.",
   },
 ];
@@ -68,7 +68,7 @@ export function Steps() {
             href="#kontakt"
             className="inline-block bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 shadow-2xl"
           >
-            Zacznijmy! Napisz do nas
+            Kup teraz — masz stronę w 24 h
           </a>
         </div>
       </div>

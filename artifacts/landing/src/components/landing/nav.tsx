@@ -20,7 +20,7 @@ export function Nav() {
           href="#kontakt"
           className="bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-lg"
         >
-          Zamów stronę
+          Kup teraz
         </a>
       </div>
     </header>

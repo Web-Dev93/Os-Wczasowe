@@ -29,12 +29,19 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  // wouter's `nest` gives relative paths inside /admin, so /admin/login → /login
+  const isLoginPage = location === "/login" || location.startsWith("/login?");
+
   // Redirect if not logged in and not loading
   React.useEffect(() => {
-    if (userError && location !== "/admin/login") {
-      setLocation("/admin/login");
+    if (userError && !isLoginPage) {
+      // Preserve ?demo=1 so auto-login kicks in after redirect
+      const demoParam = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "1"
+        ? "?demo=1"
+        : "";
+      setLocation(`/admin/login${demoParam}`);
     }
-  }, [userError, location, setLocation]);
+  }, [userError, isLoginPage, setLocation]);
 
   if (isUserLoading) {
     return <div className="min-h-screen bg-muted/20 flex flex-col items-center justify-center p-4">
@@ -44,7 +51,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   // If login page, don't show layout
-  if (location === "/admin/login") {
+  if (isLoginPage) {
     return (
       <div className="min-h-screen bg-muted/20">
         {children}
