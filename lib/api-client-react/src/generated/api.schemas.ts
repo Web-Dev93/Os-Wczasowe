@@ -52,27 +52,35 @@ export interface SiteSettings {
   /** @nullable */
   logoUrl?: string | null;
   /** @nullable */
+  faviconUrl?: string | null;
+  /**
+     * 'yes' lub 'no' — czy ośrodek akceptuje zwierzęta
+     * @nullable
+     */
+  petsAllowed?: string | null;
+  /**
+     * Cena za pobyt zwierzęcia (np. "30 zł / doba")
+     * @nullable
+     */
+  petPrice?: string | null;
+  /** @nullable */
   heroImageUrl?: string | null;
-  theme: SiteSettingsTheme;
-  bookingMode: SiteSettingsBookingMode;
   /** @nullable */
   heroImageUrl2?: string | null;
   /** @nullable */
   heroImageUrl3?: string | null;
-  /** @nullable */
-  bookingComIcalUrl?: string | null;
   /** @nullable */
   googleCalendarUrl?: string | null;
   /** @nullable */
   googleAnalyticsId?: string | null;
   /** @nullable */
   googleMapsUrl?: string | null;
+  theme: SiteSettingsTheme;
+  bookingMode: SiteSettingsBookingMode;
   /** @nullable */
   checkInTime?: string | null;
   /** @nullable */
   checkOutTime?: string | null;
-  /** @nullable */
-  adminPassword?: string | null;
 }
 
 export type AdminSiteSettings = SiteSettings & ({
@@ -80,24 +88,13 @@ export type AdminSiteSettings = SiteSettings & ({
   bookingComIcalUrl?: string | null;
 });
 
-export interface Post {
-  id: number;
-  title: string;
-  /** @nullable */
-  content?: string | null;
-  /** @nullable */
-  imageUrl?: string | null;
-  isPublished: boolean;
-  /** @nullable */
-  createdAt?: string | null;
-}
+export type SiteSettingsInputPetsAllowed = typeof SiteSettingsInputPetsAllowed[keyof typeof SiteSettingsInputPetsAllowed];
 
-export interface PostInput {
-  title: string;
-  content?: string;
-  imageUrl?: string;
-  isPublished?: boolean;
-}
+
+export const SiteSettingsInputPetsAllowed = {
+  yes: 'yes',
+  no: 'no',
+} as const;
 
 export type SiteSettingsInputTheme = typeof SiteSettingsInputTheme[keyof typeof SiteSettingsInputTheme];
 
@@ -132,7 +129,15 @@ export interface SiteSettingsInput {
   whatsapp?: string;
   facebook?: string;
   logoUrl?: string;
+  faviconUrl?: string;
+  petsAllowed?: SiteSettingsInputPetsAllowed;
+  petPrice?: string;
   heroImageUrl?: string;
+  heroImageUrl2?: string;
+  heroImageUrl3?: string;
+  googleCalendarUrl?: string;
+  googleAnalyticsId?: string;
+  googleMapsUrl?: string;
   theme?: SiteSettingsInputTheme;
   bookingMode?: SiteSettingsInputBookingMode;
   checkInTime?: string;
@@ -250,6 +255,7 @@ export interface Booking {
   checkIn: string;
   checkOut: string;
   guestsCount: number;
+  childrenCount?: number;
   /** @nullable */
   message?: string | null;
   status: BookingStatus;
@@ -279,6 +285,8 @@ export interface InquiryInput {
   checkOut: string;
   /** @minimum 1 */
   guestsCount: number;
+  /** @minimum 0 */
+  childrenCount?: number;
   message?: string;
   type?: InquiryInputType;
 }
@@ -339,6 +347,44 @@ export interface DashboardStats {
   confirmedBookings: number;
   cancelledBookings: number;
   recentBookings: Booking[];
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  /** @nullable */
+  content?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  isPublished: boolean;
+  createdAt: string;
+}
+
+export interface PostInput {
+  /** @minLength 1 */
+  title: string;
+  content?: string;
+  imageUrl?: string;
+  isPublished?: boolean;
+}
+
+export interface UploadUrlRequest {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  size: number;
+  /** @minLength 1 */
+  contentType: string;
+}
+
+export interface UploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+  metadata?: UploadUrlRequest;
+}
+
+export interface ErrorEnvelope {
+  error: string;
 }
 
 export type GetAvailabilityParams = {

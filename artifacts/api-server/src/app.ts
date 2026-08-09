@@ -39,7 +39,10 @@ app.use(
   session({
     store: new PgSession({
       pool,
-      createTableIfMissing: true,
+      // Bundled build cannot read connect-pg-simple's table.sql (ENOENT poisons
+      // the store and every session save fails). The "session" table is created
+      // by scripts/ensure-session-table.sql / post-merge setup instead.
+      createTableIfMissing: false,
     }),
     secret: process.env.SESSION_SECRET ?? "seaside-resort-secret",
     resave: false,

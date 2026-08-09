@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { useListRooms, useSubmitInquiry } from "@workspace/api-client-react";
+import { useListRooms, useSubmitInquiry, useGetSettings } from "@workspace/api-client-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,7 +19,8 @@ const formSchema = z.object({
   guestName: z.string().min(2, "Imię jest wymagane"),
   guestEmail: z.string().email("Niepoprawny email"),
   guestPhone: z.string().min(6, "Telefon jest wymagany"),
-  guestsCount: z.coerce.number().min(1, "Minimum 1 gość"),
+  guestsCount: z.coerce.number().min(1, "Minimum 1 dorosły"),
+  childrenCount: z.coerce.number().min(0, "Nie może być ujemna"),
   checkIn: z.string().min(1, "Wybierz datę przyjazdu"),
   checkOut: z.string().min(1, "Wybierz datę wyjazdu"),
   message: z.string().optional(),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 
 export default function Reservation() {
   const { data: rooms, isLoading: isRoomsLoading } = useListRooms();
+  const { data: settings } = useGetSettings();
   const submitInquiry = useSubmitInquiry();
   const { toast } = useToast();
   const [roomIdFromUrl, setRoomIdFromUrl] = useState<string>("");
@@ -55,6 +57,7 @@ export default function Reservation() {
       guestEmail: "",
       guestPhone: "",
       guestsCount: 2,
+      childrenCount: 0,
       checkIn: "",
       checkOut: "",
       message: "",
@@ -75,6 +78,7 @@ export default function Reservation() {
         guestEmail: values.guestEmail,
         guestPhone: values.guestPhone,
         guestsCount: values.guestsCount,
+        childrenCount: values.childrenCount,
         checkIn: values.checkIn,
         checkOut: values.checkOut,
         message: values.message,
@@ -92,6 +96,7 @@ export default function Reservation() {
           guestEmail: "",
           guestPhone: "",
           guestsCount: 2,
+          childrenCount: 0,
           checkIn: "",
           checkOut: "",
           message: "",
@@ -189,7 +194,7 @@ export default function Reservation() {
                     name="guestsCount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Liczba gości</FormLabel>
+                        <FormLabel>Liczba dorosłych</FormLabel>
                         <FormControl>
                           <Input type="number" min="1" max="10" className="h-12 bg-muted/50 rounded-xl" {...field} />
                         </FormControl>
@@ -197,7 +202,31 @@ export default function Reservation() {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="childrenCount"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Liczba dzieci</FormLabel>
+                        <FormControl>
+                          <Input type="number" min="0" max="10" className="h-12 bg-muted/50 rounded-xl" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
+
+                {settings?.petsAllowed === "yes" && (
+                  <div className="rounded-xl bg-muted/40 border border-border px-4 py-3 text-sm flex items-start gap-2">
+                    <span aria-hidden>🐾</span>
+                    <p>
+                      Akceptujemy zwierzęta{settings?.petPrice ? <> — dopłata: <strong>{settings.petPrice}</strong></> : " — bezpłatnie"}.
+                      {" "}Jeśli przyjeżdżasz ze zwierzęciem, napisz o tym w polu „Wiadomość".
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-6 pb-6">

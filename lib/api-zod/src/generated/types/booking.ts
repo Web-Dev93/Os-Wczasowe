@@ -20,6 +20,7 @@ export interface Booking {
   checkIn: Date;
   checkOut: Date;
   guestsCount: number;
+  childrenCount?: number;
   /** @nullable */
   message?: string | null;
   status: BookingStatus;

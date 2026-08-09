@@ -10,6 +10,7 @@ import statsRouter from "./stats";
 import icalRouter from "./ical";
 import postsRouter from "./posts";
 import landingContactRouter from "./landing-contact";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(statsRouter);
 router.use(icalRouter);
 router.use(postsRouter);
 router.use(landingContactRouter);
+router.use(storageRouter);
 
 export default router;

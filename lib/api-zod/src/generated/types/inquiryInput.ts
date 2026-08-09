@@ -19,6 +19,8 @@ export interface InquiryInput {
   checkOut: Date;
   /** @minimum 1 */
   guestsCount: number;
+  /** @minimum 0 */
+  childrenCount?: number;
   message?: string;
   type?: InquiryInputType;
 }

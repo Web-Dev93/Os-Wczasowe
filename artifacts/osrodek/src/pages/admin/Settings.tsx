@@ -11,9 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, BarChart3, MapPin, Calendar } from "lucide-react";
+import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, BarChart3, MapPin, Calendar, Upload, X, PawPrint } from "lucide-react";
 import { AdminTip } from "@/components/ui/admin-help";
 import { ThemePicker } from "@/components/ui/theme-picker";
+import { useUpload } from "@workspace/object-storage-web";
+import { Switch } from "@/components/ui/switch";
 
 const THEMES = [
   { value: "professional", label: "Professional — Morski profesjonalizm" },
@@ -41,6 +43,77 @@ function FieldGroup({ title, icon, children }: FieldGroupProps) {
       </CardHeader>
       <CardContent className="space-y-4">{children}</CardContent>
     </Card>
+  );
+}
+
+function ImageUploadField({
+  label,
+  value,
+  onChange,
+  hint,
+  previewClass = "h-12",
+  accept = "image/*",
+}: {
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  hint?: string;
+  previewClass?: string;
+  accept?: string;
+}) {
+  const { toast } = useToast();
+  const { uploadFile, isUploading } = useUpload({
+    onSuccess: async (res) => {
+      // Mark the object as a public site asset — otherwise it won't be served to visitors.
+      try {
+        const r = await fetch("/api/storage/uploads/finalize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ objectPath: res.objectPath }),
+          credentials: "include",
+        });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        onChange(`/api/storage${res.objectPath}`);
+      } catch {
+        toast({ title: "Błąd podczas wgrywania pliku", variant: "destructive" });
+      }
+    },
+    onError: () => toast({ title: "Błąd podczas wgrywania pliku", variant: "destructive" }),
+  });
+  const inputId = React.useId();
+  return (
+    <div className="space-y-1.5">
+      <label className="text-sm font-medium text-foreground">{label}</label>
+      <div className="flex flex-wrap items-center gap-3">
+        <input
+          id={inputId}
+          type="file"
+          accept={accept}
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) uploadFile(f);
+            e.target.value = "";
+          }}
+        />
+        <Button type="button" variant="outline" size="sm" className="gap-2" disabled={isUploading}
+          onClick={() => document.getElementById(inputId)?.click()}>
+          {isUploading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+          {isUploading ? "Wgrywanie..." : "Wgraj plik z komputera"}
+        </Button>
+        {value && (
+          <>
+            <img src={value} alt={label} className={`${previewClass} object-contain rounded border p-1 bg-muted`} />
+            <Button type="button" variant="ghost" size="sm" className="gap-1 text-muted-foreground"
+              onClick={() => onChange("")}>
+              <X className="w-4 h-4" /> Usuń
+            </Button>
+          </>
+        )}
+      </div>
+      <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder="…lub wklej URL: https://..." className="text-xs" />
+      {hint && <AdminTip text={hint} />}
+    </div>
   );
 }
 
@@ -72,6 +145,9 @@ export default function AdminSettings() {
     whatsapp: "",
     facebook: "",
     logoUrl: "",
+    faviconUrl: "",
+    petsAllowed: "no",
+    petPrice: "",
     heroImageUrl: "",
     heroImageUrl2: "",
     heroImageUrl3: "",
@@ -104,6 +180,9 @@ export default function AdminSettings() {
         whatsapp: settings.whatsapp || "",
         facebook: settings.facebook || "",
         logoUrl: settings.logoUrl || "",
+        faviconUrl: (settings as { faviconUrl?: string | null }).faviconUrl || "",
+        petsAllowed: (settings as { petsAllowed?: string | null }).petsAllowed || "no",
+        petPrice: (settings as { petPrice?: string | null }).petPrice || "",
         heroImageUrl: settings.heroImageUrl || "",
         heroImageUrl2: settings.heroImageUrl2 || "",
         heroImageUrl3: settings.heroImageUrl3 || "",
@@ -146,6 +225,9 @@ export default function AdminSettings() {
       whatsapp: form.whatsapp || undefined,
       facebook: form.facebook || undefined,
       logoUrl: form.logoUrl || undefined,
+      faviconUrl: form.faviconUrl || undefined,
+      petsAllowed: form.petsAllowed,
+      petPrice: form.petPrice || undefined,
       heroImageUrl: form.heroImageUrl || undefined,
       heroImageUrl2: form.heroImageUrl2 || undefined,
       heroImageUrl3: form.heroImageUrl3 || undefined,
@@ -246,13 +328,20 @@ export default function AdminSettings() {
 
       <FieldGroup title="Wygląd i zdjęcia" icon={<Image className="w-5 h-5 text-primary" />}>
         <AdminTip text="Zdjęcia slidera to pierwsze co widzi gość wchodząc na Twoją stronę. Użyj własnych zdjęć ośrodka — skopiuj link do zdjęcia (URL) i wklej poniżej. Jeśli nie masz własnych, możesz użyć darmowych zdjęć z unsplash.com." />
-        <Field label="URL logo (opcjonalnie)">
-          <Input value={form.logoUrl} onChange={handleChange("logoUrl")} placeholder="https://..." />
-          <AdminTip text="Link do pliku z logo Twojego ośrodka. Jeśli zostawisz puste, w menu pojawi się sama nazwa ośrodka." />
-          {form.logoUrl && (
-            <img src={form.logoUrl} alt="Logo" className="mt-2 h-12 object-contain rounded border p-1 bg-muted" />
-          )}
-        </Field>
+        <ImageUploadField
+          label="Logo ośrodka (opcjonalnie)"
+          value={form.logoUrl}
+          onChange={(url) => setForm(prev => ({ ...prev, logoUrl: url }))}
+          hint="Wgraj plik z logo Twojego ośrodka — pojawi się w menu zamiast nazwy. Jeśli zostawisz puste, w menu będzie sama nazwa ośrodka."
+        />
+        <ImageUploadField
+          label="Favicon — ikonka w karcie przeglądarki (opcjonalnie)"
+          value={form.faviconUrl}
+          onChange={(url) => setForm(prev => ({ ...prev, faviconUrl: url }))}
+          hint="Mała ikonka widoczna w karcie przeglądarki. Najlepiej kwadratowy obrazek PNG lub SVG (np. 64×64 px). Jeśli zostawisz puste, użyjemy ikonki dopasowanej do wybranego motywu."
+          previewClass="h-8 w-8"
+          accept="image/png,image/svg+xml,image/x-icon,image/jpeg,image/webp"
+        />
         <p className="text-xs text-muted-foreground -mt-2">Wklej URL zdjęcia (np. z Unsplash, Google Drive, własnego serwera). Slider pokazuje do 3 slajdów — zostaw puste żeby użyć domyślnego zdjęcia morskiego.</p>
         {[
           { key: "heroImageUrl" as const, label: "Slajd 1 — URL zdjęcia (główny baner)" },
@@ -287,6 +376,26 @@ export default function AdminSettings() {
             </SelectContent>
           </Select>
         </Field>
+      </FieldGroup>
+
+      <FieldGroup title="Zwierzęta" icon={<PawPrint className="w-5 h-5 text-primary" />}>
+        <AdminTip text="Jeśli akceptujesz zwierzęta, goście zobaczą tę informację (wraz z ceną) na stronie i w formularzu rezerwacji." />
+        <div className="flex items-center justify-between rounded-lg border border-border px-4 py-3">
+          <div>
+            <p className="text-sm font-medium">Akceptujemy zwierzęta</p>
+            <p className="text-xs text-muted-foreground">Włącz, jeśli goście mogą przyjechać ze zwierzętami</p>
+          </div>
+          <Switch
+            checked={form.petsAllowed === "yes"}
+            onCheckedChange={(checked) => setForm(prev => ({ ...prev, petsAllowed: checked ? "yes" : "no" }))}
+          />
+        </div>
+        {form.petsAllowed === "yes" && (
+          <Field label="Cena za pobyt zwierzęcia">
+            <Input value={form.petPrice} onChange={handleChange("petPrice")} placeholder="np. 30 zł / doba" />
+            <p className="text-xs text-muted-foreground pt-1">Zostaw puste, jeśli pobyt zwierzęcia jest bezpłatny.</p>
+          </Field>
+        )}
       </FieldGroup>
 
       <FieldGroup title="Godziny" icon={<Clock className="w-5 h-5 text-primary" />}>

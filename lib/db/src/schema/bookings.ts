@@ -12,6 +12,7 @@ export const bookingsTable = pgTable("bookings", {
   checkIn: date("check_in", { mode: "string" }).notNull(),
   checkOut: date("check_out", { mode: "string" }).notNull(),
   guestsCount: integer("guests_count").notNull().default(1),
+  childrenCount: integer("children_count").notNull().default(0),
   message: text("message"),
   status: text("status").notNull().default("pending"),
   type: text("type").notNull().default("inquiry"),

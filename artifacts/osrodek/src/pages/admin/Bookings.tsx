@@ -99,7 +99,10 @@ export default function AdminBookings() {
                     {format(new Date(booking.checkIn), "dd MMM yyyy", { locale: pl })} - {format(new Date(booking.checkOut), "dd MMM yyyy", { locale: pl })}
                   </div>
                   <div className="text-sm">
-                    <strong>Liczba gości:</strong> {booking.guestsCount}
+                    <strong>Dorośli:</strong> {booking.guestsCount}
+                    {typeof (booking as { childrenCount?: number }).childrenCount === "number" && ((booking as { childrenCount?: number }).childrenCount ?? 0) > 0 && (
+                      <> · <strong>Dzieci:</strong> {(booking as { childrenCount?: number }).childrenCount}</>
+                    )}
                   </div>
                   <div className="text-xs text-muted-foreground pt-2 border-t border-border/50">
                     Otrzymano: {format(new Date(booking.createdAt), "dd MMM HH:mm")}

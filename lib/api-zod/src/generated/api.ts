@@ -31,14 +31,19 @@ export const GetSettingsResponse = zod.object({
   "whatsapp": zod.string().nullish(),
   "facebook": zod.string().nullish(),
   "logoUrl": zod.string().nullish(),
+  "faviconUrl": zod.string().nullish(),
+  "petsAllowed": zod.string().nullish().describe('\'yes\' lub \'no\' — czy ośrodek akceptuje zwierzęta'),
+  "petPrice": zod.string().nullish().describe('Cena za pobyt zwierzęcia (np. \"30 zł \/ doba\")'),
   "heroImageUrl": zod.string().nullish(),
   "heroImageUrl2": zod.string().nullish(),
   "heroImageUrl3": zod.string().nullish(),
+  "googleCalendarUrl": zod.string().nullish(),
+  "googleAnalyticsId": zod.string().nullish(),
+  "googleMapsUrl": zod.string().nullish(),
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish(),
-  "adminPassword": zod.string().nullish()
+  "checkOutTime": zod.string().nullish()
 })
 
 
@@ -132,6 +137,8 @@ export const GetAvailabilityResponse = zod.array(GetAvailabilityResponseItem)
 
 
 
+export const submitInquiryBodyChildrenCountMin = 0;
+
 
 
 export const SubmitInquiryBody = zod.object({
@@ -142,6 +149,7 @@ export const SubmitInquiryBody = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number().min(1),
+  "childrenCount": zod.number().min(submitInquiryBodyChildrenCountMin).optional(),
   "message": zod.string().optional(),
   "type": zod.enum(['inquiry', 'booking']).optional()
 })
@@ -156,6 +164,7 @@ export const SubmitInquiryResponse = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number(),
+  "childrenCount": zod.number().optional(),
   "message": zod.string().nullish(),
   "status": zod.enum(['pending', 'confirmed', 'cancelled']),
   "type": zod.enum(['inquiry', 'booking']),
@@ -208,19 +217,21 @@ export const AdminGetSettingsResponse = zod.object({
   "whatsapp": zod.string().nullish(),
   "facebook": zod.string().nullish(),
   "logoUrl": zod.string().nullish(),
+  "faviconUrl": zod.string().nullish(),
+  "petsAllowed": zod.string().nullish().describe('\'yes\' lub \'no\' — czy ośrodek akceptuje zwierzęta'),
+  "petPrice": zod.string().nullish().describe('Cena za pobyt zwierzęcia (np. \"30 zł \/ doba\")'),
   "heroImageUrl": zod.string().nullish(),
   "heroImageUrl2": zod.string().nullish(),
   "heroImageUrl3": zod.string().nullish(),
+  "googleCalendarUrl": zod.string().nullish(),
+  "googleAnalyticsId": zod.string().nullish(),
+  "googleMapsUrl": zod.string().nullish(),
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish(),
-  "adminPassword": zod.string().nullish()
+  "checkOutTime": zod.string().nullish()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().nullish(),
-  "googleCalendarUrl": zod.string().nullish(),
-  "googleAnalyticsId": zod.string().nullish(),
-  "googleMapsUrl": zod.string().nullish()
+  "bookingComIcalUrl": zod.string().nullish()
 }))
 
 
@@ -241,19 +252,22 @@ export const AdminUpdateSettingsBody = zod.object({
   "whatsapp": zod.string().optional(),
   "facebook": zod.string().optional(),
   "logoUrl": zod.string().optional(),
+  "faviconUrl": zod.string().optional(),
+  "petsAllowed": zod.enum(['yes', 'no']).optional(),
+  "petPrice": zod.string().optional(),
   "heroImageUrl": zod.string().optional(),
   "heroImageUrl2": zod.string().optional(),
   "heroImageUrl3": zod.string().optional(),
+  "googleCalendarUrl": zod.string().optional(),
+  "googleAnalyticsId": zod.string().optional(),
+  "googleMapsUrl": zod.string().optional(),
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']).optional(),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']).optional(),
   "checkInTime": zod.string().optional(),
   "checkOutTime": zod.string().optional(),
   "adminPassword": zod.string().optional()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().optional(),
-  "googleCalendarUrl": zod.string().optional(),
-  "googleAnalyticsId": zod.string().optional(),
-  "googleMapsUrl": zod.string().optional()
+  "bookingComIcalUrl": zod.string().optional()
 }))
 
 export const AdminUpdateSettingsResponse = zod.object({
@@ -268,19 +282,21 @@ export const AdminUpdateSettingsResponse = zod.object({
   "whatsapp": zod.string().nullish(),
   "facebook": zod.string().nullish(),
   "logoUrl": zod.string().nullish(),
+  "faviconUrl": zod.string().nullish(),
+  "petsAllowed": zod.string().nullish().describe('\'yes\' lub \'no\' — czy ośrodek akceptuje zwierzęta'),
+  "petPrice": zod.string().nullish().describe('Cena za pobyt zwierzęcia (np. \"30 zł \/ doba\")'),
   "heroImageUrl": zod.string().nullish(),
   "heroImageUrl2": zod.string().nullish(),
   "heroImageUrl3": zod.string().nullish(),
+  "googleCalendarUrl": zod.string().nullish(),
+  "googleAnalyticsId": zod.string().nullish(),
+  "googleMapsUrl": zod.string().nullish(),
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish(),
-  "adminPassword": zod.string().nullish()
+  "checkOutTime": zod.string().nullish()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().nullish(),
-  "googleCalendarUrl": zod.string().nullish(),
-  "googleAnalyticsId": zod.string().nullish(),
-  "googleMapsUrl": zod.string().nullish()
+  "bookingComIcalUrl": zod.string().nullish()
 }))
 
 
@@ -552,6 +568,7 @@ export const AdminListBookingsResponseItem = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number(),
+  "childrenCount": zod.number().optional(),
   "message": zod.string().nullish(),
   "status": zod.enum(['pending', 'confirmed', 'cancelled']),
   "type": zod.enum(['inquiry', 'booking']),
@@ -578,6 +595,7 @@ export const AdminGetBookingResponse = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number(),
+  "childrenCount": zod.number().optional(),
   "message": zod.string().nullish(),
   "status": zod.enum(['pending', 'confirmed', 'cancelled']),
   "type": zod.enum(['inquiry', 'booking']),
@@ -608,6 +626,7 @@ export const AdminUpdateBookingResponse = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number(),
+  "childrenCount": zod.number().optional(),
   "message": zod.string().nullish(),
   "status": zod.enum(['pending', 'confirmed', 'cancelled']),
   "type": zod.enum(['inquiry', 'booking']),
@@ -695,6 +714,7 @@ export const AdminGetStatsResponse = zod.object({
   "checkIn": zod.coerce.date(),
   "checkOut": zod.coerce.date(),
   "guestsCount": zod.number(),
+  "childrenCount": zod.number().optional(),
   "message": zod.string().nullish(),
   "status": zod.enum(['pending', 'confirmed', 'cancelled']),
   "type": zod.enum(['inquiry', 'booking']),
@@ -702,5 +722,143 @@ export const AdminGetStatsResponse = zod.object({
   "createdAt": zod.string()
 }))
 })
+
+
+/**
+ * @summary Lista opublikowanych wpisów
+ */
+export const ListPostsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string()
+})
+export const ListPostsResponse = zod.array(ListPostsResponseItem)
+
+
+/**
+ * @summary Lista wszystkich wpisów
+ */
+export const AdminListPostsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string()
+})
+export const AdminListPostsResponse = zod.array(AdminListPostsResponseItem)
+
+
+/**
+ * @summary Utwórz wpis
+ */
+
+
+
+export const AdminCreatePostBody = zod.object({
+  "title": zod.string().min(1),
+  "content": zod.string().optional(),
+  "imageUrl": zod.string().optional(),
+  "isPublished": zod.boolean().optional()
+})
+
+export const AdminCreatePostResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Zaktualizuj wpis
+ */
+export const AdminUpdatePostParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+export const AdminUpdatePostBody = zod.object({
+  "title": zod.string().min(1),
+  "content": zod.string().optional(),
+  "imageUrl": zod.string().optional(),
+  "isPublished": zod.boolean().optional()
+})
+
+export const AdminUpdatePostResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Usuń wpis
+ */
+export const AdminDeletePostParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeletePostResponse = zod.void()
+
+
+/**
+ * @summary Request a presigned URL for file upload
+ */
+
+
+
+
+
+export const RequestUploadUrlBody = zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+})
+
+
+
+
+
+
+export const RequestUploadUrlResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string(),
+  "metadata": zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+}).optional()
+})
+
+
+/**
+ * @summary Serve a public asset from PUBLIC_OBJECT_SEARCH_PATHS
+ */
+export const GetPublicObjectParams = zod.object({
+  "filePath": zod.coerce.string()
+})
+
+export const GetPublicObjectResponse = zod.unknown()
+
+
+/**
+ * @summary Serve an object entity from PRIVATE_OBJECT_DIR
+ */
+export const GetStorageObjectParams = zod.object({
+  "objectPath": zod.coerce.string()
+})
+
+export const GetStorageObjectResponse = zod.unknown()
 
 

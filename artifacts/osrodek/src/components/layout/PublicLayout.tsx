@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { usePublicTheme } from "../../hooks/use-theme";
 import { Menu, X, Phone, Mail, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+function useFavicon(faviconUrl: string | null | undefined, theme: string | undefined) {
+  useEffect(() => {
+    const href = faviconUrl || (theme ? `${import.meta.env.BASE_URL}favicon-${theme}.svg` : null);
+    if (!href) return;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.href = href;
+  }, [faviconUrl, theme]);
+}
+
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const { settings, isLoading, isDemo, activeTheme } = usePublicTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  useFavicon((settings as { faviconUrl?: string | null } | undefined)?.faviconUrl, activeTheme);
 
   if (isLoading && !settings) return <div className="min-h-screen bg-background flex items-center justify-center">Ładowanie...</div>;
 

@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { SiteSettingsInputBookingMode } from './siteSettingsInputBookingMode';
+import type { SiteSettingsInputPetsAllowed } from './siteSettingsInputPetsAllowed';
 import type { SiteSettingsInputTheme } from './siteSettingsInputTheme';
 
 export interface SiteSettingsInput {
@@ -20,9 +21,15 @@ export interface SiteSettingsInput {
   whatsapp?: string;
   facebook?: string;
   logoUrl?: string;
+  faviconUrl?: string;
+  petsAllowed?: SiteSettingsInputPetsAllowed;
+  petPrice?: string;
   heroImageUrl?: string;
   heroImageUrl2?: string;
   heroImageUrl3?: string;
+  googleCalendarUrl?: string;
+  googleAnalyticsId?: string;
+  googleMapsUrl?: string;
   theme?: SiteSettingsInputTheme;
   bookingMode?: SiteSettingsInputBookingMode;
   checkInTime?: string;

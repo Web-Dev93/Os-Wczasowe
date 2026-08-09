@@ -30,17 +30,33 @@ export interface SiteSettings {
   /** @nullable */
   logoUrl?: string | null;
   /** @nullable */
+  faviconUrl?: string | null;
+  /**
+     * 'yes' lub 'no' — czy ośrodek akceptuje zwierzęta
+     * @nullable
+     */
+  petsAllowed?: string | null;
+  /**
+     * Cena za pobyt zwierzęcia (np. "30 zł / doba")
+     * @nullable
+     */
+  petPrice?: string | null;
+  /** @nullable */
   heroImageUrl?: string | null;
   /** @nullable */
   heroImageUrl2?: string | null;
   /** @nullable */
   heroImageUrl3?: string | null;
+  /** @nullable */
+  googleCalendarUrl?: string | null;
+  /** @nullable */
+  googleAnalyticsId?: string | null;
+  /** @nullable */
+  googleMapsUrl?: string | null;
   theme: SiteSettingsTheme;
   bookingMode: SiteSettingsBookingMode;
   /** @nullable */
   checkInTime?: string | null;
   /** @nullable */
   checkOutTime?: string | null;
-  /** @nullable */
-  adminPassword?: string | null;
 }

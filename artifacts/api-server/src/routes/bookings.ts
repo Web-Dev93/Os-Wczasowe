@@ -57,6 +57,7 @@ router.post("/inquiries", async (req, res): Promise<void> => {
     checkIn: toDateStr(parsed.data.checkIn),
     checkOut: toDateStr(parsed.data.checkOut),
     guestsCount: parsed.data.guestsCount,
+    childrenCount: parsed.data.childrenCount ?? 0,
     message: parsed.data.message ?? null,
     type: parsed.data.type ?? "inquiry",
     status: "pending",
