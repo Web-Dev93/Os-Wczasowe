@@ -96,8 +96,8 @@
   --sidebar-ring: 221.2 83.2% 53.3%;
 
   --radius: 0.5rem;
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: 'Playfair Display', serif;
+  --app-font-sans: 'DM Sans', 'Inter', sans-serif;
+  --app-font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
 }
 
 html.theme-exclusive {
