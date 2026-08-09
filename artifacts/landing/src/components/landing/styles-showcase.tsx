@@ -181,7 +181,18 @@ export function StylesShowcase() {
           </div>
         </div>
 
-        <div className="text-center mt-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+          <a
+            href={`/?theme=${s.themeKey}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-8 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            Podgląd strony
+          </a>
           <a
             href="#kontakt"
             className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
