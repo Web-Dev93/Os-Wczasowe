@@ -359,9 +359,27 @@ html.theme-exclusive {
   --muted: 25 6% 9%;
   --muted-foreground: 38 8% 55%;
   --primary: 38 52% 50%;
-  /* LIGHT primary-foreground — sekcje bg-primary mają CIEMNE tło (patrz section.bg-primary override),
-     więc text-primary-foreground musi być jasny */
-  --primary-foreground: 38 18% 91%;
+  /* Ciemny primary-foreground — złote przyciski (bg-primary) mają ciemny tekst */
+  --primary-foreground: 25 8% 4%;
+}
+
+/* Sekcje bg-primary dostają CIEMNE tło (patrz section.bg-primary niżej),
+   więc tekst wewnątrz musi być jasny — scoped, nie globalnie */
+html.theme-exclusive section.bg-primary {
+  color: hsl(38 18% 88%);
+}
+html.theme-exclusive section.bg-primary [class*="text-primary-foreground"] {
+  color: hsl(38 18% 88%) !important;
+}
+/* CTA: przycisk "Sprawdź dostępność" (bg-primary-foreground → jasny) i outline */
+html.theme-exclusive section.bg-primary a.bg-primary-foreground,
+html.theme-exclusive section.bg-primary .bg-primary-foreground {
+  background: hsl(38 52% 50%) !important;
+  color: hsl(25 8% 4%) !important;
+}
+html.theme-exclusive section.bg-primary a[class*="border-primary-foreground"] {
+  border-color: hsl(38 52% 50% / 0.5) !important;
+  color: hsl(38 52% 60%) !important;
 }
 
 /* — Typografia bazowa — */
@@ -1132,5 +1150,3 @@ header nav a.text-primary::after { width: 100%; }
 img {
   transition: opacity 0.3s ease;
 }
-img[loading] { opacity: 0; }
-img.loaded   { opacity: 1; }

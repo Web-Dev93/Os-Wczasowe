@@ -80,9 +80,21 @@ export function usePublicTheme() {
 }
 
 export function useAdminTheme() {
+  // Demo preview (landing showcase iframe): honor ?theme= from URL/session first
+  const urlTheme = getUrlTheme();
+  if (urlTheme) {
+    try { sessionStorage.setItem(SESSION_THEME_KEY, urlTheme); } catch { /* noop */ }
+  }
+  const storedTheme = (() => {
+    try { return sessionStorage.getItem(SESSION_THEME_KEY); } catch { return null; }
+  })();
+  const forcedTheme = urlTheme ?? storedTheme;
+
   // Use authenticated admin endpoint for reliability in secured context
-  const { data: settings } = useAdminGetSettings({ query: { retry: 1 } as never });
+  const { data: settings } = useAdminGetSettings({
+    query: { retry: 1, enabled: !forcedTheme } as never,
+  });
   useEffect(() => {
-    applyTheme(settings?.theme ?? "professional");
-  }, [settings?.theme]);
+    applyTheme(forcedTheme ?? settings?.theme ?? "professional");
+  }, [forcedTheme, settings?.theme]);
 }

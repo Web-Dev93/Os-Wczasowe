@@ -51,8 +51,11 @@ const STYLES = [
 const SITE_WIDTH = 1280;
 const SITE_HEIGHT = 1300;
 
+type ViewMode = "site" | "admin";
+
 export function StylesShowcase() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [view, setView] = useState<ViewMode>("site");
   const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.82);
@@ -78,7 +81,16 @@ export function StylesShowcase() {
     setActiveIdx(idx);
   }
 
-  const iframeSrc = `/osrodek/?theme=${s.themeKey}&demo=1`;
+  function switchView(v: ViewMode) {
+    if (v === view) return;
+    setLoading(true);
+    setView(v);
+  }
+
+  const iframeSrc =
+    view === "site"
+      ? `/osrodek/?theme=${s.themeKey}&demo=1`
+      : `/osrodek/admin/login?theme=${s.themeKey}&demo=1`;
   const containerHeight = Math.round(SITE_HEIGHT * scale);
 
   return (
@@ -128,6 +140,32 @@ export function StylesShowcase() {
           </AnimatePresence>
         </div>
 
+        {/* View toggle: site / admin panel */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex rounded-full border border-border bg-background p-1 shadow-sm">
+            <button
+              onClick={() => switchView("site")}
+              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                view === "site"
+                  ? "bg-primary text-primary-foreground shadow"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Strona dla gości
+            </button>
+            <button
+              onClick={() => switchView("admin")}
+              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                view === "admin"
+                  ? "bg-primary text-primary-foreground shadow"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Panel administracyjny
+            </button>
+          </div>
+        </div>
+
         {/* Browser frame + live iframe */}
         <div className="max-w-6xl mx-auto">
           <div className="rounded-2xl overflow-hidden shadow-2xl border-8 border-foreground/10">
@@ -139,7 +177,7 @@ export function StylesShowcase() {
               <div className="w-3 h-3 rounded-full bg-green-400" />
               <div className="ml-3 flex-1 flex justify-center">
                 <div className="bg-white border border-gray-200 rounded px-3 py-0.5 text-xs text-gray-400 w-64 text-center truncate">
-                  willa-morska.pl?theme={s.themeKey}
+                  {view === "site" ? `willa-morska.pl?theme=${s.themeKey}` : "willa-morska.pl/admin"}
                 </div>
               </div>
               <div
@@ -165,10 +203,18 @@ export function StylesShowcase() {
               )}
 
               <iframe
-                key={s.themeKey}
+                key={`${s.themeKey}-${view}`}
                 src={iframeSrc}
                 title={`Podgląd stylu: ${s.name}`}
-                onLoad={() => setTimeout(() => setLoading(false), 2500)}
+                onLoad={(e) => {
+                  const key = `${s.themeKey}-${view}`;
+                  const el = e.currentTarget;
+                  setTimeout(() => {
+                    // Ignoruj przestarzałe timeouty po szybkiej zmianie stylu/widoku
+                    if (el.isConnected && el.dataset.viewKey === key) setLoading(false);
+                  }, 2500);
+                  el.dataset.viewKey = key;
+                }}
                 className="absolute top-0 left-0 border-0 pointer-events-none"
                 style={{
                   width: `${SITE_WIDTH}px`,
@@ -187,18 +233,33 @@ export function StylesShowcase() {
             href={`/osrodek/?theme=${s.themeKey}&demo=1`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-8 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
+            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-7 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0M12 3a15 15 0 010 18M12 3a15 15 0 000 18" />
             </svg>
-            Podgląd strony
+            Otwórz stronę główną
+          </a>
+          <a
+            href={`/osrodek/admin/login?theme=${s.themeKey}&demo=1`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-7 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Panel administracyjny
           </a>
           <a
             href="#kontakt"
-            className="btn-ocean inline-block bg-primary text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
+            className="btn-ocean inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
           >
-            Kup teraz — ten styl jest mój!
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Kup teraz
           </a>
         </div>
       </div>
