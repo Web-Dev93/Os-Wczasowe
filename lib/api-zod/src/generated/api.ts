@@ -217,7 +217,10 @@ export const AdminGetSettingsResponse = zod.object({
   "checkOutTime": zod.string().nullish(),
   "adminPassword": zod.string().nullish()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().nullish()
+  "bookingComIcalUrl": zod.string().nullish(),
+  "googleCalendarUrl": zod.string().nullish(),
+  "googleAnalyticsId": zod.string().nullish(),
+  "googleMapsUrl": zod.string().nullish()
 }))
 
 
@@ -247,7 +250,10 @@ export const AdminUpdateSettingsBody = zod.object({
   "checkOutTime": zod.string().optional(),
   "adminPassword": zod.string().optional()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().optional()
+  "bookingComIcalUrl": zod.string().optional(),
+  "googleCalendarUrl": zod.string().optional(),
+  "googleAnalyticsId": zod.string().optional(),
+  "googleMapsUrl": zod.string().optional()
 }))
 
 export const AdminUpdateSettingsResponse = zod.object({
@@ -271,7 +277,10 @@ export const AdminUpdateSettingsResponse = zod.object({
   "checkOutTime": zod.string().nullish(),
   "adminPassword": zod.string().nullish()
 }).and(zod.object({
-  "bookingComIcalUrl": zod.string().nullish()
+  "bookingComIcalUrl": zod.string().nullish(),
+  "googleCalendarUrl": zod.string().nullish(),
+  "googleAnalyticsId": zod.string().nullish(),
+  "googleMapsUrl": zod.string().nullish()
 }))
 
 

@@ -80,7 +80,7 @@ export function StylesShowcase() {
   const containerHeight = Math.round(SITE_HEIGHT * scale);
 
   return (
-    <section id="style" className="py-24 bg-card overflow-hidden border-y border-border">
+    <section id="demo" className="py-24 bg-card overflow-hidden border-y border-border">
       <div className="container mx-auto px-4 md:px-6">
 
         {/* Heading */}

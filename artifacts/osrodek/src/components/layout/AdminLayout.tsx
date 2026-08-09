@@ -17,9 +17,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
+import { QuickThemeSwitcher } from "@/components/ui/theme-picker";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
-  useAdminTheme(); // Force professional theme
+  useAdminTheme(); // Apply site theme to admin panel
   const [location, setLocation] = useLocation();
   const { data: user, isLoading: isUserLoading, error: userError } = useAdminGetMe({
     query: {
@@ -148,7 +149,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="flex-1 overflow-y-auto py-6 px-3">
           <NavLinks />
         </div>
-        <div className="p-4 border-t">
+        <div className="p-4 border-t space-y-3">
+          <QuickThemeSwitcher />
           <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10" onClick={handleLogout}>
             <LogOut className="w-5 h-5 mr-3" />
             Wyloguj się

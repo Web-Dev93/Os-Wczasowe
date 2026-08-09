@@ -23,6 +23,9 @@ export const settingsTable = pgTable("settings", {
   checkOutTime: text("check_out_time").default("10:00"),
   adminPassword: text("admin_password").notNull().default("admin123"),
   bookingComIcalUrl: text("booking_com_ical_url"),
+  googleCalendarUrl: text("google_calendar_url"),
+  googleAnalyticsId: text("google_analytics_id"),
+  googleMapsUrl: text("google_maps_url"),
 });
 
 export const insertSettingsSchema = createInsertSchema(settingsTable).omit({ id: true });

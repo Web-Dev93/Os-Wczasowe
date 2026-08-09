@@ -384,6 +384,82 @@ export default function Home() {
         </section>
       )}
 
+      {/* ════════════════════ MAPA DOJAZDU ══ */}
+      {(settings?.address || settings?.googleMapsUrl) && (() => {
+        const mapSrc = settings?.googleMapsUrl?.trim()
+          ? settings.googleMapsUrl
+          : `https://maps.google.com/maps?q=${encodeURIComponent(settings!.address!.trim())}&output=embed&hl=pl`;
+        return (
+          <section className="py-24 bg-background">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <motion.div
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                variants={stagger}
+                className="text-center mb-12"
+              >
+                <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">
+                  Dojazd
+                </motion.p>
+                <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-serif font-bold mb-4">
+                  Jak do nas trafić?
+                </motion.h2>
+                {settings?.address && (
+                  <motion.p variants={fadeUp} className="text-muted-foreground text-lg flex items-center justify-center gap-2">
+                    <MapPin className="w-5 h-5 text-primary shrink-0" />
+                    {settings.address}
+                  </motion.p>
+                )}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+                className="rounded-3xl overflow-hidden shadow-2xl border border-border"
+                style={{ height: "420px" }}
+              >
+                <iframe
+                  src={mapSrc}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Mapa dojazdu do ośrodka"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center"
+              >
+                {settings?.phone && (
+                  <a
+                    href={`tel:${settings.phone}`}
+                    className="inline-flex items-center gap-2 text-foreground hover:text-primary transition font-medium"
+                  >
+                    <span className="text-xl">📞</span>
+                    {settings.phone}
+                  </a>
+                )}
+                <Link href="/kontakt">
+                  <Button variant="outline" className="rounded-full px-8">
+                    Pełne dane kontaktowe
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+          </section>
+        );
+      })()}
+
       {/* ════════════════════════════════ CTA ══ */}
       <section className="relative py-32 overflow-hidden bg-primary">
         {/* decorative circles */}

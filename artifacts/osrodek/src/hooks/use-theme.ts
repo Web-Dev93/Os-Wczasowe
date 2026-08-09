@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGetSettings } from "@workspace/api-client-react";
+import { useGetSettings, useAdminGetSettings } from "@workspace/api-client-react";
 
 const ALL_THEMES = [
   "theme-professional",
@@ -80,9 +80,9 @@ export function usePublicTheme() {
 }
 
 export function useAdminTheme() {
-  const { data: settings } = useGetSettings();
+  // Use authenticated admin endpoint for reliability in secured context
+  const { data: settings } = useAdminGetSettings({ query: { retry: 1 } as never });
   useEffect(() => {
-    // Admin panel uses the same theme as the public site
     applyTheme(settings?.theme ?? "professional");
   }, [settings?.theme]);
 }

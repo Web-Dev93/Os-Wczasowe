@@ -1,27 +1,61 @@
 import { motion, type Variants } from "framer-motion";
 import {
-  BedDouble, Images, CalendarCheck, Settings, Smartphone,
-  Lock, MapPin, Check, RefreshCw, Newspaper
+  BedDouble, Images, CalendarCheck, Smartphone,
+  Lock, MapPin, Check, RefreshCw, Newspaper,
+  BarChart3, Calendar, Globe, Settings2, MessageSquare
 } from "lucide-react";
 
-const FEATURES = [
-  { icon: BedDouble,     text: "Strona główna z animowanym sliderem zdjęć" },
-  { icon: BedDouble,     text: "Katalog pokoi z cenami i udogodnieniami" },
-  { icon: CalendarCheck, text: "Formularz rezerwacji lub zapytania online" },
-  { icon: Images,        text: "Galeria zdjęć w układzie masonry z lightboxem" },
-  { icon: MapPin,        text: "Strona kontaktu z mapą i danymi" },
-  { icon: Smartphone,    text: "W pełni responsywna — piękna na telefonie" },
-  { icon: Newspaper,     text: "Sekcja aktualności — informuj gości o promocjach" },
-  { icon: RefreshCw,     text: "Synchronizacja z Booking.com — blokada zajętych dat" },
+const SITE_FEATURES = [
+  { text: "Strona główna z animowanym sliderem zdjęć" },
+  { text: "Katalog pokoi z cenami i udogodnieniami" },
+  { text: "Formularz rezerwacji lub zapytania online" },
+  { text: "Galeria zdjęć w układzie masonry z lightboxem" },
+  { text: "Strona kontaktu z mapą Google Maps" },
+  { text: "Sekcja aktualności — nowości dla gości" },
+  { text: "W pełni responsywna — piękna na telefonie" },
+  { text: "6 stylów wizualnych do wyboru" },
 ];
 
 const ADMIN_FEATURES = [
   "Zarządzaj pokojami, cenami i zdjęciami",
   "Przeglądaj i obsługuj rezerwacje",
   "Dodawaj i usuwaj zdjęcia galerii",
-  "Blokuj terminy (urlop, remont, Booking.com)",
+  "Blokuj terminy (Booking.com, Google Calendar)",
   "Zmień styl, opis i dane kontaktowe",
   "Publikuj aktualności dla gości",
+  "Google Analytics — statystyki strony",
+  "Google Maps — mapa dla gości",
+];
+
+const INTEGRATIONS = [
+  {
+    icon: RefreshCw,
+    color: "bg-[#003580] text-white",
+    label: "Booking.com",
+    desc: "Zajęte terminy blokują się automatycznie. Zero podwójnych rezerwacji.",
+    badge: "Automatyczne",
+  },
+  {
+    icon: Calendar,
+    color: "bg-[#1a73e8] text-white",
+    label: "Google Calendar",
+    desc: "Wklej adres kalendarza i zajęte dni znikają z formularza rezerwacji.",
+    badge: "Automatyczne",
+  },
+  {
+    icon: BarChart3,
+    color: "bg-[#e37400] text-white",
+    label: "Google Analytics",
+    desc: "Wklej swój kod GA4 i śledź skąd przychodzą goście i które pokoje oglądają.",
+    badge: "1 kliknięcie",
+  },
+  {
+    icon: MapPin,
+    color: "bg-[#34a853] text-white",
+    label: "Google Maps",
+    desc: "Mapa z lokalizacją Twojego ośrodka pojawi się na stronie kontaktu automatycznie.",
+    badge: "1 kliknięcie",
+  },
 ];
 
 const fadeUp: Variants = {
@@ -33,46 +67,54 @@ export function Features() {
   return (
     <section id="funkcje" className="py-28 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+
+        {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-20">
           <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">Co dostajesz</p>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">Kompletna strona — gotowa do działania</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">Kompletny system. Gotowy w 24 h.</h2>
           <p className="text-lg text-muted-foreground">
-            Żadnych modułów, wtyczek i tajemniczych subskrypcji.
-            Dostajesz gotową stronę z panelem admina. Płacisz raz i masz ją na zawsze.
+            Wszystko, czego potrzebuje ośrodek nad morzem — w jednym pakiecie,
+            za jedną cenę, bez ukrytych kosztów.
           </p>
         </div>
 
-        {/* Booking.com badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 mx-auto max-w-2xl"
-        >
-          <div className="flex items-center gap-5 p-5 rounded-2xl border-2 border-[#003580]/20 bg-[#003580]/5">
-            <div className="w-14 h-14 rounded-xl bg-[#003580] flex items-center justify-center shrink-0">
-              <RefreshCw className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-bold text-[#003580] text-lg">Synchronizacja z Booking.com</span>
-                <span className="text-xs bg-[#003580] text-white px-2 py-0.5 rounded-full font-semibold">NOWOŚĆ</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Zajęte terminy z Booking.com blokują się automatycznie na Twojej stronie.
-                Zero podwójnych rezerwacji — goście widzą tylko wolne daty.
-              </p>
-            </div>
+        {/* Google + Booking integrations */}
+        <div className="mb-20">
+          <h3 className="text-center text-xl font-serif font-bold mb-8 text-foreground/70">
+            Integracje wbudowane w standard
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {INTEGRATIONS.map((item, i) => (
+              <motion.div
+                key={i}
+                custom={i}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="bg-card border border-border rounded-2xl p-5"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
+                    <item.icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    {item.badge}
+                  </span>
+                </div>
+                <div className="font-bold text-sm mb-1">{item.label}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left: feature list */}
           <div>
             <h3 className="text-2xl font-serif font-bold mb-8">Strona publiczna dla Twoich gości</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-              {FEATURES.map((f, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
+              {SITE_FEATURES.map((f, i) => (
                 <motion.div
                   key={i}
                   custom={i}
@@ -80,9 +122,9 @@ export function Features() {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true }}
-                  className="flex items-start gap-3 p-4 bg-card border border-border rounded-2xl feature-chip"
+                  className="flex items-start gap-3 p-4 bg-card border border-border rounded-2xl"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-4 h-4" />
                   </div>
                   <span className="text-sm leading-relaxed text-foreground/85">{f.text}</span>
@@ -95,15 +137,16 @@ export function Features() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6 }}
               className="p-7 bg-primary text-primary-foreground rounded-3xl"
             >
               <div className="flex items-center gap-3 mb-4">
                 <Lock className="w-5 h-5 opacity-80" />
-                <h4 className="font-bold text-lg">Twój własny panel administratora</h4>
+                <h4 className="font-bold text-lg">Panel administratora — tylko dla Ciebie</h4>
               </div>
               <p className="opacity-80 mb-5 text-sm leading-relaxed">
-                Chroniony hasłem panel tylko dla Ciebie. Zarządzasz wszystkim samodzielnie — bez kontaktu z programistą, bez dodatkowych kosztów.
+                Chroniony hasłem panel do zarządzania całą stroną.
+                Zmieniasz wszystko samodzielnie — bez kontaktu z programistą, bez dodatkowych kosztów.
               </p>
               <ul className="space-y-2.5">
                 {ADMIN_FEATURES.map((f, i) => (
@@ -123,8 +166,8 @@ export function Features() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl overflow-hidden border border-border shadow-2xl bg-card admin-mock"
+            transition={{ duration: 0.7 }}
+            className="rounded-2xl overflow-hidden border border-border shadow-2xl bg-card"
           >
             {/* Browser chrome */}
             <div className="bg-muted px-4 py-3 border-b border-border flex items-center gap-2">
@@ -134,89 +177,60 @@ export function Features() {
                 <div className="w-3 h-3 rounded-full bg-green-400" />
               </div>
               <div className="mx-auto bg-background px-3 py-1 rounded text-xs text-muted-foreground w-1/2 text-center border border-border">
-                admin.twojosrodek.pl
+                twojosrodek.pl/admin
               </div>
             </div>
 
-            {/* Admin panel mock UI */}
-            <div className="flex h-[440px]">
-              {/* Sidebar */}
+            {/* Admin panel mock */}
+            <div className="flex h-[480px]">
               <div className="w-44 bg-muted/60 border-r border-border p-4 flex flex-col gap-1 shrink-0">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Panel admin</div>
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Panel</div>
                 {[
                   { label: "Dashboard", active: false },
-                  { label: "Pokoje", active: true },
+                  { label: "Pokoje", active: false },
                   { label: "Rezerwacje", active: false },
                   { label: "Galeria", active: false },
                   { label: "Aktualności", active: false },
-                  { label: "Ustawienia", active: false },
+                  { label: "Ustawienia", active: true },
                 ].map(({ label, active }) => (
-                  <div
-                    key={label}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium cursor-default ${
-                      active
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-border"
-                    }`}
-                  >
+                  <div key={label} className={`px-3 py-2 rounded-lg text-xs font-medium ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
                     {label}
                   </div>
                 ))}
               </div>
 
-              {/* Content */}
               <div className="flex-1 p-5 overflow-hidden">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-sm">Pokoje i apartamenty</h3>
-                  <button className="bg-primary text-primary-foreground text-xs px-3 py-1.5 rounded-lg font-medium">
-                    + Dodaj pokój
-                  </button>
-                </div>
-                {/* Room list mock */}
-                <div className="space-y-2.5">
+                <h3 className="font-bold text-sm mb-4">Ustawienia — Integracje</h3>
+
+                {/* Integration mocks */}
+                <div className="space-y-3">
                   {[
-                    { name: "Apartament Bałtyk", price: "320 zł/noc", cap: "4 os.", active: true },
-                    { name: "Pokój Standard",    price: "180 zł/noc", cap: "2 os.", active: true },
-                    { name: "Domek Wydmy",       price: "450 zł/noc", cap: "6 os.", active: false },
-                  ].map((room) => (
-                    <div key={room.name} className="flex items-center gap-3 p-3 bg-muted/40 border border-border rounded-xl">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-xs truncate">{room.name}</div>
-                        <div className="text-xs text-muted-foreground">{room.price} · {room.cap}</div>
+                    { icon: "🔵", label: "Booking.com iCal URL", val: "https://booking.com/ical/...", ok: true },
+                    { icon: "📅", label: "Google Calendar URL", val: "https://calendar.google.com/...", ok: true },
+                    { icon: "📊", label: "Google Analytics ID", val: "G-XXXXXXXXXX", ok: false },
+                    { icon: "🗺️", label: "Google Maps Embed URL", val: "https://maps.google.com/...", ok: false },
+                  ].map((row) => (
+                    <div key={row.label} className="p-3 bg-muted/40 border border-border rounded-xl">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="text-xs font-medium flex items-center gap-1.5">
+                          <span>{row.icon}</span>
+                          {row.label}
+                        </div>
+                        {row.ok
+                          ? <span className="text-xs text-green-600 font-semibold">✓ Aktywne</span>
+                          : <span className="text-xs text-muted-foreground">Opcjonalne</span>
+                        }
                       </div>
-                      <div className={`text-xs px-2 py-0.5 rounded-full font-medium ${room.active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
-                        {room.active ? "Aktywny" : "Ukryty"}
+                      <div className="text-xs text-muted-foreground font-mono bg-background px-2 py-1 rounded truncate">
+                        {row.val}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Booking.com sync status */}
-                <div className="mt-4 flex items-center gap-2.5 p-3 bg-[#003580]/8 border border-[#003580]/20 rounded-xl">
-                  <div className="w-6 h-6 bg-[#003580] rounded flex items-center justify-center shrink-0">
-                    <RefreshCw className="w-3 h-3 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium">Booking.com</div>
-                    <div className="text-xs text-muted-foreground">Zsynchronizowano 5 min temu</div>
-                  </div>
-                  <div className="text-xs text-green-600 font-medium">✓ OK</div>
-                </div>
-
-                {/* Stats at bottom */}
-                <div className="grid grid-cols-3 gap-2 mt-4">
-                  {[
-                    { label: "Rezerwacje", val: "12" },
-                    { label: "Oczekujące", val: "3" },
-                    { label: "Ten miesiąc", val: "4 200 zł" },
-                  ].map(({ label, val }) => (
-                    <div key={label} className="bg-muted/40 border border-border rounded-xl p-2.5 text-center">
-                      <div className="font-bold text-sm text-primary">{val}</div>
-                      <div className="text-xs text-muted-foreground">{label}</div>
-                    </div>
-                  ))}
-                </div>
+                <button className="mt-4 w-full bg-primary text-primary-foreground text-xs py-2.5 rounded-lg font-semibold">
+                  Zapisz ustawienia
+                </button>
               </div>
             </div>
           </motion.div>

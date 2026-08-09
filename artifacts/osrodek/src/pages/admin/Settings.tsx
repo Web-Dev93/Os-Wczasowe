@@ -11,8 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, MessageCircle } from "lucide-react";
+import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, BarChart3, MapPin, Calendar } from "lucide-react";
 import { AdminTip } from "@/components/ui/admin-help";
+import { ThemePicker } from "@/components/ui/theme-picker";
 
 const THEMES = [
   { value: "professional", label: "Professional — Morski profesjonalizm" },
@@ -80,6 +81,9 @@ export default function AdminSettings() {
     checkOutTime: "10:00",
     adminPassword: "",
     bookingComIcalUrl: "",
+    googleCalendarUrl: "",
+    googleAnalyticsId: "",
+    googleMapsUrl: "",
   });
   const [icalImportStatus, setIcalImportStatus] = useState<{
     loading: boolean;
@@ -109,6 +113,9 @@ export default function AdminSettings() {
         checkOutTime: settings.checkOutTime || "10:00",
         adminPassword: "",
         bookingComIcalUrl: settings.bookingComIcalUrl || "",
+        googleCalendarUrl: settings.googleCalendarUrl || "",
+        googleAnalyticsId: settings.googleAnalyticsId || "",
+        googleMapsUrl: settings.googleMapsUrl || "",
       });
     }
   }, [settings]);
@@ -147,6 +154,9 @@ export default function AdminSettings() {
       checkInTime: form.checkInTime || undefined,
       checkOutTime: form.checkOutTime || undefined,
       bookingComIcalUrl: form.bookingComIcalUrl || undefined,
+      googleCalendarUrl: form.googleCalendarUrl || undefined,
+      googleAnalyticsId: form.googleAnalyticsId || undefined,
+      googleMapsUrl: form.googleMapsUrl || undefined,
     };
 
     if (form.adminPassword.trim()) {
@@ -261,18 +271,9 @@ export default function AdminSettings() {
       </FieldGroup>
 
       <FieldGroup title="Wygląd strony" icon={<Palette className="w-5 h-5 text-primary" />}>
-        <AdminTip text="Motyw zmienia kolory, czcionki i ogólny styl całej strony — zarówno publicznej jak i tego panelu. Wypróbuj każdy i wybierz ten, który najlepiej pasuje do charakteru Twojego ośrodka." />
+        <AdminTip text="Motyw zmienia kolory, czcionki i ogólny styl całej strony — zarówno publicznej jak i tego panelu. Kliknij kartę, żeby wybrać. Zmiana jest widoczna od razu po zapisaniu ustawień." />
         <Field label="Motyw kolorystyczny">
-          <Select value={form.theme} onValueChange={handleSelect("theme")}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {THEMES.map(t => (
-                <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <ThemePicker value={form.theme} onChange={(v) => setForm(prev => ({ ...prev, theme: v }))} />
         </Field>
         <Field label="Tryb rezerwacji">
           <Select value={form.bookingMode} onValueChange={handleSelect("bookingMode")}>
@@ -362,6 +363,140 @@ export default function AdminSettings() {
             ✓ Pobrano kalendarz — znaleziono {icalImportStatus.result.eventsFound} zajętych terminów.
           </p>
         )}
+      </FieldGroup>
+
+      <FieldGroup title="Integracje Google" icon={<Globe className="w-5 h-5 text-primary" />}>
+
+        {/* ── Google Maps ───────────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-[#34a853]" />
+            <span className="font-semibold text-sm">Mapa Google Maps na stronie</span>
+          </div>
+
+          {/* Auto-map info box */}
+          <div className="rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800 leading-relaxed">
+            <p className="font-semibold mb-1">✅ Mapa działa automatycznie!</p>
+            <p>
+              Wystarczy że masz wypełnione pole <strong>Adres</strong> w sekcji Kontakt powyżej —
+              mapa pojawi się na stronie kontaktu i na stronie głównej bez żadnej dodatkowej konfiguracji.
+            </p>
+          </div>
+
+          {/* Optional custom URL */}
+          <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+            <p className="text-sm font-medium text-foreground">
+              📍 <strong>Opcjonalnie</strong> — chcesz wskazać dokładne miejsce na mapie?
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Jeśli Twój adres nie pokazuje dokładnego miejsca, możesz wkleić precyzyjny link do mapy.
+              Poniżej znajdziesz jak to zrobić krok po kroku.
+            </p>
+
+            <div className="bg-background rounded-lg border border-border p-3 text-xs leading-loose text-foreground/80 space-y-0.5">
+              <p className="font-semibold text-foreground mb-1">Jak zdobyć link do mapy (2 minuty):</p>
+              <p>1️⃣ Otwórz <strong>maps.google.com</strong> w przeglądarce</p>
+              <p>2️⃣ Znajdź swój ośrodek na mapie (wpisz adres w wyszukiwarce)</p>
+              <p>3️⃣ Kliknij przycisk <strong>„Udostępnij"</strong> (ikona strzałki ↗)</p>
+              <p>4️⃣ Wybierz zakładkę <strong>„Umieść mapę"</strong> (Embed a map)</p>
+              <p>5️⃣ Kliknij <strong>„Kopiuj HTML"</strong></p>
+              <p>6️⃣ Wklej skopiowany kod do pola poniżej — my automatycznie wyciągniemy z niego link</p>
+            </div>
+
+            <Field label="">
+              <Input
+                value={form.googleMapsUrl}
+                onChange={(e) => {
+                  // Accept both full iframe HTML and raw src URL
+                  let val = e.target.value;
+                  const srcMatch = val.match(/src="([^"]+)"/);
+                  if (srcMatch) val = srcMatch[1];
+                  setForm(prev => ({ ...prev, googleMapsUrl: val }));
+                }}
+                placeholder='Wklej link do mapy lub cały kod <iframe src="...">'
+                className="font-mono text-xs"
+              />
+              {form.googleMapsUrl && (
+                <p className="text-xs text-green-700 pt-1">✓ Link do mapy zapisany — pojawi się na stronie po zapisaniu ustawień</p>
+              )}
+              {!form.googleMapsUrl && (
+                <p className="text-xs text-muted-foreground pt-1">
+                  Zostaw puste — mapa i tak pojawi się automatycznie z Twojego adresu.
+                </p>
+              )}
+            </Field>
+          </div>
+        </div>
+
+        <div className="border-t border-border my-2" />
+
+        {/* ── Google Calendar ───────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-[#1a73e8]" />
+            <span className="font-semibold text-sm">Google Calendar — synchronizacja terminów</span>
+          </div>
+
+          <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Jeśli prowadzisz kalendarz rezerwacji w Google Calendar, wklej jego adres poniżej —
+              zajęte dni automatycznie zablokują się na Twojej stronie.
+            </p>
+            <div className="bg-background rounded-lg border border-border p-3 text-xs leading-loose text-foreground/80 space-y-0.5">
+              <p className="font-semibold text-foreground mb-1">Jak zdobyć adres kalendarza:</p>
+              <p>1️⃣ Otwórz <strong>calendar.google.com</strong></p>
+              <p>2️⃣ Po lewej kliknij ⋮ przy swoim kalendarzu → <strong>„Ustawienia i udostępnianie"</strong></p>
+              <p>3️⃣ Przewiń do sekcji <strong>„Integracja kalendarza"</strong></p>
+              <p>4️⃣ Skopiuj <strong>„Tajny adres w formacie iCal"</strong> (długi link)</p>
+              <p>5️⃣ Wklej go poniżej</p>
+            </div>
+            <Field label="">
+              <Input
+                value={form.googleCalendarUrl}
+                onChange={handleChange("googleCalendarUrl")}
+                placeholder="https://calendar.google.com/calendar/ical/.../basic.ics"
+                className="font-mono text-xs"
+              />
+              {form.googleCalendarUrl && (
+                <p className="text-xs text-green-700 pt-1">✓ Kalendarz Google podłączony</p>
+              )}
+            </Field>
+          </div>
+        </div>
+
+        <div className="border-t border-border my-2" />
+
+        {/* ── Google Analytics ──────────────────────────── */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-[#e37400]" />
+            <span className="font-semibold text-sm">Google Analytics — statystyki odwiedzin</span>
+          </div>
+          <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Chcesz wiedzieć ile osób odwiedza Twoją stronę, skąd przychodzą i co oglądają?
+              Wklej swój identyfikator Google Analytics 4 poniżej.
+            </p>
+            <div className="bg-background rounded-lg border border-border p-3 text-xs leading-loose text-foreground/80 space-y-0.5">
+              <p className="font-semibold text-foreground mb-1">Jak znaleźć identyfikator GA4:</p>
+              <p>1️⃣ Wejdź na <strong>analytics.google.com</strong></p>
+              <p>2️⃣ Kliknij ⚙️ <strong>„Admin"</strong> (lewy dolny róg)</p>
+              <p>3️⃣ Kliknij <strong>„Strumienie danych"</strong> → wybierz swoją stronę</p>
+              <p>4️⃣ Skopiuj <strong>„Identyfikator pomiaru"</strong> (zaczyna się od G-)</p>
+            </div>
+            <Field label="">
+              <Input
+                value={form.googleAnalyticsId}
+                onChange={handleChange("googleAnalyticsId")}
+                placeholder="G-XXXXXXXXXX"
+                className="font-mono"
+              />
+              {form.googleAnalyticsId && (
+                <p className="text-xs text-green-700 pt-1">✓ Google Analytics podłączone — ID: {form.googleAnalyticsId}</p>
+              )}
+            </Field>
+          </div>
+        </div>
       </FieldGroup>
 
       <FieldGroup title="Bezpieczeństwo" icon={<Lock className="w-5 h-5 text-primary" />}>
