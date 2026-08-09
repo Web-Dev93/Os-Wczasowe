@@ -1,67 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
 
 const STYLES = [
-  {
-    id: "ekskluzywny",
-    themeKey: "exclusive",
-    name: "Ekskluzywny",
-    desc: "Ciemny, złoty, luksusowy. Idealny dla wymagających gości i apartamentów premium.",
-    accent: "#c9a74e",
-  },
-  {
-    id: "nadmorski",
-    themeKey: "professional",
-    name: "Nadmorski",
-    desc: "Błękit morza, piasek, świeże powietrze. Klasyczny klimat polskiego wybrzeża.",
-    accent: "#1e3a6b",
-  },
-  {
-    id: "rodzinny",
-    themeKey: "family",
-    name: "Rodzinny",
-    desc: "Ciepły, radosny, z letnią energią. Przyciąga rodziny z dziećmi.",
-    accent: "#2da8d8",
-  },
-  {
-    id: "rustykalny",
-    themeKey: "rustic",
-    name: "Rustykalny",
-    desc: "Drewno, zieleń, natura. Dla domków letniskowych i agroturystyki.",
-    accent: "#6b4c2a",
-  },
-  {
-    id: "wakacyjny",
-    themeKey: "fun",
-    name: "Wakacyjny",
-    desc: "Turquoise i koral, energia letniej imprezy. Dla ośrodków pełnych życia i zabawy.",
-    accent: "#00b4c5",
-  },
-  {
-    id: "nowoczesny",
-    themeKey: "modern",
-    name: "Nowoczesny",
-    desc: "Minimalistyczny, czarno-biały. Dla obiektu który stawia na designerską architekturę.",
-    accent: "#111111",
-  },
+  { id: "nadmorski", themeKey: "professional", name: "Nadmorski", desc: "Klasyczny klimat polskiego wybrzeża. Błękit, biel i przestrzeń." },
+  { id: "ekskluzywny", themeKey: "exclusive", name: "Ekskluzywny", desc: "Ciemny, elegancki motyw. Idealny dla apartamentów premium." },
+  { id: "rustykalny", themeKey: "rustic", name: "Rustykalny", desc: "Ciepło drewna i natury. Doskonały dla domków letniskowych." },
+  { id: "nowoczesny", themeKey: "modern", name: "Nowoczesny", desc: "Minimalistyczny, czarno-biały. Dla designerskich obiektów." },
+  { id: "rodzinny", themeKey: "family", name: "Rodzinny", desc: "Ciepły i radosny. Stworzony, by przyciągać rodziny z dziećmi." },
+  { id: "wakacyjny", themeKey: "fun", name: "Wakacyjny", desc: "Energia i kolor. Dla ośrodków pełnych życia i letniej zabawy." },
 ];
 
-// Scale the 1280px-wide site to fit the preview container
 const SITE_WIDTH = 1280;
-const SITE_HEIGHT = 1300;
-
-type ViewMode = "site" | "admin";
+const SITE_HEIGHT = 1000;
 
 export function StylesShowcase() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [view, setView] = useState<ViewMode>("site");
+  const [view, setView] = useState<"site" | "admin">("site");
   const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.82);
+  const [scale, setScale] = useState(0.8);
   const s = STYLES[activeIdx];
 
-  // Compute scale based on container width
   useEffect(() => {
     function computeScale() {
       if (containerRef.current) {
@@ -81,123 +40,106 @@ export function StylesShowcase() {
     setActiveIdx(idx);
   }
 
-  function switchView(v: ViewMode) {
-    if (v === view) return;
-    setLoading(true);
-    setView(v);
-  }
-
-  const iframeSrc =
-    view === "site"
-      ? `/osrodek/?theme=${s.themeKey}&demo=1`
-      : `/osrodek/admin/login?theme=${s.themeKey}&demo=1`;
+  const iframeSrc = view === "site" 
+    ? `/osrodek/?theme=${s.themeKey}&demo=1` 
+    : `/osrodek/admin/login?theme=${s.themeKey}&demo=1`;
+    
   const containerHeight = Math.round(SITE_HEIGHT * scale);
 
   return (
-    <section id="demo" className="py-24 bg-card overflow-hidden border-y border-border">
-      <div className="container mx-auto px-4 md:px-6">
-
-        {/* Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">6 Stylów do wyboru</p>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">Który to Twój?</h2>
-          <p className="text-lg text-muted-foreground">
-            Kliknij styl i zobaczysz na żywo jak będzie wyglądać Twoja strona.
-            Ta sama funkcjonalność — inny klimat.
+    <section id="demo" className="py-24 md:py-32 bg-background border-b border-border/50">
+      <div className="container mx-auto px-6">
+        
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-serif font-medium mb-6">Zaprojektowane, by zachwycać.</h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Wybierz motyw, który najlepiej oddaje charakter Twojego miejsca. 
+            Możesz go w każdej chwili zmienić jednym kliknięciem w panelu.
           </p>
         </div>
 
-        {/* Style tabs */}
-        <div className="flex flex-wrap justify-center gap-2.5 mb-6">
-          {STYLES.map((style, idx) => (
-            <button
-              key={style.id}
-              onClick={() => switchStyle(idx)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                idx === activeIdx
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105"
-                  : "bg-background border border-border text-foreground hover:border-primary/40"
-              }`}
-            >
-              {style.name}
-            </button>
-          ))}
+        <div className="flex justify-center mb-12">
+          <div className="flex flex-wrap justify-center gap-3">
+            {STYLES.map((style, idx) => (
+              <button
+                key={style.id}
+                onClick={() => switchStyle(idx)}
+                className={`px-5 py-2 rounded text-sm transition-all duration-300 ${
+                  idx === activeIdx
+                    ? "bg-foreground text-background font-medium shadow-sm"
+                    : "bg-muted/50 text-foreground hover:bg-muted"
+                }`}
+              >
+                {style.name}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Description */}
-        <div className="text-center mb-6 h-6">
+        <div className="text-center mb-8 h-6">
           <AnimatePresence mode="wait">
             <motion.p
               key={s.id}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.2 }}
-              className="text-muted-foreground text-sm font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-muted-foreground text-sm"
             >
               {s.desc}
             </motion.p>
           </AnimatePresence>
         </div>
 
-        {/* View toggle: site / admin panel */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-full border border-border bg-background p-1 shadow-sm">
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1 border border-border rounded bg-muted/30">
             <button
-              onClick={() => switchView("site")}
-              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                view === "site"
-                  ? "bg-primary text-primary-foreground shadow"
-                  : "text-muted-foreground hover:text-foreground"
+              onClick={() => { setLoading(true); setView("site"); }}
+              className={`px-6 py-1.5 rounded text-xs tracking-wider uppercase transition-colors ${
+                view === "site" ? "bg-background shadow-sm font-semibold" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              Strona dla gości
+              Strona gościa
             </button>
             <button
-              onClick={() => switchView("admin")}
-              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                view === "admin"
-                  ? "bg-primary text-primary-foreground shadow"
-                  : "text-muted-foreground hover:text-foreground"
+              onClick={() => { setLoading(true); setView("admin"); }}
+              className={`px-6 py-1.5 rounded text-xs tracking-wider uppercase transition-colors ${
+                view === "admin" ? "bg-background shadow-sm font-semibold" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              Panel administracyjny
+              Panel Admina
             </button>
           </div>
         </div>
 
-        {/* Browser frame + live iframe */}
-        <div className="max-w-6xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-2xl border-8 border-foreground/10">
-
-            {/* Browser chrome */}
-            <div className="h-10 bg-gray-100 flex items-center px-4 gap-1.5 border-b border-gray-200 shrink-0">
-              <div className="w-3 h-3 rounded-full bg-red-400" />
-              <div className="w-3 h-3 rounded-full bg-yellow-400" />
-              <div className="w-3 h-3 rounded-full bg-green-400" />
-              <div className="ml-3 flex-1 flex justify-center">
-                <div className="bg-white border border-gray-200 rounded px-3 py-0.5 text-xs text-gray-400 w-64 text-center truncate">
-                  {view === "site" ? `willa-morska.pl?theme=${s.themeKey}` : "willa-morska.pl/admin"}
-                </div>
+        <div className="max-w-[1280px] mx-auto">
+          <div className="border border-border/60 rounded shadow-2xl bg-card overflow-hidden">
+            
+            {/* Browser Chrome */}
+            <div className="h-12 bg-muted/20 border-b border-border/50 flex items-center px-4 relative">
+              <div className="flex gap-2 absolute left-4">
+                <div className="w-2.5 h-2.5 rounded-full bg-border" />
+                <div className="w-2.5 h-2.5 rounded-full bg-border" />
+                <div className="w-2.5 h-2.5 rounded-full bg-border" />
               </div>
-              <div
-                className="ml-auto w-3 h-3 rounded-full shrink-0"
-                style={{ backgroundColor: s.accent }}
-              />
+              <div className="mx-auto bg-background border border-border/50 rounded px-4 py-1.5 text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
+                {view === "site" ? `twojosrodek.pl — ${s.name}` : `twojosrodek.pl/admin`}
+              </div>
             </div>
 
-            {/* Iframe container with exact scaled height */}
-            <div
-              ref={containerRef}
-              className="relative w-full overflow-hidden bg-white"
-              style={{ height: containerHeight }}
-            >
-              {/* Loading spinner overlay */}
+            {/* Viewport */}
+            <div ref={containerRef} className="relative w-full bg-background" style={{ height: containerHeight }}>
+              
               {loading && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted/60 backdrop-blur-sm">
-                  <div className="flex flex-col items-center gap-3">
-                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                    <p className="text-sm text-muted-foreground font-medium">Ładowanie podglądu…</p>
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background">
+                  <div className="w-full h-full p-8 flex flex-col gap-6">
+                    <div className="w-full h-48 skeleton-shimmer rounded" />
+                    <div className="w-3/4 h-8 skeleton-shimmer rounded mx-auto" />
+                    <div className="w-1/2 h-4 skeleton-shimmer rounded mx-auto" />
+                    <div className="grid grid-cols-3 gap-4 mt-8">
+                      <div className="h-32 skeleton-shimmer rounded" />
+                      <div className="h-32 skeleton-shimmer rounded" />
+                      <div className="h-32 skeleton-shimmer rounded" />
+                    </div>
                   </div>
                 </div>
               )}
@@ -205,63 +147,28 @@ export function StylesShowcase() {
               <iframe
                 key={`${s.themeKey}-${view}`}
                 src={iframeSrc}
-                title={`Podgląd stylu: ${s.name}`}
+                title={`Podgląd: ${s.name}`}
                 onLoad={(e) => {
                   const key = `${s.themeKey}-${view}`;
                   const el = e.currentTarget;
                   setTimeout(() => {
-                    // Ignoruj przestarzałe timeouty po szybkiej zmianie stylu/widoku
                     if (el.isConnected && el.dataset.viewKey === key) setLoading(false);
-                  }, 2500);
+                  }, 1000);
                   el.dataset.viewKey = key;
                 }}
-                className="absolute top-0 left-0 border-0 pointer-events-none"
+                className={`absolute top-0 left-0 border-0 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
                 style={{
                   width: `${SITE_WIDTH}px`,
                   height: `${SITE_HEIGHT}px`,
                   transform: `scale(${scale})`,
                   transformOrigin: "top left",
+                  pointerEvents: loading ? "none" : "auto"
                 }}
-                loading="eager"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-          <a
-            href={`/osrodek/?theme=${s.themeKey}&demo=1`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-7 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0M12 3a15 15 0 010 18M12 3a15 15 0 000 18" />
-            </svg>
-            Otwórz stronę główną
-          </a>
-          <a
-            href={`/osrodek/admin/login?theme=${s.themeKey}&demo=1`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-7 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Panel administracyjny
-          </a>
-          <a
-            href="#kontakt"
-            className="btn-ocean inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            Kup teraz
-          </a>
-        </div>
       </div>
     </section>
   );

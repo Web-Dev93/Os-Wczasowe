@@ -1,239 +1,173 @@
-import { motion, type Variants } from "framer-motion";
-import {
-  BedDouble, Images, CalendarCheck, Smartphone,
-  Lock, MapPin, Check, RefreshCw, Newspaper,
-  BarChart3, Calendar, Globe, Settings2, MessageSquare
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Check, Lock } from "lucide-react";
 
 const SITE_FEATURES = [
-  { text: "Strona główna z animowanym sliderem zdjęć" },
-  { text: "Katalog pokoi z cenami i udogodnieniami" },
-  { text: "Formularz rezerwacji lub zapytania online" },
-  { text: "Galeria zdjęć w układzie masonry z lightboxem" },
-  { text: "Strona kontaktu z mapą Google Maps" },
-  { text: "Sekcja aktualności — nowości dla gości" },
-  { text: "W pełni responsywna — piękna na telefonie" },
-  { text: "6 stylów wizualnych do wyboru" },
+  "Strona główna z eleganckim sliderem zdjęć",
+  "Katalog pokoi z cennikiem i udogodnieniami",
+  "Formularz rezerwacji i zapytań online",
+  "Galeria zdjęć z powiększeniem (lightbox)",
+  "Sekcja kontaktowa z mapą dojazdu",
+  "Moduł aktualności dla gości",
+  "Pełna responsywność na telefony i tablety",
+  "6 dopracowanych stylów wizualnych",
 ];
 
 const ADMIN_FEATURES = [
   "Zarządzaj pokojami, cenami i zdjęciami",
-  "Przeglądaj i obsługuj rezerwacje",
-  "Dodawaj i usuwaj zdjęcia galerii",
-  "Blokuj terminy (Booking.com, Google Calendar)",
-  "Zmień styl, opis i dane kontaktowe",
-  "Publikuj aktualności dla gości",
-  "Google Analytics — statystyki strony",
-  "Google Maps — mapa dla gości",
+  "Przeglądaj napływające rezerwacje",
+  "Blokuj terminy z Booking.com",
+  "Zmieniaj teksty i dane kontaktowe",
+  "Publikuj nowe informacje dla gości",
 ];
 
 const INTEGRATIONS = [
   {
-    icon: RefreshCw,
-    color: "bg-[#003580] text-white",
     label: "Booking.com",
-    desc: "Zajęte terminy blokują się automatycznie. Zero podwójnych rezerwacji.",
-    badge: "Automatyczne",
+    desc: "Zajęte terminy blokują się automatycznie. Zero podwójnych rezerwacji (synchronizacja iCal).",
+    badge: "Auto",
   },
   {
-    icon: Calendar,
-    color: "bg-[#1a73e8] text-white",
     label: "Google Calendar",
-    desc: "Wklej adres kalendarza i zajęte dni znikają z formularza rezerwacji.",
-    badge: "Automatyczne",
+    desc: "Wklej adres kalendarza i niedostępne dni znikają z formularza na Twojej stronie.",
+    badge: "Auto",
   },
   {
-    icon: BarChart3,
-    color: "bg-[#e37400] text-white",
     label: "Google Analytics",
-    desc: "Wklej swój kod GA4 i śledź skąd przychodzą goście i które pokoje oglądają.",
-    badge: "1 kliknięcie",
-  },
-  {
-    icon: MapPin,
-    color: "bg-[#34a853] text-white",
-    label: "Google Maps",
-    desc: "Mapa z lokalizacją Twojego ośrodka pojawi się na stronie kontaktu automatycznie.",
-    badge: "1 kliknięcie",
+    desc: "Dodaj swój identyfikator, aby śledzić ruch na stronie i zachowania potencjalnych gości.",
+    badge: "Wbudowane",
   },
 ];
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.06, duration: 0.55, ease: [0.16, 1, 0.3, 1] } }),
-};
-
 export function Features() {
   return (
-    <section id="funkcje" className="py-28 bg-background">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-20">
-          <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">Co dostajesz</p>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">Kompletny system. Gotowy w 24 h.</h2>
-          <p className="text-lg text-muted-foreground">
-            Wszystko, czego potrzebuje ośrodek nad morzem — w jednym pakiecie,
-            za jedną cenę, bez ukrytych kosztów.
+    <section id="funkcje" className="py-24 md:py-32 bg-muted/30">
+      <div className="container mx-auto px-6 max-w-6xl">
+        
+        <div className="mb-20 max-w-3xl">
+          <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">
+            Co otrzymujesz
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif font-medium mb-6">
+            Jeden kompletny system.
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Zaprojektowaliśmy rozwiązanie, które ma wszystko, czego potrzebuje nowoczesny ośrodek wypoczynkowy. 
+            Bez komplikacji, bez dobierania modułów.
           </p>
         </div>
 
-        {/* Google + Booking integrations */}
-        <div className="mb-20">
-          <h3 className="text-center text-xl font-serif font-bold mb-8 text-foreground/70">
-            Integracje wbudowane w standard
-          </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {INTEGRATIONS.map((item, i) => (
-              <motion.div
-                key={i}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="bg-card border border-border rounded-2xl p-5"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
-                    <item.icon className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    {item.badge}
-                  </span>
-                </div>
-                <div className="font-bold text-sm mb-1">{item.label}</div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Left: feature list */}
-          <div>
-            <h3 className="text-2xl font-serif font-bold mb-8">Strona publiczna dla Twoich gości</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
-              {SITE_FEATURES.map((f, i) => (
-                <motion.div
-                  key={i}
-                  custom={i}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 p-4 bg-card border border-border rounded-2xl"
-                >
-                  <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-4 h-4" />
-                  </div>
-                  <span className="text-sm leading-relaxed text-foreground/85">{f.text}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Admin box */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="p-7 bg-primary text-primary-foreground rounded-3xl"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Lock className="w-5 h-5 opacity-80" />
-                <h4 className="font-bold text-lg">Panel administratora — tylko dla Ciebie</h4>
-              </div>
-              <p className="opacity-80 mb-5 text-sm leading-relaxed">
-                Chroniony hasłem panel do zarządzania całą stroną.
-                Zmieniasz wszystko samodzielnie — bez kontaktu z programistą, bez dodatkowych kosztów.
-              </p>
-              <ul className="space-y-2.5">
-                {ADMIN_FEATURES.map((f, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-sm">
-                    <div className="w-5 h-5 rounded-full bg-primary-foreground/20 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3" />
+        <div className="grid lg:grid-cols-12 gap-16 items-start">
+          
+          {/* Left Col */}
+          <div className="lg:col-span-5 space-y-16">
+            <div>
+              <h3 className="text-2xl font-serif font-medium mb-8">Dla Twoich gości</h3>
+              <ul className="space-y-4">
+                {SITE_FEATURES.map((f, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <div className="mt-1 w-5 h-5 rounded-full border border-border flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-muted-foreground" />
                     </div>
-                    {f}
+                    <span className="text-foreground/80">{f}</span>
                   </li>
                 ))}
               </ul>
-            </motion.div>
-          </div>
-
-          {/* Right: admin panel mock */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="rounded-2xl overflow-hidden border border-border shadow-2xl bg-card"
-          >
-            {/* Browser chrome */}
-            <div className="bg-muted px-4 py-3 border-b border-border flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-              </div>
-              <div className="mx-auto bg-background px-3 py-1 rounded text-xs text-muted-foreground w-1/2 text-center border border-border">
-                twojosrodek.pl/admin
-              </div>
             </div>
 
-            {/* Admin panel mock */}
-            <div className="flex h-[480px]">
-              <div className="w-44 bg-muted/60 border-r border-border p-4 flex flex-col gap-1 shrink-0">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Panel</div>
-                {[
-                  { label: "Dashboard", active: false },
-                  { label: "Pokoje", active: false },
-                  { label: "Rezerwacje", active: false },
-                  { label: "Galeria", active: false },
-                  { label: "Aktualności", active: false },
-                  { label: "Ustawienia", active: true },
-                ].map(({ label, active }) => (
-                  <div key={label} className={`px-3 py-2 rounded-lg text-xs font-medium ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
-                    {label}
+            <div>
+              <h3 className="text-2xl font-serif font-medium mb-8">Kluczowe integracje</h3>
+              <div className="space-y-6">
+                {INTEGRATIONS.map((item, i) => (
+                  <div key={i} className="border-l-2 border-border pl-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-medium text-foreground">{item.label}</span>
+                      <span className="text-[10px] uppercase tracking-wider bg-border/50 px-2 py-0.5 rounded text-muted-foreground">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
 
-              <div className="flex-1 p-5 overflow-hidden">
-                <h3 className="font-bold text-sm mb-4">Ustawienia — Integracje</h3>
+          {/* Right Col: Admin Mockup */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7"
+          >
+            <div className="bg-card border border-border rounded shadow-sm overflow-hidden flex flex-col h-full">
+              {/* Browser Header */}
+              <div className="h-12 border-b border-border bg-muted/30 flex items-center px-4 gap-4">
+                <div className="flex gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-border/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-border/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-border/80" />
+                </div>
+                <div className="flex-1 text-center">
+                  <div className="inline-block bg-background border border-border rounded px-4 py-1 text-xs text-muted-foreground font-mono">
+                    twojosrodek.pl/admin
+                  </div>
+                </div>
+                <div className="w-12"></div>
+              </div>
 
-                {/* Integration mocks */}
-                <div className="space-y-3">
-                  {[
-                    { icon: "🔵", label: "Booking.com iCal URL", val: "https://booking.com/ical/...", ok: true },
-                    { icon: "📅", label: "Google Calendar URL", val: "https://calendar.google.com/...", ok: true },
-                    { icon: "📊", label: "Google Analytics ID", val: "G-XXXXXXXXXX", ok: false },
-                    { icon: "🗺️", label: "Google Maps Embed URL", val: "https://maps.google.com/...", ok: false },
-                  ].map((row) => (
-                    <div key={row.label} className="p-3 bg-muted/40 border border-border rounded-xl">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="text-xs font-medium flex items-center gap-1.5">
-                          <span>{row.icon}</span>
-                          {row.label}
-                        </div>
-                        {row.ok
-                          ? <span className="text-xs text-green-600 font-semibold">✓ Aktywne</span>
-                          : <span className="text-xs text-muted-foreground">Opcjonalne</span>
-                        }
-                      </div>
-                      <div className="text-xs text-muted-foreground font-mono bg-background px-2 py-1 rounded truncate">
-                        {row.val}
-                      </div>
+              {/* Admin UI */}
+              <div className="flex flex-1 min-h-[450px]">
+                <div className="w-48 border-r border-border bg-muted/10 p-5 flex flex-col gap-2">
+                  <div className="flex items-center gap-2 mb-6 text-foreground font-serif">
+                    <Lock className="w-4 h-4" />
+                    <span>Panel</span>
+                  </div>
+                  {["Dashboard", "Pokoje", "Rezerwacje", "Ustawienia"].map((label, i) => (
+                    <div 
+                      key={label} 
+                      className={`px-3 py-2 text-sm rounded ${i === 1 ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground'}`}
+                    >
+                      {label}
                     </div>
                   ))}
                 </div>
+                
+                <div className="flex-1 p-8 bg-background">
+                  <h4 className="font-medium text-lg mb-6">Zarządzanie pokojami</h4>
+                  
+                  <div className="space-y-4">
+                    {[
+                      { name: "Apartament Morski", price: "350 zł", status: "Dostępny" },
+                      { name: "Pokój 2-osobowy Standard", price: "180 zł", status: "Dostępny" },
+                      { name: "Domek Letniskowy", price: "400 zł", status: "Brak miejsc" }
+                    ].map((room, i) => (
+                      <div key={i} className="flex items-center justify-between p-4 border border-border rounded">
+                        <div>
+                          <div className="font-medium text-sm mb-1">{room.name}</div>
+                          <div className="text-xs text-muted-foreground">{room.price} / noc</div>
+                        </div>
+                        <div className="text-xs px-2 py-1 rounded bg-muted">Edytuj</div>
+                      </div>
+                    ))}
+                  </div>
 
-                <button className="mt-4 w-full bg-primary text-primary-foreground text-xs py-2.5 rounded-lg font-semibold">
-                  Zapisz ustawienia
-                </button>
+                  <div className="mt-8 pt-8 border-t border-border">
+                    <p className="text-sm text-muted-foreground mb-4">Co jeszcze zrobisz w panelu?</p>
+                    <ul className="grid grid-cols-2 gap-3">
+                      {ADMIN_FEATURES.map((f, i) => (
+                        <li key={i} className="text-xs text-muted-foreground flex items-center gap-2">
+                          <span className="w-1 h-1 rounded-full bg-border" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
+
         </div>
       </div>
     </section>

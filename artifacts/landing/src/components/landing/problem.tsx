@@ -1,83 +1,61 @@
 import { motion } from "framer-motion";
-import { TrendingDown, Percent, AlertTriangle, ArrowRight } from "lucide-react";
+import { ArrowDownRight } from "lucide-react";
 
 const PAINS = [
   {
-    icon: Percent,
-    title: "Booking.com bierze 15–20%",
-    desc: "Każda rezerwacja przez portal to strata. Przy 50 rezerwacjach po 1000 zł tracisz nawet 10 000 zł rocznie na prowizjach.",
+    title: "Pośrednicy zabierają Twój zysk",
+    desc: "15–20% prowizji od każdej rezerwacji to utrata tysięcy złotych rocznie. Przy 50 rezerwacjach za 1000 zł, oddajesz portalom nawet 10 000 zł.",
   },
   {
-    icon: TrendingDown,
-    title: "Gość nie wie, że możesz taniej",
-    desc: "Bez własnej strony gość bookuje przez pośrednika. Gdyby wiedział, że u Ciebie bezpośrednio jest taniej — wybrałby Ciebie.",
+    title: "Gość nie wie, że u Ciebie jest taniej",
+    desc: "Brak własnej strony sprawia, że klienci rezerwują przez pośredników. Gdyby mieli wybór, zarezerwowaliby bezpośrednio, aby zaoszczędzić.",
   },
   {
-    icon: AlertTriangle,
-    title: "Nie masz kontroli nad swoim wizerunkiem",
-    desc: "Na Booking.com wyglądasz tak samo jak setki innych. Własna strona to Twoja twarz — taka, jaką chcesz pokazać.",
+    title: "Twój obiekt znika w tłumie",
+    desc: "Na portalach rezerwacyjnych wyglądasz jak setki innych. Własna, profesjonalna strona buduje zaufanie i pozwala pokazać Twój prawdziwy standard.",
   },
 ];
 
 export function Problem() {
   return (
-    <section className="py-24 bg-[hsl(38,35%,97%)]">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <section className="py-24 md:py-32 bg-background border-b border-border/50">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-start">
+          
+          <div className="max-w-xl">
+            <h2 className="text-3xl md:text-5xl font-serif font-medium leading-tight mb-6">
+              Każdy rok bez własnej strony to pieniądze oddane portalom.
+            </h2>
+            <p className="text-muted-foreground text-lg leading-relaxed mb-10">
+              Budowa własnej niezależności w internecie nie musi być trudna ani droga. 
+              Czas odciąć się od ciągłych prowizji i przejąć kontrolę nad swoimi rezerwacjami.
+            </p>
+            
+            <a href="#funkcje" className="inline-flex items-center gap-3 text-sm font-semibold tracking-wide uppercase hover:text-primary transition-colors">
+              <span className="w-8 h-px bg-current" />
+              Zobacz nasze rozwiązanie
+              <ArrowDownRight className="w-4 h-4" />
+            </a>
+          </div>
 
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-destructive text-sm uppercase tracking-[0.2em] font-semibold mb-3">Problem</p>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">
-            Czy wiesz, ile tracisz bez własnej strony?
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Każdy rok bez własnej strony to tysiące złotych wypłacone portalem zamiast Tobie.
-          </p>
+          <div className="space-y-12">
+            {PAINS.map((pain, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="group relative"
+              >
+                <div className="text-xs font-serif text-muted-foreground mb-3">0{i + 1}</div>
+                <h3 className="text-xl font-serif font-medium mb-3">{pain.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{pain.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
-
-        {/* Pain points */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {PAINS.map((pain, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.55 }}
-              className="bg-white border border-border rounded-2xl p-7"
-            >
-              <div className="w-12 h-12 rounded-xl bg-destructive/10 text-destructive flex items-center justify-center mb-5">
-                <pain.icon className="w-6 h-6" />
-              </div>
-              <h3 className="font-bold text-lg mb-3">{pain.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{pain.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Solution bridge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-primary text-primary-foreground rounded-3xl p-10 text-center"
-        >
-          <h3 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-            Rozwiązanie: własna strona, raz na zawsze
-          </h3>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
-            Inwestujesz 1 200 zł jednorazowo i już po pierwszych kilku bezpośrednich rezerwacjach
-            się to zwraca. Bez abonamentu, bez prowizji — tylko Twoje pieniądze.
-          </p>
-          <a
-            href="#funkcje"
-            className="inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-full hover:bg-white/90 transition-all hover:scale-105"
-          >
-            Sprawdź co dostajesz
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

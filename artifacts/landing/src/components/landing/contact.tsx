@@ -13,31 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import {
-  CheckCircle2,
-  Phone,
-  Mail,
-  Loader2,
-  MessageCircle,
-  ShieldCheck,
-  BadgeCheck,
-} from "lucide-react";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Podaj imię i nazwisko (min. 2 znaki)." }),
-  email: z.string().email({ message: "Podaj poprawny adres email." }),
-  phone: z.string().min(9, { message: "Podaj numer telefonu (min. 9 cyfr)." }),
+  name: z.string().min(2, { message: "Wymagane (min. 2 znaki)." }),
+  email: z.string().email({ message: "Błędny adres email." }),
+  phone: z.string().min(9, { message: "Wymagane (min. 9 cyfr)." }),
   message: z.string().optional(),
 });
 
-const BENEFITS = [
-  { icon: BadgeCheck, text: "Płacisz raz — brak abonamentów na zawsze" },
-  { icon: ShieldCheck, text: "Strona gotowa w 24 godziny" },
-  { icon: Phone,       text: "Wsparcie telefoniczne w razie pytań" },
-];
-
-// API base — works in both dev (proxy) and via absolute BASE_URL
 const API_BASE = (() => {
   const base = import.meta.env.BASE_URL ?? "/";
   return base.replace(/\/[^/]+\/?$/, "/api").replace(/\/\/$/, "/api");
@@ -63,8 +46,7 @@ export function Contact() {
         body: JSON.stringify(values),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({})) as { error?: string };
-        throw new Error(data?.error ?? `Błąd serwera: ${res.status}`);
+        throw new Error("Błąd serwera. Spróbuj ponownie.");
       }
       setSubmitted(true);
     } catch (err) {
@@ -75,135 +57,67 @@ export function Contact() {
   }
 
   return (
-    <section id="kontakt" className="py-24 px-6 bg-[hsl(195,40%,97%)]">
-      <div className="container mx-auto max-w-5xl">
+    <section id="kontakt" className="py-24 md:py-32 bg-muted/30">
+      <div className="container mx-auto px-6 max-w-5xl">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          
+          <div className="max-w-md">
+            <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">Porozmawiajmy o detalach.</h2>
+            <p className="text-muted-foreground leading-relaxed mb-12">
+              Zostaw kontakt do siebie. Oddzwonimy, by odpowiedzieć na wszystkie pytania. 
+              Możesz też od razu podjąć decyzję o wyborze stylu i rozpoczęciu współpracy.
+            </p>
 
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-primary text-sm uppercase tracking-[0.2em] font-semibold mb-3">
-            Bezpłatna rozmowa
-          </p>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-            Zainteresowany? Odezwij się.
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Zostaw dane — zadzwonimy i odpowiemy na wszystkie pytania.
-            Bez zobowiązań, bez ukrytych kosztów.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-5 gap-10 items-start">
-
-          {/* Left — benefits */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-2 space-y-6 pt-2"
-          >
-            {BENEFITS.map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-4">
-                <div className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <span className="font-medium text-foreground">{text}</span>
+            <div className="space-y-6">
+              <div>
+                <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">Email</div>
+                <a href="mailto:kontakt@stronydlaosrodkow.pl" className="text-lg hover:text-primary transition-colors">kontakt@stronydlaosrodkow.pl</a>
               </div>
-            ))}
-
-            {/* Price card */}
-            <div className="mt-8 p-6 rounded-2xl border-2 border-primary bg-primary/5">
-              <div className="text-sm font-semibold text-primary mb-1 uppercase tracking-wide">
-                Jednorazowa opłata
-              </div>
-              <div className="text-4xl font-bold text-foreground mb-1">
-                1 200 zł
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Strona + panel admina + synchronizacja z Booking.com.
-                Zero abonamentów. Na zawsze Twoje.
+              <div>
+                <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">Telefon</div>
+                <a href="tel:+48500000000" className="text-lg hover:text-primary transition-colors">+48 500 000 000</a>
               </div>
             </div>
+          </div>
 
-            {/* Contact direct */}
-            <div className="space-y-3 pt-2">
-              <a
-                href="tel:+48500000000"
-                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Wolisz zadzwonić? +48 500 000 000</span>
-              </a>
-              <a
-                href="mailto:kontakt@twojsystem.pl"
-                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                <span>kontakt@twojsystem.pl</span>
-              </a>
-            </div>
-          </motion.div>
-
-          {/* Right — form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-3 bg-card border border-border rounded-2xl p-8 shadow-xl"
-          >
+          <div className="bg-background border border-border p-8 rounded shadow-sm">
             {submitted ? (
-              <div className="flex flex-col items-center justify-center text-center py-12">
-                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-9 h-9" />
-                </div>
-                <h3 className="text-2xl font-serif font-bold mb-3">
-                  Dziękujemy! Odezwiemy się wkrótce.
-                </h3>
-                <p className="text-muted-foreground max-w-sm">
-                  Twoje zapytanie trafiło do nas. Zadzwonimy lub napiszemy
-                  najszybciej jak możemy — zazwyczaj w ciągu kilku godzin.
-                </p>
-                <Button
+              <div className="py-12 text-center">
+                <h3 className="text-2xl font-serif font-medium mb-4">Dziękujemy</h3>
+                <p className="text-muted-foreground mb-8">Wiadomość została wysłana. Odezwiemy się niebawem.</p>
+                <button
                   onClick={() => { setSubmitted(false); form.reset(); }}
-                  variant="outline"
-                  className="mt-8"
+                  className="px-6 py-2 border border-border text-sm font-medium hover:bg-muted transition-colors rounded"
                 >
-                  Wyślij kolejne zapytanie
-                </Button>
+                  Wyślij ponownie
+                </button>
               </div>
             ) : (
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-
-                  <div className="flex items-center gap-2 mb-2">
-                    <MessageCircle className="w-5 h-5 text-primary" />
-                    <h3 className="font-semibold text-lg">Wyślij zapytanie</h3>
-                  </div>
-
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Imię i nazwisko</FormLabel>
+                        <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Imię i nazwisko / Nazwa obiektu</FormLabel>
                         <FormControl>
-                          <Input placeholder="Jan Kowalski" {...field} />
+                          <Input className="rounded-none border-t-0 border-x-0 border-b-2 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-foreground" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
 
-                  <div className="grid grid-cols-2 gap-5">
+                  <div className="grid grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Adres email</FormLabel>
+                          <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="jan@gmail.com" {...field} />
+                            <Input className="rounded-none border-t-0 border-x-0 border-b-2 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-foreground" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -214,9 +128,9 @@ export function Contact() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Telefon</FormLabel>
+                          <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Telefon</FormLabel>
                           <FormControl>
-                            <Input placeholder="500 123 456" {...field} />
+                            <Input className="rounded-none border-t-0 border-x-0 border-b-2 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-foreground" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -229,10 +143,10 @@ export function Contact() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Pytania lub uwagi <span className="text-muted-foreground font-normal">(opcjonalnie)</span></FormLabel>
+                        <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Wiadomość (opcjonalnie)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Np. ile mam pokoi, jaki motyw mnie interesuje, kiedy chciałbym uruchomić stronę…"
+                            className="rounded-none border-t-0 border-x-0 border-b-2 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-foreground resize-none"
                             rows={3}
                             {...field}
                           />
@@ -242,32 +156,20 @@ export function Contact() {
                     )}
                   />
 
-                  {apiError && (
-                    <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-4 py-2">
-                      {apiError}
-                    </p>
-                  )}
+                  {apiError && <p className="text-sm text-destructive">{apiError}</p>}
 
-                  <Button
+                  <button
                     type="submit"
-                    className="w-full text-base py-6 gap-2"
                     disabled={loading}
+                    className="w-full bg-foreground text-background py-4 font-semibold uppercase tracking-wider text-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
                   >
-                    {loading ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Mail className="w-5 h-5" />
-                    )}
-                    {loading ? "Wysyłanie…" : "Wyślij zapytanie"}
-                  </Button>
-
-                  <p className="text-center text-xs text-muted-foreground">
-                    Odpowiemy w ciągu kilku godzin. Bez zobowiązań.
-                  </p>
+                    {loading ? "Wysyłanie..." : "Wyślij"}
+                  </button>
                 </form>
               </Form>
             )}
-          </motion.div>
+          </div>
+
         </div>
       </div>
     </section>
