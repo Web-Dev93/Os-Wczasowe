@@ -30,12 +30,8 @@ router.post("/admin/login", async (req, res): Promise<void> => {
   res.json(AdminLoginResponse.parse({ isAdmin: true }));
 });
 
-/** Demo-login — bez hasła, tylko dla wersji demonstracyjnej (disabled in production) */
+/** Demo-login — bez hasła, dla wersji demonstracyjnej (działa też na produkcji — strona ofertowa pokazuje panel demo) */
 router.post("/admin/demo-login", async (req, res): Promise<void> => {
-  if (process.env.NODE_ENV === "production") {
-    res.status(404).json({ error: "Not found" });
-    return;
-  }
   const sess = req.session as { isAdmin?: boolean };
   sess.isAdmin = true;
   res.json({ isAdmin: true });

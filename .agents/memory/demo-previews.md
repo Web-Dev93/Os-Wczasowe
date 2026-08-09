@@ -7,4 +7,4 @@ description: How theme/demo query params drive public and admin previews for the
 
 **Why:** The landing page showcase embeds both site and admin previews per style; without URL-theme support in admin, buyers saw the configured theme instead of the selected one.
 
-**How to apply:** Any new preview surface should pass `theme` + `demo=1` through and rely on `use-theme.ts` helpers. Note: demo-login is disabled in production — production showcases need a separate flow.
+**How to apply:** Any new preview surface should pass `theme` + `demo=1` through and rely on `use-theme.ts` helpers. Note: demo-login works in production too (user decision, Aug 2026 — sales page must show the admin panel). Login.tsx falls back to the password form if demo-login fails. Risk accepted: any visitor can get an admin session on the published demo; mitigated by demo-data-reset plans.
