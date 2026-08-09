@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "wouter";
 import { motion, type Variants } from "framer-motion";
-import { useGetSettings, useListRooms, useListGallery } from "@workspace/api-client-react";
+import { useGetSettings, useListRooms, useListGallery, useListPosts } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { HeroSlider } from "@/components/HeroSlider";
 import {
   Users, BedDouble, ChevronRight, Sun, Shield, Heart, Star,
-  Waves, MapPin, Clock
+  Waves, MapPin, Clock, CalendarDays
 } from "lucide-react";
 
 /* ── animation variants ─────────────────────────────────── */
@@ -43,6 +43,7 @@ export default function Home() {
   const { data: settings } = useGetSettings();
   const { data: rooms }    = useListRooms();
   const { data: gallery }  = useListGallery();
+  const { data: posts }    = useListPosts();
 
   const featuredRooms  = rooms?.slice(0, 3)   || [];
   const galleryPreview = gallery?.slice(0, 6)  || FALLBACK_GALLERY;
@@ -311,6 +312,72 @@ export default function Home() {
                     </div>
                   )}
                 </Link>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════ AKTUALNOŚCI ══ */}
+      {posts && posts.length > 0 && (
+        <section className="py-24 bg-muted/20">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <motion.div
+              className="text-center mb-14"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={stagger}
+            >
+              <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">
+                Co nowego?
+              </motion.p>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-serif font-bold">
+                Aktualności
+              </motion.h2>
+            </motion.div>
+
+            <motion.div
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+              variants={stagger}
+            >
+              {posts.map(post => (
+                <motion.div
+                  key={post.id}
+                  variants={fadeUp}
+                  className="rounded-2xl bg-card border border-border/60 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200"
+                >
+                  {post.imageUrl && (
+                    <div className="aspect-video overflow-hidden">
+                      <img
+                        src={post.imageUrl}
+                        alt={post.title}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  {!post.imageUrl && (
+                    <div className="aspect-video bg-primary/8 flex items-center justify-center">
+                      <Waves className="w-12 h-12 text-primary/30" />
+                    </div>
+                  )}
+                  <div className="p-6 flex flex-col flex-1">
+                    {post.createdAt && (
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
+                        <CalendarDays className="w-3.5 h-3.5" />
+                        {new Date(post.createdAt).toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}
+                      </div>
+                    )}
+                    <h3 className="font-serif font-bold text-lg leading-snug mb-3">{post.title}</h3>
+                    {post.content && (
+                      <p className="text-sm text-muted-foreground leading-relaxed flex-1">{post.content}</p>
+                    )}
+                  </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>

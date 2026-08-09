@@ -37,7 +37,7 @@ export default function AdminRooms() {
           <p className="text-muted-foreground mt-1">Zarządzaj pokojami i apartamentami</p>
         </div>
         <Button asChild>
-          <Link href="/admin/pokoje/nowy">
+          <Link href="/pokoje/nowy">
             <Plus className="w-4 h-4 mr-2" /> Dodaj pokój
           </Link>
         </Button>
@@ -72,7 +72,7 @@ export default function AdminRooms() {
 
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="flex-1" asChild>
-                  <Link href={`/admin/pokoje/${room.id}/edytuj`}>
+                  <Link href={`/pokoje/${room.id}/edytuj`}>
                     <Edit className="w-4 h-4 mr-2" /> Edytuj
                   </Link>
                 </Button>

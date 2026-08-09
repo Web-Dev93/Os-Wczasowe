@@ -24,6 +24,7 @@ import AdminBookings from './pages/admin/Bookings';
 import AdminAvailability from './pages/admin/Availability';
 import AdminGallery from './pages/admin/Gallery';
 import AdminSettings from './pages/admin/Settings';
+import AdminPosts from './pages/admin/Posts';
 
 import NotFound from '@/pages/not-found';
 
@@ -44,6 +45,7 @@ function Router() {
             <Route path="/rezerwacje" component={AdminBookings} />
             <Route path="/dostepnosc" component={AdminAvailability} />
             <Route path="/galeria" component={AdminGallery} />
+            <Route path="/aktualnosci" component={AdminPosts} />
             <Route path="/ustawienia" component={AdminSettings} />
             <Route component={NotFound} />
           </Switch>

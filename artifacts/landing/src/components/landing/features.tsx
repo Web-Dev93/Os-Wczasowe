@@ -1,7 +1,7 @@
 import { motion, type Variants } from "framer-motion";
 import {
   BedDouble, Images, CalendarCheck, Settings, Smartphone,
-  Lock, MapPin, Check
+  Lock, MapPin, Check, RefreshCw, Newspaper
 } from "lucide-react";
 
 const FEATURES = [
@@ -11,19 +11,22 @@ const FEATURES = [
   { icon: Images,        text: "Galeria zdjęć w układzie masonry z lightboxem" },
   { icon: MapPin,        text: "Strona kontaktu z mapą i danymi" },
   { icon: Smartphone,    text: "W pełni responsywna — piękna na telefonie" },
+  { icon: Newspaper,     text: "Sekcja aktualności — informuj gości o promocjach" },
+  { icon: RefreshCw,     text: "Synchronizacja z Booking.com — blokada zajętych dat" },
 ];
 
 const ADMIN_FEATURES = [
   "Zarządzaj pokojami, cenami i zdjęciami",
   "Przeglądaj i obsługuj rezerwacje",
   "Dodawaj i usuwaj zdjęcia galerii",
-  "Blokuj terminy (urlop, remont)",
+  "Blokuj terminy (urlop, remont, Booking.com)",
   "Zmień styl, opis i dane kontaktowe",
+  "Publikuj aktualności dla gości",
 ];
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55, ease: [0.16, 1, 0.3, 1] } }),
+  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.06, duration: 0.55, ease: [0.16, 1, 0.3, 1] } }),
 };
 
 export function Features() {
@@ -38,6 +41,31 @@ export function Features() {
             Dostajesz gotową stronę z panelem admina. Płacisz raz i masz ją na zawsze.
           </p>
         </div>
+
+        {/* Booking.com badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 mx-auto max-w-2xl"
+        >
+          <div className="flex items-center gap-5 p-5 rounded-2xl border-2 border-[#003580]/20 bg-[#003580]/5">
+            <div className="w-14 h-14 rounded-xl bg-[#003580] flex items-center justify-center shrink-0">
+              <RefreshCw className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-bold text-[#003580] text-lg">Synchronizacja z Booking.com</span>
+                <span className="text-xs bg-[#003580] text-white px-2 py-0.5 rounded-full font-semibold">NOWOŚĆ</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Zajęte terminy z Booking.com blokują się automatycznie na Twojej stronie.
+                Zero podwójnych rezerwacji — goście widzą tylko wolne daty.
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left: feature list */}
@@ -111,7 +139,7 @@ export function Features() {
             </div>
 
             {/* Admin panel mock UI */}
-            <div className="flex h-[420px]">
+            <div className="flex h-[440px]">
               {/* Sidebar */}
               <div className="w-44 bg-muted/60 border-r border-border p-4 flex flex-col gap-1 shrink-0">
                 <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">Panel admin</div>
@@ -120,6 +148,7 @@ export function Features() {
                   { label: "Pokoje", active: true },
                   { label: "Rezerwacje", active: false },
                   { label: "Galeria", active: false },
+                  { label: "Aktualności", active: false },
                   { label: "Ustawienia", active: false },
                 ].map(({ label, active }) => (
                   <div
@@ -163,8 +192,20 @@ export function Features() {
                   ))}
                 </div>
 
+                {/* Booking.com sync status */}
+                <div className="mt-4 flex items-center gap-2.5 p-3 bg-[#003580]/8 border border-[#003580]/20 rounded-xl">
+                  <div className="w-6 h-6 bg-[#003580] rounded flex items-center justify-center shrink-0">
+                    <RefreshCw className="w-3 h-3 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-medium">Booking.com</div>
+                    <div className="text-xs text-muted-foreground">Zsynchronizowano 5 min temu</div>
+                  </div>
+                  <div className="text-xs text-green-600 font-medium">✓ OK</div>
+                </div>
+
                 {/* Stats at bottom */}
-                <div className="grid grid-cols-3 gap-2 mt-5">
+                <div className="grid grid-cols-3 gap-2 mt-4">
                   {[
                     { label: "Rezerwacje", val: "12" },
                     { label: "Oczekujące", val: "3" },

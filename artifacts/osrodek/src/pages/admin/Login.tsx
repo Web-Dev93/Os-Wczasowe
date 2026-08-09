@@ -96,6 +96,10 @@ export default function AdminLogin() {
             </Button>
           </form>
         </Form>
+
+        <p className="text-center text-xs text-muted-foreground mt-6">
+          Domyślne hasło: <span className="font-mono font-semibold select-all">admin123</span>
+        </p>
       </div>
     </div>
   );

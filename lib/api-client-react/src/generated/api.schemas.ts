@@ -68,6 +68,25 @@ export type AdminSiteSettings = SiteSettings & ({
   bookingComIcalUrl?: string | null;
 });
 
+export interface Post {
+  id: number;
+  title: string;
+  /** @nullable */
+  content?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  isPublished: boolean;
+  /** @nullable */
+  createdAt?: string | null;
+}
+
+export interface PostInput {
+  title: string;
+  content?: string;
+  imageUrl?: string;
+  isPublished?: boolean;
+}
+
 export type SiteSettingsInputTheme = typeof SiteSettingsInputTheme[keyof typeof SiteSettingsInputTheme];
 
 

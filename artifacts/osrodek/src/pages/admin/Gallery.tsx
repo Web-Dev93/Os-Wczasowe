@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { AdminTip } from "@/components/ui/admin-help";
 
 export default function AdminGallery() {
   const [url, setUrl] = useState("");
@@ -66,6 +67,8 @@ export default function AdminGallery() {
         <p className="text-muted-foreground mt-1">Zarządzaj zdjęciami w galerii publicznej</p>
       </div>
 
+      <AdminTip text="Zdjęcia z galerii wyświetlają się na publicznej stronie w zakładce 'Galeria' oraz w podglądzie na stronie głównej. Wklej link (URL) do zdjęcia — np. ze swojego Google Drive, Dropbox lub serwisu Unsplash.com (darmowe zdjęcia)." />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Add Photo Form */}
         <div className="lg:col-span-1">
@@ -84,6 +87,7 @@ export default function AdminGallery() {
                     onChange={(e) => setUrl(e.target.value)}
                     required
                   />
+                  <AdminTip text="Skopiuj i wklej link do zdjęcia. Link musi zaczynać się od https:// i kończyć rozszerzeniem .jpg lub .png." />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Podpis (opcjonalnie)</label>

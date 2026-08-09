@@ -11,7 +11,8 @@ import {
   Settings, 
   LogOut,
   Menu,
-  X
+  X,
+  Newspaper
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
@@ -68,7 +69,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     logout.mutate(undefined, {
       onSuccess: () => {
         toast({ title: "Wylogowano pomyślnie" });
-        setLocation("/admin/login");
+        setLocation("/login");
       },
       onError: () => {
         toast({ title: "Błąd podczas wylogowywania", variant: "destructive" });
@@ -76,19 +77,21 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     });
   };
 
+  // Paths are relative to the /admin nested router base
   const navItems = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/pokoje", label: "Pokoje", icon: BedDouble },
-    { href: "/admin/rezerwacje", label: "Rezerwacje", icon: CalendarCheck },
-    { href: "/admin/dostepnosc", label: "Dostępność", icon: CalendarDays },
-    { href: "/admin/galeria", label: "Galeria", icon: ImageIcon },
-    { href: "/admin/ustawienia", label: "Ustawienia", icon: Settings },
+    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/pokoje", label: "Pokoje", icon: BedDouble },
+    { href: "/rezerwacje", label: "Rezerwacje", icon: CalendarCheck },
+    { href: "/dostepnosc", label: "Dostępność", icon: CalendarDays },
+    { href: "/galeria", label: "Galeria", icon: ImageIcon },
+    { href: "/aktualnosci", label: "Aktualności", icon: Newspaper },
+    { href: "/ustawienia", label: "Ustawienia", icon: Settings },
   ];
 
   const NavLinks = ({ onClick }: { onClick?: () => void }) => (
     <div className="space-y-1">
       {navItems.map((item) => {
-        const isActive = location === item.href || (item.href !== "/admin" && location.startsWith(item.href));
+        const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
         return (
           <Link key={item.href} href={item.href} onClick={onClick}>
             <span className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors cursor-pointer ${

@@ -8,6 +8,8 @@ import bookingsRouter from "./bookings";
 import availabilityRouter from "./availability";
 import statsRouter from "./stats";
 import icalRouter from "./ical";
+import postsRouter from "./posts";
+import landingContactRouter from "./landing-contact";
 
 const router: IRouter = Router();
 
@@ -20,5 +22,7 @@ router.use(bookingsRouter);
 router.use(availabilityRouter);
 router.use(statsRouter);
 router.use(icalRouter);
+router.use(postsRouter);
+router.use(landingContactRouter);
 
 export default router;

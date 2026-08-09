@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, MessageCircle } from "lucide-react";
+import { AdminTip } from "@/components/ui/admin-help";
 
 const THEMES = [
   { value: "professional", label: "Professional — Morski profesjonalizm" },
@@ -188,11 +189,13 @@ export default function AdminSettings() {
       </div>
 
       <FieldGroup title="Podstawowe informacje" icon={<Globe className="w-5 h-5 text-primary" />}>
+        <AdminTip text="Te informacje pojawiają się na stronie głównej Twojego ośrodka — w nagłówku, stopce i w wynikach wyszukiwania. Wypełnij je dokładnie, żeby goście wiedzieli, gdzie trafiają." />
         <Field label="Nazwa ośrodka" required>
           <Input value={form.resortName} onChange={handleChange("resortName")} placeholder="Ośrodek Przy Morzu" required />
         </Field>
         <Field label="Hasło / slogan">
           <Input value={form.tagline} onChange={handleChange("tagline")} placeholder="Twój wypoczynek nad Bałtykiem" />
+          <AdminTip text="Krótkie zdanie widoczne w głównym banerze strony. Np. 'Twój wypoczynek nad Bałtykiem'." />
         </Field>
         <Field label="Opis ośrodka">
           <Textarea
@@ -201,6 +204,7 @@ export default function AdminSettings() {
             placeholder="Krótki opis widoczny na stronie głównej..."
             rows={4}
           />
+          <AdminTip text="2–4 zdania zachęcające do rezerwacji. Pojawia się pod sloganem w banerze głównym." />
         </Field>
       </FieldGroup>
 
@@ -231,8 +235,10 @@ export default function AdminSettings() {
       </FieldGroup>
 
       <FieldGroup title="Wygląd i zdjęcia" icon={<Image className="w-5 h-5 text-primary" />}>
+        <AdminTip text="Zdjęcia slidera to pierwsze co widzi gość wchodząc na Twoją stronę. Użyj własnych zdjęć ośrodka — skopiuj link do zdjęcia (URL) i wklej poniżej. Jeśli nie masz własnych, możesz użyć darmowych zdjęć z unsplash.com." />
         <Field label="URL logo (opcjonalnie)">
           <Input value={form.logoUrl} onChange={handleChange("logoUrl")} placeholder="https://..." />
+          <AdminTip text="Link do pliku z logo Twojego ośrodka. Jeśli zostawisz puste, w menu pojawi się sama nazwa ośrodka." />
           {form.logoUrl && (
             <img src={form.logoUrl} alt="Logo" className="mt-2 h-12 object-contain rounded border p-1 bg-muted" />
           )}
@@ -255,6 +261,7 @@ export default function AdminSettings() {
       </FieldGroup>
 
       <FieldGroup title="Wygląd strony" icon={<Palette className="w-5 h-5 text-primary" />}>
+        <AdminTip text="Motyw zmienia kolory, czcionki i ogólny styl całej strony — zarówno publicznej jak i tego panelu. Wypróbuj każdy i wybierz ten, który najlepiej pasuje do charakteru Twojego ośrodka." />
         <Field label="Motyw kolorystyczny">
           <Select value={form.theme} onValueChange={handleSelect("theme")}>
             <SelectTrigger>

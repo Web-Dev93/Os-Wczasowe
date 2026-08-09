@@ -95,7 +95,7 @@ export default function AdminRoomForm() {
         onSuccess: () => {
           toast({ title: "Pokój dodany pomyślnie" });
           queryClient.invalidateQueries({ queryKey: getAdminListRoomsQueryKey() });
-          setLocation("/admin/pokoje");
+          setLocation("/pokoje");
         },
         onError: () => toast({ title: "Błąd podczas dodawania", variant: "destructive" })
       });
@@ -105,7 +105,7 @@ export default function AdminRoomForm() {
           toast({ title: "Pokój zaktualizowany" });
           queryClient.invalidateQueries({ queryKey: getAdminGetRoomQueryKey(roomId) });
           queryClient.invalidateQueries({ queryKey: getAdminListRoomsQueryKey() });
-          setLocation("/admin/pokoje");
+          setLocation("/pokoje");
         },
         onError: () => toast({ title: "Błąd podczas aktualizacji", variant: "destructive" })
       });

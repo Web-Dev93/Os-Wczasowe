@@ -75,7 +75,7 @@ export default function AdminDashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Ostatnie zapytania i rezerwacje</CardTitle>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/admin/rezerwacje">Zobacz wszystkie</Link>
+              <Link href="/rezerwacje">Zobacz wszystkie</Link>
             </Button>
           </CardHeader>
           <CardContent>
