@@ -196,7 +196,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SiteSettings"
+                $ref: "#/components/schemas/AdminSiteSettings"
     put:
       operationId: adminUpdateSettings
       tags: [admin]
@@ -206,14 +206,47 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SiteSettingsInput"
+              $ref: "#/components/schemas/AdminSiteSettingsInput"
       responses:
         "200":
           description: Zaktualizowane ustawienia
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SiteSettings"
+                $ref: "#/components/schemas/AdminSiteSettings"
+
+  # ─── ICAL ────────────────────────────────────────────────────────────────────
+
+  /ical:
+    get:
+      operationId: getIcal
+      tags: [public]
+      summary: Eksport kalendarza iCal (tylko daty zajęcia, bez danych gości)
+      responses:
+        "200":
+          description: Kalendarz iCal
+          content:
+            text/calendar:
+              schema:
+                type: string
+
+  /admin/ical-import:
+    post:
+      operationId: adminIcalImport
+      tags: [admin]
+      summary: Importuj zajęte daty z Booking.com przez URL iCal i zapisz jako blokady dostępności
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IcalImportInput"
+      responses:
+        "200":
+          description: Wynik importu
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IcalImportResult"
 
   # ─── ADMIN ROOMS ─────────────────────────────────────────────────────────────
 
@@ -606,6 +639,14 @@ components:
         adminPassword:
           type: ["string", "null"]
 
+    AdminSiteSettings:
+      allOf:
+        - $ref: "#/components/schemas/SiteSettings"
+        - type: object
+          properties:
+            bookingComIcalUrl:
+              type: ["string", "null"]
+
     SiteSettingsInput:
       type: object
       properties:
@@ -643,6 +684,36 @@ components:
         checkOutTime:
           type: string
         adminPassword:
+          type: string
+
+    AdminSiteSettingsInput:
+      allOf:
+        - $ref: "#/components/schemas/SiteSettingsInput"
+        - type: object
+          properties:
+            bookingComIcalUrl:
+              type: string
+
+    IcalImportInput:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL kalendarza iCal (opcjonalnie — jeśli brak, używa zapisanego w ustawieniach)
+
+    IcalImportResult:
+      type: object
+      required: [ok, eventsFound, blocksWritten]
+      properties:
+        ok:
+          type: boolean
+        eventsFound:
+          type: number
+        blocksWritten:
+          type: number
+        rooms:
+          type: number
+        warning:
           type: string
 
     # ─── AUTH ────────────────────────────────────────────────────────────────

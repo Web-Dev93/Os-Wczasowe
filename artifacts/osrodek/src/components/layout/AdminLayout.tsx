@@ -23,7 +23,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading: isUserLoading, error: userError } = useAdminGetMe({
     query: {
       retry: false,
-    }
+    } as never,
   });
   const logout = useAdminLogout();
   const { toast } = useToast();

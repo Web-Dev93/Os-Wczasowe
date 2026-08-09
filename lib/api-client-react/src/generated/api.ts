@@ -22,6 +22,8 @@ import type {
 import type {
   AdminListAvailabilityParams,
   AdminListBookingsParams,
+  AdminSiteSettings,
+  AdminSiteSettingsInput,
   AdminUser,
   AvailabilityBlock,
   AvailabilityInput,
@@ -31,14 +33,15 @@ import type {
   GalleryPhoto,
   GetAvailabilityParams,
   HealthStatus,
+  IcalImportInput,
+  IcalImportResult,
   InquiryInput,
   LoginInput,
   PhotoInput,
   Room,
   RoomInput,
   RoomPhoto,
-  SiteSettings,
-  SiteSettingsInput
+  SiteSettings
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -838,9 +841,9 @@ export const getAdminGetSettingsUrl = () => {
 /**
  * @summary Pobierz ustawienia (admin)
  */
-export const adminGetSettings = async ( options?: Parameters<typeof customFetch>[1]): Promise<SiteSettings> => {
+export const adminGetSettings = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminSiteSettings> => {
 
-  return customFetch<SiteSettings>(getAdminGetSettingsUrl(),
+  return customFetch<AdminSiteSettings>(getAdminGetSettingsUrl(),
   {
     ...options,
     method: 'GET'
@@ -915,14 +918,14 @@ export const getAdminUpdateSettingsUrl = () => {
 /**
  * @summary Zaktualizuj ustawienia
  */
-export const adminUpdateSettings = async (siteSettingsInput: SiteSettingsInput, options?: Parameters<typeof customFetch>[1]): Promise<SiteSettings> => {
+export const adminUpdateSettings = async (adminSiteSettingsInput: AdminSiteSettingsInput, options?: Parameters<typeof customFetch>[1]): Promise<AdminSiteSettings> => {
 
-  return customFetch<SiteSettings>(getAdminUpdateSettingsUrl(),
+  return customFetch<AdminSiteSettings>(getAdminUpdateSettingsUrl(),
   {
     ...options,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(siteSettingsInput)
+    body: JSON.stringify(adminSiteSettingsInput)
   }
 );}
 
@@ -931,8 +934,8 @@ export const adminUpdateSettings = async (siteSettingsInput: SiteSettingsInput, 
 
 
 export const getAdminUpdateSettingsMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<SiteSettingsInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<SiteSettingsInput>}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<AdminSiteSettingsInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<AdminSiteSettingsInput>}, TContext> => {
 
 const mutationKey = ['adminUpdateSettings'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -944,7 +947,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminUpdateSettings>>, {data: BodyType<SiteSettingsInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminUpdateSettings>>, {data: BodyType<AdminSiteSettingsInput>}> = (props) => {
           const {data} = props ?? {};
 
           return  adminUpdateSettings(data,requestOptions)
@@ -958,21 +961,169 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AdminUpdateSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof adminUpdateSettings>>>
-    export type AdminUpdateSettingsMutationBody = BodyType<SiteSettingsInput>
+    export type AdminUpdateSettingsMutationBody = BodyType<AdminSiteSettingsInput>
     export type AdminUpdateSettingsMutationError = ErrorType<unknown>
 
     /**
  * @summary Zaktualizuj ustawienia
  */
 export const useAdminUpdateSettings = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<SiteSettingsInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateSettings>>, TError,{data: BodyType<AdminSiteSettingsInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
         Awaited<ReturnType<typeof adminUpdateSettings>>,
         TError,
-        {data: BodyType<SiteSettingsInput>},
+        {data: BodyType<AdminSiteSettingsInput>},
         TContext
       > => {
       return useMutation(getAdminUpdateSettingsMutationOptions(options));
+    }
+
+export const getGetIcalUrl = () => {
+
+
+
+
+  return `/api/ical`
+}
+
+/**
+ * @summary Eksport kalendarza iCal (tylko daty zajęcia, bez danych gości)
+ */
+export const getIcal = async ( options?: Parameters<typeof customFetch>[1]): Promise<string> => {
+
+  return customFetch<string>(getGetIcalUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetIcalQueryKey = () => {
+    return [
+    `/api/ical`
+    ] as const;
+    }
+
+
+export const getGetIcalQueryOptions = <TData = Awaited<ReturnType<typeof getIcal>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getIcal>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetIcalQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getIcal>>> = ({ signal }) => getIcal({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getIcal>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetIcalQueryResult = NonNullable<Awaited<ReturnType<typeof getIcal>>>
+export type GetIcalQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Eksport kalendarza iCal (tylko daty zajęcia, bez danych gości)
+ */
+
+export function useGetIcal<TData = Awaited<ReturnType<typeof getIcal>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getIcal>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetIcalQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminIcalImportUrl = () => {
+
+
+
+
+  return `/api/admin/ical-import`
+}
+
+/**
+ * @summary Importuj zajęte daty z Booking.com przez URL iCal i zapisz jako blokady dostępności
+ */
+export const adminIcalImport = async (icalImportInput?: IcalImportInput, options?: Parameters<typeof customFetch>[1]): Promise<IcalImportResult> => {
+
+  return customFetch<IcalImportResult>(getAdminIcalImportUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(icalImportInput)
+  }
+);}
+
+
+
+
+
+export const getAdminIcalImportMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminIcalImport>>, TError,{data?: BodyType<IcalImportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminIcalImport>>, TError,{data?: BodyType<IcalImportInput>}, TContext> => {
+
+const mutationKey = ['adminIcalImport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminIcalImport>>, {data?: BodyType<IcalImportInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminIcalImport(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminIcalImportMutationResult = NonNullable<Awaited<ReturnType<typeof adminIcalImport>>>
+    export type AdminIcalImportMutationBody = BodyType<IcalImportInput> | undefined
+    export type AdminIcalImportMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Importuj zajęte daty z Booking.com przez URL iCal i zapisz jako blokady dostępności
+ */
+export const useAdminIcalImport = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminIcalImport>>, TError,{data?: BodyType<IcalImportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminIcalImport>>,
+        TError,
+        {data?: BodyType<IcalImportInput>},
+        TContext
+      > => {
+      return useMutation(getAdminIcalImportMutationOptions(options));
     }
 
 export const getAdminListRoomsUrl = () => {

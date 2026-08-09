@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useGetSettings, useListRooms, useListGallery } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { HeroSlider } from "@/components/HeroSlider";
@@ -10,15 +10,15 @@ import {
 } from "lucide-react";
 
 /* ── animation variants ─────────────────────────────────── */
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 40 },
-  show: (delay = 0) => ({
+  show: (delay: number = 0) => ({
     opacity: 1, y: 0,
     transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }
   }),
 };
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
 };

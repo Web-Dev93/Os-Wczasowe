@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { Save, Globe, Palette, Phone, Lock, Image, Clock } from "lucide-react";
+import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw } from "lucide-react";
 
 const THEMES = [
   { value: "professional", label: "Professional — Morski profesjonalizm" },
@@ -74,7 +74,13 @@ export default function AdminSettings() {
     checkInTime: "14:00",
     checkOutTime: "10:00",
     adminPassword: "",
+    bookingComIcalUrl: "",
   });
+  const [icalImportStatus, setIcalImportStatus] = useState<{
+    loading: boolean;
+    result: { eventsFound: number } | null;
+    error: string | null;
+  }>({ loading: false, result: null, error: null });
 
   useEffect(() => {
     if (settings) {
@@ -93,6 +99,7 @@ export default function AdminSettings() {
         checkInTime: settings.checkInTime || "14:00",
         checkOutTime: settings.checkOutTime || "10:00",
         adminPassword: "",
+        bookingComIcalUrl: settings.bookingComIcalUrl || "",
       });
     }
   }, [settings]);
@@ -126,6 +133,7 @@ export default function AdminSettings() {
       bookingMode: form.bookingMode,
       checkInTime: form.checkInTime || undefined,
       checkOutTime: form.checkOutTime || undefined,
+      bookingComIcalUrl: form.bookingComIcalUrl || undefined,
     };
 
     if (form.adminPassword.trim()) {
@@ -254,6 +262,71 @@ export default function AdminSettings() {
             <Input type="time" value={form.checkOutTime} onChange={handleChange("checkOutTime")} />
           </Field>
         </div>
+      </FieldGroup>
+
+      <FieldGroup title="Synchronizacja z Booking.com (iCal)" icon={<CalendarArrowDown className="w-5 h-5 text-primary" />}>
+        <Field label="URL kalendarza iCal z Booking.com">
+          <Input
+            value={form.bookingComIcalUrl}
+            onChange={handleChange("bookingComIcalUrl")}
+            placeholder="https://admin.booking.com/hotel/hoteladmin/ical.html?..."
+          />
+          <p className="text-xs text-muted-foreground pt-1">
+            W panelu Booking.com: Nieruchomość → Kalendarze → Synchronizacja kalendarza → Skopiuj URL iCal.
+          </p>
+        </Field>
+
+        <div className="flex flex-wrap gap-3 items-center">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={icalImportStatus.loading}
+            className="gap-2"
+            onClick={async () => {
+              setIcalImportStatus({ loading: true, result: null, error: null });
+              try {
+                const res = await fetch("/api/admin/ical-import", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ url: form.bookingComIcalUrl || undefined }),
+                  credentials: "include",
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+                setIcalImportStatus({ loading: false, result: data, error: null });
+                toast({ title: `Znaleziono ${data.eventsFound} wpisów w kalendarzu Booking.com` });
+              } catch (err) {
+                const msg = err instanceof Error ? err.message : String(err);
+                setIcalImportStatus({ loading: false, result: null, error: msg });
+              }
+            }}
+          >
+            {icalImportStatus.loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+            Sprawdź kalendarz Booking.com
+          </Button>
+
+          <a
+            href="/api/ical"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-primary underline-offset-4 hover:underline"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Pobierz eksport iCal (do importu w Booking.com)
+          </a>
+        </div>
+
+        {icalImportStatus.error && (
+          <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2">
+            {icalImportStatus.error}
+          </p>
+        )}
+        {icalImportStatus.result && (
+          <p className="text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2">
+            ✓ Pobrano kalendarz — znaleziono {icalImportStatus.result.eventsFound} zajętych terminów.
+          </p>
+        )}
       </FieldGroup>
 
       <FieldGroup title="Bezpieczeństwo" icon={<Lock className="w-5 h-5 text-primary" />}>

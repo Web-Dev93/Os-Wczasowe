@@ -212,7 +212,9 @@ export const AdminGetSettingsResponse = zod.object({
   "checkInTime": zod.string().nullish(),
   "checkOutTime": zod.string().nullish(),
   "adminPassword": zod.string().nullish()
-})
+}).and(zod.object({
+  "bookingComIcalUrl": zod.string().nullish()
+}))
 
 
 /**
@@ -238,7 +240,9 @@ export const AdminUpdateSettingsBody = zod.object({
   "checkInTime": zod.string().optional(),
   "checkOutTime": zod.string().optional(),
   "adminPassword": zod.string().optional()
-})
+}).and(zod.object({
+  "bookingComIcalUrl": zod.string().optional()
+}))
 
 export const AdminUpdateSettingsResponse = zod.object({
   "id": zod.number(),
@@ -258,6 +262,30 @@ export const AdminUpdateSettingsResponse = zod.object({
   "checkInTime": zod.string().nullish(),
   "checkOutTime": zod.string().nullish(),
   "adminPassword": zod.string().nullish()
+}).and(zod.object({
+  "bookingComIcalUrl": zod.string().nullish()
+}))
+
+
+/**
+ * @summary Eksport kalendarza iCal (tylko daty zajęcia, bez danych gości)
+ */
+export const GetIcalResponse = zod.unknown()
+
+
+/**
+ * @summary Importuj zajęte daty z Booking.com przez URL iCal i zapisz jako blokady dostępności
+ */
+export const AdminIcalImportBody = zod.object({
+  "url": zod.string().optional().describe('URL kalendarza iCal (opcjonalnie — jeśli brak, używa zapisanego w ustawieniach)')
+})
+
+export const AdminIcalImportResponse = zod.object({
+  "ok": zod.boolean(),
+  "eventsFound": zod.number(),
+  "blocksWritten": zod.number(),
+  "rooms": zod.number().optional(),
+  "warning": zod.string().optional()
 })
 
 

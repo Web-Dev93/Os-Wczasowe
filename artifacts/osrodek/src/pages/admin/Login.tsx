@@ -16,7 +16,7 @@ const loginSchema = z.object({
 
 export default function AdminLogin() {
   const [, setLocation] = useLocation();
-  const { data: user, isLoading } = useAdminGetMe({ query: { retry: false } });
+  const { data: user, isLoading } = useAdminGetMe({ query: { retry: false } as never });
   const loginMutation = useAdminLogin();
   const { toast } = useToast();
   const [demoLoading, setDemoLoading] = React.useState(false);

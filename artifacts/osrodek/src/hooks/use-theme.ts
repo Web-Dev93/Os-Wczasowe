@@ -35,7 +35,7 @@ export function usePublicTheme() {
   const urlTheme = getUrlTheme();
   // If URL forces a theme (iframe preview mode), skip API call
   const { data: settings, isLoading } = useGetSettings({
-    query: { enabled: !urlTheme },
+    query: { enabled: !urlTheme } as never,
   });
 
   useEffect(() => {

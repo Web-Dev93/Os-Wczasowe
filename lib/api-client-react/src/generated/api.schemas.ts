@@ -63,6 +63,11 @@ export interface SiteSettings {
   adminPassword?: string | null;
 }
 
+export type AdminSiteSettings = SiteSettings & ({
+  /** @nullable */
+  bookingComIcalUrl?: string | null;
+});
+
 export type SiteSettingsInputTheme = typeof SiteSettingsInputTheme[keyof typeof SiteSettingsInputTheme];
 
 
@@ -102,6 +107,23 @@ export interface SiteSettingsInput {
   checkInTime?: string;
   checkOutTime?: string;
   adminPassword?: string;
+}
+
+export type AdminSiteSettingsInput = SiteSettingsInput & {
+  bookingComIcalUrl?: string;
+};
+
+export interface IcalImportInput {
+  /** URL kalendarza iCal (opcjonalnie — jeśli brak, używa zapisanego w ustawieniach) */
+  url?: string;
+}
+
+export interface IcalImportResult {
+  ok: boolean;
+  eventsFound: number;
+  blocksWritten: number;
+  rooms?: number;
+  warning?: string;
 }
 
 export interface LoginInput {

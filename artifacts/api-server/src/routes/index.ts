@@ -7,6 +7,7 @@ import galleryRouter from "./gallery";
 import bookingsRouter from "./bookings";
 import availabilityRouter from "./availability";
 import statsRouter from "./stats";
+import icalRouter from "./ical";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(galleryRouter);
 router.use(bookingsRouter);
 router.use(availabilityRouter);
 router.use(statsRouter);
+router.use(icalRouter);
 
 export default router;

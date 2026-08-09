@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
   BedDouble, Images, CalendarCheck, Settings, Smartphone,
   Lock, MapPin, Check
@@ -21,7 +21,7 @@ const ADMIN_FEATURES = [
   "Zmień styl, opis i dane kontaktowe",
 ];
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55, ease: [0.16, 1, 0.3, 1] } }),
 };

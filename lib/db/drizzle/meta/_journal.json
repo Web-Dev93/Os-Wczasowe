@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1786302803238,
+      "tag": "0000_normal_fenris",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786320000000,
+      "tag": "0001_add_settings_booking_com_ical_url",
+      "breakpoints": true
+    }
+  ]
+}

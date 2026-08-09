@@ -9,6 +9,8 @@
 export * from './adminListAvailabilityParams';
 export * from './adminListBookingsParams';
 export * from './adminListBookingsStatus';
+export * from './adminSiteSettings';
+export * from './adminSiteSettingsInput';
 export * from './adminUser';
 export * from './availabilityBlock';
 export * from './availabilityBlockStatus';
@@ -23,6 +25,8 @@ export * from './dashboardStats';
 export * from './galleryPhoto';
 export * from './getAvailabilityParams';
 export * from './healthStatus';
+export * from './icalImportInput';
+export * from './icalImportResult';
 export * from './inquiryInput';
 export * from './inquiryInputType';
 export * from './loginInput';
