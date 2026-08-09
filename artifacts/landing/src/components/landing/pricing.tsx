@@ -60,7 +60,7 @@ export function Pricing() {
               <ul className="space-y-4 mb-10">
                 {INCLUDED.map((item, i) => (
                   <li key={i} className="flex items-start gap-4">
-                    <Check className="w-4 h-4 mt-0.5 text-foreground shrink-0" />
+                    <Check className="w-4 h-4 mt-0.5 text-primary shrink-0" />
                     <span className="text-sm text-foreground/80">{item}</span>
                   </li>
                 ))}
@@ -72,7 +72,7 @@ export function Pricing() {
 
               <a
                 href="#kontakt"
-                className="flex items-center justify-center w-full px-8 py-4 bg-foreground text-background font-semibold rounded transition-colors hover:bg-foreground/90"
+                className="flex items-center justify-center w-full px-8 py-4 bg-accent text-accent-foreground font-semibold rounded transition-colors hover:bg-accent/90 shadow-sm"
               >
                 Zamów swoją stronę
               </a>
@@ -93,7 +93,7 @@ export function Pricing() {
                 {COMPARED.map((c, i) => (
                   <div key={i} className="flex flex-col py-3 border-b border-border last:border-0">
                     <span className="text-sm font-medium">{c.label}</span>
-                    <span className={`text-sm mt-1 ${c.bad ? 'text-muted-foreground' : 'text-foreground font-semibold'}`}>
+                    <span className={`text-sm mt-1 ${c.bad ? 'text-muted-foreground' : 'text-primary font-bold'}`}>
                       {c.cost}
                     </span>
                   </div>

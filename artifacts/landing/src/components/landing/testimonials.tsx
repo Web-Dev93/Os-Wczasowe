@@ -46,7 +46,7 @@ export function Testimonials() {
               transition={{ delay: i * 0.1, duration: 0.6 }}
               className="flex flex-col"
             >
-              <div className="text-4xl font-serif text-border leading-none mb-4">„</div>
+              <div className="text-5xl font-serif text-accent/60 leading-none mb-4">„</div>
               <p className="text-lg leading-relaxed text-foreground/80 mb-8 flex-1">
                 {t.text}
               </p>
@@ -71,7 +71,7 @@ export function Testimonials() {
             { val: "0 zł", label: "Miesięczny abonament" },
           ].map(({ val, label }) => (
             <div key={label}>
-              <div className="text-3xl font-serif mb-1">{val}</div>
+              <div className="text-4xl font-serif text-primary mb-2">{val}</div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider">{label}</div>
             </div>
           ))}

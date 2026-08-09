@@ -52,8 +52,8 @@ export function Nav() {
           href="#kontakt"
           className={`hidden md:inline-flex items-center justify-center px-6 py-2.5 rounded text-sm font-semibold transition-all duration-300 ${
             scrolled
-              ? "bg-primary text-primary-foreground hover:bg-primary/90"
-              : "bg-white text-foreground hover:bg-white/90"
+              ? "bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm"
+              : "bg-white text-foreground hover:bg-white/90 shadow-[0_0_15px_-3px_rgba(255,255,255,0.4)]"
           }`}
         >
           Kup teraz
@@ -93,7 +93,7 @@ export function Nav() {
                 <a
                   href="#kontakt"
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-center w-full bg-primary text-primary-foreground py-3.5 rounded font-semibold text-sm"
+                  className="flex items-center justify-center w-full bg-accent text-accent-foreground py-3.5 rounded font-semibold text-sm shadow-sm"
                 >
                   Kup teraz — 1 200 zł
                 </a>

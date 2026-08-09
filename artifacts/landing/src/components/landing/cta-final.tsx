@@ -25,7 +25,7 @@ export function CtaFinal() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <a
               href="#kontakt"
-              className="w-full sm:w-auto px-10 py-5 bg-white text-foreground font-semibold rounded hover:bg-white/90 transition-all duration-300"
+              className="w-full sm:w-auto px-10 py-5 bg-accent text-accent-foreground font-semibold rounded hover:bg-accent/90 shadow-[0_0_30px_-5px_rgba(255,180,80,0.4)] transition-all duration-300"
             >
               Zamów za 1 200 zł
             </a>

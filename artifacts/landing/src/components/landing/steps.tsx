@@ -42,7 +42,7 @@ export function Steps() {
               className="relative"
             >
               <div className="mb-6 pb-6 border-b border-border">
-                <span className="font-serif text-5xl text-border font-light tracking-tighter">
+                <span className="font-serif text-5xl text-primary/30 font-light tracking-tighter">
                   {step.num}
                 </span>
               </div>
@@ -57,7 +57,7 @@ export function Steps() {
         <div className="mt-24 text-center">
           <a
             href="#kontakt"
-            className="inline-flex items-center justify-center px-8 py-4 rounded bg-foreground text-background font-semibold hover:bg-foreground/90 transition-colors"
+            className="inline-flex items-center justify-center px-8 py-4 rounded bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors shadow-sm"
           >
             Rozpocznij teraz
           </a>

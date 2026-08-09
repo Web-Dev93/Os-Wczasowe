@@ -48,7 +48,7 @@ export function Problem() {
                 transition={{ delay: i * 0.1, duration: 0.6 }}
                 className="group relative"
               >
-                <div className="text-xs font-serif text-muted-foreground mb-3">0{i + 1}</div>
+                <div className="text-sm font-serif text-accent font-semibold mb-3">0{i + 1}</div>
                 <h3 className="text-xl font-serif font-medium mb-3">{pain.title}</h3>
                 <p className="text-muted-foreground leading-relaxed">{pain.desc}</p>
               </motion.div>

@@ -66,7 +66,7 @@ export function StylesShowcase() {
                 onClick={() => switchStyle(idx)}
                 className={`px-5 py-2 rounded text-sm transition-all duration-300 ${
                   idx === activeIdx
-                    ? "bg-foreground text-background font-medium shadow-sm"
+                    ? "bg-primary text-primary-foreground font-medium shadow-sm"
                     : "bg-muted/50 text-foreground hover:bg-muted"
                 }`}
               >

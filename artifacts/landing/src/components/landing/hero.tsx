@@ -6,13 +6,14 @@ export function Hero() {
       {/* Background Image with elegant overlay */}
       <div className="absolute inset-0">
         {/* Placeholder color while loading */}
-        <div className="absolute inset-0 bg-[#2C3848]" />
+        <div className="absolute inset-0 bg-primary/30" />
         <img
           src="/hero-bg.jpg"
           alt="Krajobraz Morza Bałtyckiego"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover opacity-75"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/50 via-foreground/20 to-foreground/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-foreground/40 via-transparent to-accent/30 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-transparent to-foreground/80" />
       </div>
 
       {/* Content */}
@@ -41,13 +42,13 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
             <a
               href="#cennik"
-              className="w-full sm:w-auto px-8 py-4 bg-white text-foreground rounded text-sm font-semibold hover:bg-white/90 transition-all duration-300"
+              className="w-full sm:w-auto px-8 py-4 bg-accent text-accent-foreground rounded text-sm font-semibold hover:bg-accent/90 shadow-[0_0_30px_-5px_rgba(255,180,80,0.4)] transition-all duration-300"
             >
               Zamów za 1 200 zł
             </a>
             <a
               href="#demo"
-              className="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/30 text-white rounded text-sm font-semibold hover:bg-white/10 transition-all duration-300"
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/40 text-white rounded text-sm font-semibold hover:bg-white/10 hover:border-white/60 transition-all duration-300"
             >
               Zobacz szablony
             </a>

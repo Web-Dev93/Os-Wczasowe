@@ -161,7 +161,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-foreground text-background py-4 font-semibold uppercase tracking-wider text-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
+                    className="w-full bg-accent text-accent-foreground py-4 font-semibold uppercase tracking-wider text-xs transition-colors hover:bg-accent/90 disabled:opacity-50 shadow-sm"
                   >
                     {loading ? "Wysyłanie..." : "Wyślij"}
                   </button>

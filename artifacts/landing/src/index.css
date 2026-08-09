@@ -44,73 +44,73 @@
 }
 
 :root {
-  /* Baltic Calm & Crafted */
-  --background: 40 33% 98%;    /* warm sand white */
-  --foreground: 215 40% 15%;   /* deep slate blue */
+  /* Baltic Morning Sun & Sea */
+  --background: 43 45% 98%;    /* sunlit warm sand white */
+  --foreground: 205 35% 20%;   /* deep sea navy */
   
   --card: 0 0% 100%;
-  --card-foreground: 215 40% 15%;
-  --card-border: 40 20% 90%;
+  --card-foreground: 205 35% 20%;
+  --card-border: 43 30% 92%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 215 40% 15%;
-  --popover-border: 40 20% 90%;
+  --popover-foreground: 205 35% 20%;
+  --popover-border: 43 30% 92%;
   
-  --primary: 210 60% 25%;      /* deep sea blue */
+  --primary: 200 45% 42%;      /* clear baltic blue */
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 210 20% 90%;    /* soft blue-gray */
-  --secondary-foreground: 210 60% 25%;
+  --secondary: 43 35% 93%;     /* soft warmer sand */
+  --secondary-foreground: 205 35% 20%;
   
-  --muted: 40 20% 90%;         /* muted sand */
-  --muted-foreground: 215 20% 40%;
+  --muted: 200 30% 96%;        /* soft morning sea breeze */
+  --muted-foreground: 205 25% 45%;
   
-  --accent: 35 40% 60%;        /* muted gold / dry grass */
-  --accent-foreground: 0 0% 100%;
+  --accent: 38 85% 65%;        /* gentle morning amber / sun */
+  --accent-foreground: 205 40% 15%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   
-  --border: 40 20% 88%;
-  --input: 40 20% 88%;
-  --ring: 210 60% 25%;
+  --border: 43 25% 88%;
+  --input: 43 25% 88%;
+  --ring: 200 45% 42%;
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: 'Fraunces', serif;
   
-  --radius: 0.25rem;
+  --radius: 0.5rem;
 }
 
 .dark {
   --background: 215 40% 10%;
-  --foreground: 40 33% 95%;
+  --foreground: 43 45% 95%;
   
   --card: 215 30% 14%;
-  --card-foreground: 40 33% 95%;
+  --card-foreground: 43 45% 95%;
   --card-border: 215 30% 20%;
   
   --popover: 215 30% 14%;
-  --popover-foreground: 40 33% 95%;
+  --popover-foreground: 43 45% 95%;
   --popover-border: 215 30% 20%;
   
-  --primary: 210 40% 80%; 
-  --primary-foreground: 215 40% 10%;
+  --primary: 200 45% 42%; 
+  --primary-foreground: 43 45% 95%;
   
   --secondary: 215 30% 20%;
-  --secondary-foreground: 40 33% 95%;
+  --secondary-foreground: 43 45% 95%;
   
   --muted: 215 30% 20%;
   --muted-foreground: 215 10% 65%;
   
-  --accent: 35 40% 60%;
+  --accent: 38 85% 65%;
   --accent-foreground: 215 40% 10%;
   
   --destructive: 0 62% 40%;
-  --destructive-foreground: 40 33% 95%;
+  --destructive-foreground: 43 45% 95%;
   
   --border: 215 30% 20%;
   --input: 215 30% 20%;
-  --ring: 210 40% 80%;
+  --ring: 200 45% 42%;
 }
 
 @layer base {
