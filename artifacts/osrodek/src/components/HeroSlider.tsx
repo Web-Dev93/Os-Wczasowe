@@ -68,6 +68,7 @@ export function HeroSlider({ tagline, description, heroImageUrl }: Props) {
   return (
     <section
       className="relative h-[92vh] min-h-[600px] max-h-[900px] overflow-hidden select-none"
+      style={{ background: "linear-gradient(160deg, #1a3556 0%, #1b5e7b 40%, #16788a 70%, #0e9aa7 100%)" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -82,7 +83,8 @@ export function HeroSlider({ tagline, description, heroImageUrl }: Props) {
             src={slide.img}
             alt=""
             className={`hero-slide__img${i === current ? ` ken-burns-${slide.kb}` : ""}`}
-            loading={i === 0 ? "eager" : "lazy"}
+            loading="eager"
+            fetchPriority={i === 0 ? "high" : "low"}
             decoding="async"
           />
         </div>
