@@ -27,6 +27,7 @@ interface Props {
 }
 
 export function HeroSlider({ tagline, description, heroImageUrl, heroImageUrl2, heroImageUrl3 }: Props) {
+  const isDemo = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "1";
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   // key changes every slide-switch so hero-text animations restart
@@ -71,7 +72,7 @@ export function HeroSlider({ tagline, description, heroImageUrl, heroImageUrl2, 
 
   return (
     <section
-      className="relative h-[92vh] min-h-[600px] max-h-[900px] overflow-hidden select-none"
+      className={`relative overflow-hidden select-none ${isDemo ? "h-[480px] min-h-[380px] max-h-[500px]" : "h-[92vh] min-h-[600px] max-h-[900px]"}`}
       style={{ background: "linear-gradient(160deg, #1a3556 0%, #1b5e7b 40%, #16788a 70%, #0e9aa7 100%)" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -114,7 +115,7 @@ export function HeroSlider({ tagline, description, heroImageUrl, heroImageUrl2, 
       </button>
 
       {/* Content */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 md:pb-28 px-4 text-center">
+      <div className="hero-content absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 md:pb-28 px-4 text-center">
         <div key={textKey} className="max-w-4xl mx-auto">
           <p className="hero-text-1 text-white/80 text-sm md:text-base uppercase tracking-[0.25em] font-medium mb-4">
             Ośrodek Nad Morzem
@@ -125,7 +126,7 @@ export function HeroSlider({ tagline, description, heroImageUrl, heroImageUrl2, 
           <p className="hero-text-3 text-base md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md">
             {subtitle}
           </p>
-          <div className="hero-text-3 flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="hero-actions hero-text-3 flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               asChild
               size="lg"

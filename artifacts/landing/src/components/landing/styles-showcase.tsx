@@ -47,7 +47,7 @@ const STYLES = [
 
 // Scale the 1280px-wide site to fit the preview container
 const SITE_WIDTH = 1280;
-const SITE_HEIGHT = 780;
+const SITE_HEIGHT = 1300;
 
 export function StylesShowcase() {
   const [activeIdx, setActiveIdx] = useState(0);

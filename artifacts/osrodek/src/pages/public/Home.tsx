@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "wouter";
 import { motion, type Variants } from "framer-motion";
 import { useGetSettings, useListRooms, useListGallery, useListPosts } from "@workspace/api-client-react";
+import { usePublicTheme } from "@/hooks/use-theme";
 import { Button } from "@/components/ui/button";
 import { HeroSlider } from "@/components/HeroSlider";
 import {
@@ -41,9 +42,15 @@ const WHY = [
 
 export default function Home() {
   const { data: settings } = useGetSettings();
+  const { isDemo }         = usePublicTheme();
   const { data: rooms }    = useListRooms();
   const { data: gallery }  = useListGallery();
   const { data: posts }    = useListPosts();
+
+  // In demo mode: skip whileInView gating so all content is immediately visible in the iframe
+  const viewportProps = isDemo
+    ? { once: true, margin: "9999px" }   // always "in view"
+    : { once: true, margin: "-80px" };
 
   const featuredRooms  = rooms?.slice(0, 3)   || [];
   const galleryPreview = gallery?.slice(0, 6)  || FALLBACK_GALLERY;
@@ -66,7 +73,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={viewportProps}
             variants={stagger}
             className="grid grid-cols-2 md:grid-cols-4 divide-x divide-primary-foreground/15"
           >
@@ -96,9 +103,9 @@ export default function Home() {
           {/* heading */}
           <motion.div
             className="text-center mb-20"
-            initial="hidden"
+            initial={isDemo ? "show" : "hidden"}
             whileInView="show"
-            viewport={{ once: true }}
+            viewport={viewportProps}
             variants={stagger}
           >
             <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">
@@ -116,9 +123,9 @@ export default function Home() {
           {/* cards */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            initial="hidden"
+            initial={isDemo ? "show" : "hidden"}
             whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={viewportProps}
             variants={stagger}
           >
             {featuredRooms.map((room) => (
@@ -133,7 +140,7 @@ export default function Home() {
                     src={room.coverPhotoUrl || FALLBACK_ROOM}
                     alt={room.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
+                    loading={isDemo ? "eager" : "lazy"}
                   />
                   {/* price badge */}
                   <div className="absolute top-4 right-4 bg-primary text-primary-foreground text-sm font-bold px-3.5 py-1.5 rounded-full shadow-lg">
@@ -203,7 +210,7 @@ export default function Home() {
               className="space-y-8"
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true }}
+              viewport={viewportProps}
               variants={stagger}
             >
               <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium">
@@ -244,7 +251,7 @@ export default function Home() {
               className="relative"
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportProps}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* stacked photo effect */}
@@ -255,7 +262,7 @@ export default function Home() {
                     src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=80"
                     alt="Bałtyk"
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading={isDemo ? "eager" : "lazy"}
                   />
                 </div>
                 {/* floating card */}
@@ -278,7 +285,7 @@ export default function Home() {
               className="flex items-end justify-between mb-10"
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true }}
+              viewport={viewportProps}
               variants={stagger}
             >
               <div>
@@ -300,12 +307,12 @@ export default function Home() {
               className="gallery-strip"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={viewportProps}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               {galleryPreview.map((photo) => (
                 <Link key={photo.id} href="/galeria" className="gallery-strip-item">
-                  <img src={photo.url} alt={photo.caption || ""} loading="lazy" />
+                  <img src={photo.url} alt={photo.caption || ""} loading={isDemo ? "eager" : "lazy"} />
                   {photo.caption && (
                     <div className="caption">
                       <span className="text-white text-sm font-medium">{photo.caption}</span>
@@ -326,7 +333,7 @@ export default function Home() {
               className="text-center mb-14"
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true }}
+              viewport={viewportProps}
               variants={stagger}
             >
               <motion.p variants={fadeUp} className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">
@@ -341,7 +348,7 @@ export default function Home() {
               className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={viewportProps}
               variants={stagger}
             >
               {posts.map(post => (
@@ -356,7 +363,7 @@ export default function Home() {
                         src={post.imageUrl}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                        loading="lazy"
+                        loading={isDemo ? "eager" : "lazy"}
                       />
                     </div>
                   )}
@@ -395,7 +402,7 @@ export default function Home() {
               <motion.div
                 initial="hidden"
                 whileInView="show"
-                viewport={{ once: true }}
+                viewport={viewportProps}
                 variants={stagger}
                 className="text-center mb-12"
               >
@@ -416,7 +423,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={viewportProps}
                 transition={{ duration: 0.7 }}
                 className="rounded-3xl overflow-hidden shadow-2xl border border-border"
                 style={{ height: "420px" }}
@@ -427,7 +434,7 @@ export default function Home() {
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
-                  loading="lazy"
+                  loading={isDemo ? "eager" : "lazy"}
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Mapa dojazdu do ośrodka"
                 />
@@ -436,7 +443,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
+                viewport={viewportProps}
                 transition={{ delay: 0.3 }}
                 className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
@@ -470,7 +477,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true }}
+            viewport={viewportProps}
             variants={stagger}
           >
             <motion.p variants={fadeUp} className="text-primary-foreground/60 text-sm uppercase tracking-[0.25em] font-medium mb-4">
