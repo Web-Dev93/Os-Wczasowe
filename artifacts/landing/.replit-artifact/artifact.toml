@@ -1,14 +1,14 @@
 kind = "web"
-previewPath = "/landing/"
+previewPath = "/"
 title = "Oferta — Strona dla Ośrodka"
-description = "Sprzedażowy landing page dla agencji oferującej gotowe strony internetowe dla pensjonatów i ośrodków nadmorskich. Pokazuje 5 stylów do wyboru, opis funkcjonalności (panel admina, rezerwacje, galeria) oraz zachęca do kontaktu i zakupu."
+description = "Sprzedażowy landing page dla agencji oferującej gotowe strony internetowe dla pensjonatów i ośrodków nadmorskich. Pokazuje 6 stylów do wyboru, opis funkcjonalności (panel admina, rezerwacje, galeria) oraz zachęca do kontaktu i zakupu."
 version = "1.0.0"
 id = "artifacts/landing"
 router = "path"
 
 [[services]]
 name = "web"
-paths = [ "/landing/" ]
+paths = [ "/" ]
 localPort = 18150
 
 [services.development]
@@ -25,4 +25,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "18150"
-BASE_PATH = "/landing/"
+BASE_PATH = "/"

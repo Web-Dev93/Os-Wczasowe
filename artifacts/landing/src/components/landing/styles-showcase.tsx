@@ -7,41 +7,43 @@ const STYLES = [
     id: "ekskluzywny",
     themeKey: "exclusive",
     name: "Ekskluzywny",
-    emoji: "✦",
     desc: "Ciemny, złoty, luksusowy. Idealny dla wymagających gości i apartamentów premium.",
-    accent: "#c9a227",
-  },
-  {
-    id: "rodzinny",
-    themeKey: "family",
-    name: "Rodzinny",
-    emoji: "☀",
-    desc: "Ciepły, radosny, z letnią energią. Przyciąga rodziny z dziećmi.",
-    accent: "#2da8d8",
-  },
-  {
-    id: "nowoczesny",
-    themeKey: "modern",
-    name: "Nowoczesny",
-    emoji: "◼",
-    desc: "Minimalistyczny, czarno-biały. Dla obiektu który stawia na designerską architekturę.",
-    accent: "#111111",
-  },
-  {
-    id: "rustykalny",
-    themeKey: "rustic",
-    name: "Rustykalny",
-    emoji: "🌿",
-    desc: "Drewno, zieleń, natura. Dla domków letniskowych i agroturystyki.",
-    accent: "#6b4c2a",
+    accent: "#c9a74e",
   },
   {
     id: "nadmorski",
     themeKey: "professional",
     name: "Nadmorski",
-    emoji: "〰",
     desc: "Błękit morza, piasek, świeże powietrze. Klasyczny klimat polskiego wybrzeża.",
     accent: "#1e3a6b",
+  },
+  {
+    id: "rodzinny",
+    themeKey: "family",
+    name: "Rodzinny",
+    desc: "Ciepły, radosny, z letnią energią. Przyciąga rodziny z dziećmi.",
+    accent: "#2da8d8",
+  },
+  {
+    id: "rustykalny",
+    themeKey: "rustic",
+    name: "Rustykalny",
+    desc: "Drewno, zieleń, natura. Dla domków letniskowych i agroturystyki.",
+    accent: "#6b4c2a",
+  },
+  {
+    id: "wakacyjny",
+    themeKey: "fun",
+    name: "Wakacyjny",
+    desc: "Turquoise i koral, energia letniej imprezy. Dla ośrodków pełnych życia i zabawy.",
+    accent: "#00b4c5",
+  },
+  {
+    id: "nowoczesny",
+    themeKey: "modern",
+    name: "Nowoczesny",
+    desc: "Minimalistyczny, czarno-biały. Dla obiektu który stawia na designerską architekturę.",
+    accent: "#111111",
   },
 ];
 
@@ -76,7 +78,7 @@ export function StylesShowcase() {
     setActiveIdx(idx);
   }
 
-  const iframeSrc = `/?theme=${s.themeKey}&demo=1`;
+  const iframeSrc = `/osrodek/?theme=${s.themeKey}&demo=1`;
   const containerHeight = Math.round(SITE_HEIGHT * scale);
 
   return (
@@ -85,7 +87,7 @@ export function StylesShowcase() {
 
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">5 Stylów do wyboru</p>
+          <p className="text-primary text-sm uppercase tracking-[0.2em] font-medium mb-3">6 Stylów do wyboru</p>
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-5">Który to Twój?</h2>
           <p className="text-lg text-muted-foreground">
             Kliknij styl i zobaczysz na żywo jak będzie wyglądać Twoja strona.
@@ -99,13 +101,12 @@ export function StylesShowcase() {
             <button
               key={style.id}
               onClick={() => switchStyle(idx)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 idx === activeIdx
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105"
                   : "bg-background border border-border text-foreground hover:border-primary/40"
               }`}
             >
-              <span className="text-base leading-none">{style.emoji}</span>
               {style.name}
             </button>
           ))}
@@ -167,7 +168,7 @@ export function StylesShowcase() {
                 key={s.themeKey}
                 src={iframeSrc}
                 title={`Podgląd stylu: ${s.name}`}
-                onLoad={() => setLoading(false)}
+                onLoad={() => setTimeout(() => setLoading(false), 2500)}
                 className="absolute top-0 left-0 border-0 pointer-events-none"
                 style={{
                   width: `${SITE_WIDTH}px`,
@@ -175,7 +176,7 @@ export function StylesShowcase() {
                   transform: `scale(${scale})`,
                   transformOrigin: "top left",
                 }}
-                loading="lazy"
+                loading="eager"
               />
             </div>
           </div>
@@ -183,7 +184,7 @@ export function StylesShowcase() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
           <a
-            href={`/?theme=${s.themeKey}&demo=1`}
+            href={`/osrodek/?theme=${s.themeKey}&demo=1`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-background border border-border text-foreground px-8 py-4 rounded-full text-lg font-semibold hover:border-primary hover:text-primary hover:scale-105 transition-all"

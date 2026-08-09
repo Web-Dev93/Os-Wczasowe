@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Waves, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 const BEACH_BG = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=85";
 
@@ -7,7 +7,7 @@ const STATS = [
   { value: "24 h", label: "Czas wdrożenia" },
   { value: "1 200 zł", label: "Jednorazowy koszt" },
   { value: "0 zł", label: "Abonament miesięczny" },
-  { value: "5", label: "Stylów do wyboru" },
+  { value: "6", label: "Stylów do wyboru" },
 ];
 
 export function Hero() {
@@ -38,8 +38,7 @@ export function Hero() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 text-white/90 text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-8">
-            <Waves className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 text-white/90 text-xs uppercase tracking-[0.25em] px-5 py-2.5 rounded-full mb-8">
             System dla pensjonatów i ośrodków nad morzem
           </div>
 
@@ -70,7 +69,7 @@ export function Hero() {
               href="#demo"
               className="bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105"
             >
-              Zobacz 5 stylów
+              Zobacz 6 stylów
             </a>
           </div>
 

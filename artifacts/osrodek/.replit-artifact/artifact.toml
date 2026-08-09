@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/"
+previewPath = "/osrodek/"
 title = "System Ośrodka Nadmorskiego"
 description = "Kompletny system dla małych ośrodków wczasowych nad morzem. Zawiera stronę publiczną dla gości (pokoje, cennik, formularz rezerwacji/zapytania, galeria) oraz panel administratora do zarządzania pokojami, rezerwacjami, dostępnością i ustawieniami strony. System posiada 6 motywów wizualnych nawiązujących do morza: profesjonalny, ekskluzywny, wakacyjny, rodzinny, rustykalny i nowoczesny."
 version = "1.0.0"
@@ -8,7 +8,7 @@ router = "path"
 
 [[services]]
 name = "web"
-paths = [ "/" ]
+paths = [ "/osrodek/" ]
 localPort = 18535
 
 [services.development]
@@ -25,4 +25,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "18535"
-BASE_PATH = "/"
+BASE_PATH = "/osrodek/"

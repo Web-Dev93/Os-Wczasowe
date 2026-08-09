@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Waves, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "#funkcje",    label: "Funkcje" },
-  { href: "#demo",       label: "5 Stylów" },
+  { href: "#demo",       label: "6 Stylów" },
   { href: "#opinie",     label: "Opinie" },
   { href: "#cennik",     label: "Cennik" },
   { href: "#faq",        label: "FAQ" },
@@ -29,8 +29,7 @@ export function Nav() {
     >
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <div className={`flex items-center gap-2 font-serif text-xl font-bold tracking-tight transition-colors ${scrolled ? "text-primary" : "text-white drop-shadow-md"}`}>
-          <Waves className="w-5 h-5" />
+        <div className={`font-serif text-xl font-semibold tracking-wide transition-colors ${scrolled ? "text-primary" : "text-white drop-shadow-md"}`}>
           Strony dla Ośrodków
         </div>
 

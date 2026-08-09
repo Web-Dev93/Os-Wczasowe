@@ -342,23 +342,38 @@ html.theme-professional .text-primary {
 }
 
 /* ══════════════════════════════════════════════════════════
-   EXCLUSIVE — Luksus à la SeaPearl / Cannes / Dubaj
-   Głęboka czerń, ciepłe złoto, Playfair Display cienkie.
-   Centered hero, ornamentalne linie, zero zaokrągleń.
+   EXCLUSIVE — Luksus à la SeaPearl
+   Głęboka czerń (#080707), ciepłe champagne gold (#c9a74e).
+   Playfair Display weight 300, zero italic w tytułach,
+   zero zaokrągleń, maksymalna przestrzeń.
    ══════════════════════════════════════════════════════════ */
+
+/* — Base colors override — */
+html.theme-exclusive {
+  --background: 25 8% 4%;
+  --foreground: 38 18% 91%;
+  --card: 25 8% 5.5%;
+  --card-foreground: 38 18% 88%;
+  --card-border: 25 6% 12%;
+  --border: 25 6% 13%;
+  --muted: 25 6% 9%;
+  --muted-foreground: 38 8% 55%;
+  --primary: 38 52% 50%;
+  --primary-foreground: 25 8% 4%;
+}
 
 /* — Typografia bazowa — */
 html.theme-exclusive h1,
 html.theme-exclusive h2,
 html.theme-exclusive h3 {
-  font-style: italic;
-  letter-spacing: 0.03em;
+  font-style: normal;
   font-weight: 300;
+  letter-spacing: 0.04em;
   line-height: 1.1;
 }
-html.theme-exclusive h1 { font-size: clamp(3rem, 6.5vw, 6.5rem); }
-html.theme-exclusive h2 { font-size: clamp(2rem, 4vw, 3.8rem); }
-html.theme-exclusive h3 { font-size: clamp(1.2rem, 2vw, 1.8rem); font-style: normal; font-weight: 400; letter-spacing: 0.06em; }
+html.theme-exclusive h1 { font-size: clamp(3rem, 7vw, 7rem); }
+html.theme-exclusive h2 { font-size: clamp(2rem, 4.5vw, 4rem); }
+html.theme-exclusive h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 400; letter-spacing: 0.06em; }
 
 html.theme-exclusive p,
 html.theme-exclusive span,
@@ -369,232 +384,268 @@ html.theme-exclusive p.uppercase,
 html.theme-exclusive span.uppercase,
 html.theme-exclusive div.uppercase {
   letter-spacing: 0.45em;
-  font-size: 0.6em;
+  font-size: 0.58em;
   font-weight: 400;
   font-family: var(--app-font-sans);
   text-transform: uppercase;
 }
 
-/* — Top bar: ukryj (nieelegancki dla luksusowego motywu) — */
+/* — Top bar: ukryj — */
 html.theme-exclusive .topbar-shine { display: none !important; }
 
-/* — Nawigacja: przezroczysta, cienka złota linia — */
+/* — Nawigacja — */
 html.theme-exclusive header {
-  background: hsl(240 10% 3.9% / 0.85) !important;
-  backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid hsl(43 74% 49% / 0.18) !important;
+  background: hsl(25 8% 4% / 0.88) !important;
+  backdrop-filter: blur(16px) saturate(1.2) !important;
+  border-bottom: 1px solid hsl(38 52% 50% / 0.15) !important;
 }
 
-/* Logo: uppercase elegancki serif */
 html.theme-exclusive header a > span.font-serif {
-  font-style: italic;
+  font-style: normal;
   font-weight: 300;
-  letter-spacing: 0.18em;
-  font-size: 1.15rem;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
   text-transform: uppercase;
 }
 
-/* Nav linki: ultra tracking, drobne uppercase */
 html.theme-exclusive nav a.text-sm {
   letter-spacing: 0.22em;
-  font-size: 0.62rem !important;
+  font-size: 0.6rem !important;
   text-transform: uppercase;
   font-family: var(--app-font-sans);
   font-weight: 400;
+  color: hsl(38 18% 75%) !important;
+}
+html.theme-exclusive nav a.text-sm:hover,
+html.theme-exclusive nav a.text-sm.text-primary {
+  color: hsl(38 52% 60%) !important;
 }
 
-/* CTA: outline gold, bez zaokrąglenia */
+/* CTA rezerwacja — outline gold, ostre narożniki */
 html.theme-exclusive header .btn-cta-glow,
-html.theme-exclusive header a[href="/rezerwacja"] {
+html.theme-exclusive header a[href="/rezerwacja"],
+html.theme-exclusive header a[href="/osrodek/rezerwacja"] {
   background: transparent !important;
-  border: 1px solid hsl(43 74% 49%) !important;
-  color: hsl(43 74% 55%) !important;
+  border: 1px solid hsl(38 52% 50%) !important;
+  color: hsl(38 52% 60%) !important;
   border-radius: 0 !important;
-  letter-spacing: 0.18em;
-  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  font-size: 0.58rem;
+  font-family: var(--app-font-sans);
   text-transform: uppercase;
   box-shadow: none !important;
-  padding: 0.6rem 1.6rem !important;
+  padding: 0.65rem 1.8rem !important;
   height: auto !important;
+  transition: background 0.2s, color 0.2s !important;
 }
-html.theme-exclusive header a[href="/rezerwacja"]:hover {
-  background: hsl(43 74% 49% / 0.12) !important;
+html.theme-exclusive header a[href="/rezerwacja"]:hover,
+html.theme-exclusive header a[href="/osrodek/rezerwacja"]:hover {
+  background: hsl(38 52% 50% / 0.1) !important;
+  color: hsl(38 52% 70%) !important;
 }
 
-/* — Hero: wyśrodkowany w pionie — */
+/* — Hero: wyśrodkowany pionowo — */
 html.theme-exclusive .hero-content {
   justify-content: center !important;
   padding-bottom: 0 !important;
-  padding-top: 4rem !important;
+  padding-top: 3rem !important;
 }
 
-/* Hero overlay: bardziej równomierny ciemny */
 html.theme-exclusive .hero-overlay {
   background: linear-gradient(
-    160deg,
-    rgba(0,0,0,0.62) 0%,
-    rgba(0,0,0,0.38) 50%,
-    rgba(0,0,0,0.60) 100%
+    to bottom,
+    rgba(5,4,3,0.72) 0%,
+    rgba(5,4,3,0.52) 45%,
+    rgba(5,4,3,0.70) 100%
   ) !important;
 }
 
-/* Hero etykieta: złota, ekstremalny tracking, z liniami po bokach */
+/* Hero etykieta — złota, szerokie litery, ozdobne linie */
 html.theme-exclusive .hero-text-1 {
-  color: hsl(43 74% 58%) !important;
-  letter-spacing: 0.55em !important;
-  font-size: 0.58rem !important;
+  color: hsl(38 52% 58%) !important;
+  letter-spacing: 0.52em !important;
+  font-size: 0.55rem !important;
   font-family: var(--app-font-sans) !important;
   font-weight: 400 !important;
+  text-indent: 0.52em;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 1rem !important;
-  margin-bottom: 1.5rem !important;
+  gap: 1.2rem !important;
+  margin-bottom: 2rem !important;
 }
 html.theme-exclusive .hero-text-1::before,
 html.theme-exclusive .hero-text-1::after {
   content: '';
   display: block;
-  width: 60px;
-  height: 0.5px;
-  background: hsl(43 74% 49% / 0.65);
+  width: 55px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, hsl(38 52% 50% / 0.7), transparent);
   flex-shrink: 0;
 }
 
-/* Hero tytuł: cienko, majestatycznie */
+/* Hero tytuł — cienkie, majestatyczne */
 html.theme-exclusive .hero-text-2 {
+  font-style: normal !important;
   font-weight: 300 !important;
-  font-size: clamp(3.2rem, 7vw, 7rem) !important;
+  font-size: clamp(3rem, 7vw, 7rem) !important;
   letter-spacing: 0.04em !important;
-  line-height: 1.05 !important;
-  margin-bottom: 1.5rem !important;
+  line-height: 1.06 !important;
+  margin-bottom: 1.8rem !important;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.5) !important;
 }
 
-/* Hero podtytuł: dyskretny */
+/* Hero podtytuł — subtelny */
 html.theme-exclusive .hero-text-3:not(.hero-actions) {
-  font-size: 0.8rem !important;
-  letter-spacing: 0.12em !important;
-  color: rgba(255,255,255,0.55) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.14em !important;
+  color: rgba(255,255,255,0.5) !important;
   font-family: var(--app-font-sans) !important;
+  font-weight: 300 !important;
   margin-bottom: 2.5rem !important;
+  text-transform: none !important;
 }
 
-/* Hero przyciski: złoty ghost + biały ghost */
+/* Hero przyciski */
 html.theme-exclusive .hero-actions a {
   border-radius: 0 !important;
-  letter-spacing: 0.18em;
-  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  font-size: 0.58rem;
   text-transform: uppercase;
   font-family: var(--app-font-sans);
   height: 3.2rem !important;
-  padding: 0 2.2rem !important;
-}
-/* Primary button - gold */
-html.theme-exclusive .hero-actions a:first-child {
-  background: hsl(43 74% 49%) !important;
-  color: hsl(240 10% 4%) !important;
-  border: 1px solid hsl(43 74% 49%) !important;
+  padding: 0 2.4rem !important;
+  transition: all 0.25s !important;
   box-shadow: none !important;
 }
-html.theme-exclusive .hero-actions a:first-child:hover {
-  background: hsl(43 74% 58%) !important;
+html.theme-exclusive .hero-actions a:first-child {
+  background: hsl(38 52% 50%) !important;
+  color: hsl(25 8% 4%) !important;
+  border: 1px solid hsl(38 52% 50%) !important;
 }
-/* Secondary button - white outline */
+html.theme-exclusive .hero-actions a:first-child:hover {
+  background: hsl(38 52% 60%) !important;
+  border-color: hsl(38 52% 60%) !important;
+}
 html.theme-exclusive .hero-actions a:last-child {
   background: transparent !important;
-  border: 1px solid rgba(255,255,255,0.4) !important;
-  color: rgba(255,255,255,0.85) !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  color: rgba(255,255,255,0.80) !important;
   backdrop-filter: none !important;
 }
-
-/* Hero dots */
-html.theme-exclusive .hero-overlay ~ div button {
-  border-radius: 0 !important;
+html.theme-exclusive .hero-actions a:last-child:hover {
+  border-color: rgba(255,255,255,0.6) !important;
+  color: rgba(255,255,255,0.95) !important;
 }
 
-/* — Pasek statystyk: ciemny z złotymi akcentami — */
-html.theme-exclusive .topbar-shine + header + main .bg-primary {
-  background: hsl(240 10% 6%) !important;
+/* — Stats bar — */
+html.theme-exclusive .bg-primary.py-10,
+html.theme-exclusive .bg-primary.py-12 {
+  background: hsl(25 8% 6%) !important;
+  border-top: 1px solid hsl(38 52% 50% / 0.12);
+  border-bottom: 1px solid hsl(38 52% 50% / 0.12);
+}
+html.theme-exclusive .bg-primary.py-10 *,
+html.theme-exclusive .bg-primary.py-12 * {
+  color: hsl(38 18% 88%) !important;
+}
+html.theme-exclusive .bg-primary.py-10 .text-4xl,
+html.theme-exclusive .bg-primary.py-10 .text-5xl,
+html.theme-exclusive .bg-primary.py-12 .text-4xl,
+html.theme-exclusive .bg-primary.py-12 .text-5xl {
+  color: hsl(38 52% 58%) !important;
+  font-weight: 300 !important;
 }
 
-/* — Karty pokoi: czarne z złotą ramką na hover — */
+/* — Karty pokoi — */
 html.theme-exclusive .card-lift {
-  background: hsl(240 10% 5%) !important;
-  border: 1px solid hsl(240 3.7% 16%) !important;
-  transition: border-color 0.35s ease !important;
+  background: hsl(25 8% 5.5%) !important;
+  border: 1px solid hsl(25 6% 12%) !important;
+  transition: border-color 0.3s, box-shadow 0.3s !important;
 }
 html.theme-exclusive .card-lift:hover {
-  border-color: hsl(43 74% 49% / 0.55) !important;
-  box-shadow: 0 0 30px hsl(43 74% 49% / 0.08) !important;
+  border-color: hsl(38 52% 50% / 0.4) !important;
+  box-shadow: 0 0 40px hsl(38 52% 50% / 0.07) !important;
+  transform: none !important;
 }
-
-/* Card price badge: gold solid */
 html.theme-exclusive .card-lift .bg-primary {
-  background: hsl(43 74% 49%) !important;
-  color: hsl(240 10% 4%) !important;
+  background: hsl(38 52% 50%) !important;
+  color: hsl(25 8% 4%) !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em;
 }
-
-/* Card amenity pills */
 html.theme-exclusive .card-lift .bg-muted {
-  background: hsl(240 10% 9%) !important;
-  color: hsl(0 0% 65%) !important;
+  background: hsl(25 6% 9%) !important;
+  color: hsl(38 8% 58%) !important;
+  border: 1px solid hsl(25 6% 14%) !important;
 }
-
-/* Card Rezerwuj button: gold */
 html.theme-exclusive .card-lift button,
 html.theme-exclusive .card-lift a.flex-1 {
   border-radius: 0 !important;
-  letter-spacing: 0.15em;
-  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  font-size: 0.6rem;
   text-transform: uppercase;
+  font-family: var(--app-font-sans);
 }
 
-/* — Nagłówki sekcji: z ozdobną złotą linią — */
-html.theme-exclusive section h2 + .h-px {
-  background: hsl(43 74% 49% / 0.45) !important;
-}
+/* — Nagłówki sekcji — */
 html.theme-exclusive section .text-primary {
-  letter-spacing: 0.45em;
-  font-size: 0.58rem;
+  letter-spacing: 0.48em;
+  font-size: 0.55rem;
+  color: hsl(38 52% 55%) !important;
+  text-indent: 0.48em;
+}
+html.theme-exclusive section h2 + .h-px,
+html.theme-exclusive section h2 + p + .h-px {
+  background: linear-gradient(to right, transparent, hsl(38 52% 50% / 0.4), transparent) !important;
 }
 
-/* — Galeria: ciemny overlay na hover — */
-html.theme-exclusive .gallery-item img {
-  filter: brightness(0.92);
-  transition: filter 0.4s;
-}
-html.theme-exclusive .gallery-item:hover img {
-  filter: brightness(1.05);
+/* — Sekcja "Dlaczego my" — */
+html.theme-exclusive .bg-muted {
+  background: hsl(25 6% 7%) !important;
 }
 
-/* — Aktualności (posty): ciemne karty — */
+/* — Aktualności — */
 html.theme-exclusive article.bg-card {
-  background: hsl(240 10% 5%) !important;
-  border-color: hsl(240 3.7% 14%) !important;
+  background: hsl(25 8% 5.5%) !important;
+  border-color: hsl(25 6% 11%) !important;
 }
 html.theme-exclusive article.bg-card:hover {
-  border-color: hsl(43 74% 49% / 0.4) !important;
+  border-color: hsl(38 52% 50% / 0.3) !important;
 }
 
-/* — Stopka: głęboka czerń, złote akcenty — */
+/* — Galeria — */
+html.theme-exclusive .gallery-item img {
+  filter: brightness(0.88) saturate(0.85);
+  transition: filter 0.5s, transform 0.5s;
+}
+html.theme-exclusive .gallery-item:hover img {
+  filter: brightness(1.0) saturate(1.0);
+}
+
+/* — CTA sekcja — */
+html.theme-exclusive section.bg-primary {
+  background: hsl(25 8% 6%) !important;
+  border-top: 1px solid hsl(38 52% 50% / 0.15);
+}
+
+/* — Stopka — */
 html.theme-exclusive .footer-wave {
-  background: hsl(240 10% 2%) !important;
+  background: hsl(25 8% 2.5%) !important;
 }
 html.theme-exclusive .footer-wave h3 {
+  font-style: normal;
   font-weight: 300;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
 }
 html.theme-exclusive .footer-wave h4 {
-  letter-spacing: 0.4em;
-  font-size: 0.58rem;
+  letter-spacing: 0.42em;
+  font-size: 0.55rem;
+  text-indent: 0.42em;
 }
-
-/* — Sekcja mapy: ciemny background — */
-html.theme-exclusive section.py-24.bg-background {
-  background: hsl(240 10% 3%) !important;
-}
-html.theme-exclusive section.py-24.bg-background .rounded-3xl {
-  border-color: hsl(43 74% 49% / 0.25) !important;
+html.theme-exclusive .footer-wave .border-t {
+  border-color: hsl(38 52% 50% / 0.12) !important;
 }
 
 /* ── FUN (Żywiołowy) ──────────────────────────────────── 
