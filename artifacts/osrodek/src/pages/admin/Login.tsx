@@ -22,8 +22,9 @@ export default function AdminLogin() {
   const [demoLoading, setDemoLoading] = React.useState(false);
 
   // Redirect if already logged in
+  // wouter nested context (base /admin): "/" maps to /admin dashboard
   React.useEffect(() => {
-    if (user) setLocation("/admin");
+    if (user) setLocation("/");
   }, [user, setLocation]);
 
   // Auto-login in demo mode (?demo=1 in URL)
@@ -34,7 +35,7 @@ export default function AdminLogin() {
     setDemoLoading(true);
     fetch("/api/admin/demo-login", { method: "POST", credentials: "include" })
       .then((r) => r.json())
-      .then(() => setLocation("/admin"))
+      .then(() => setLocation("/"))
       .catch(() => setDemoLoading(false));
   }, [setLocation]);
 
@@ -47,7 +48,7 @@ export default function AdminLogin() {
     loginMutation.mutate({ data: { password: values.password } }, {
       onSuccess: () => {
         toast({ title: "Zalogowano pomyślnie" });
-        setLocation("/admin");
+        setLocation("/");
       },
       onError: () => {
         toast({ title: "Błędne hasło", variant: "destructive" });

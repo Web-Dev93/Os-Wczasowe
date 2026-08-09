@@ -5,7 +5,7 @@ import { Menu, X, Phone, Mail, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {
-  const { settings, isLoading } = usePublicTheme();
+  const { settings, isLoading, isDemo, activeTheme } = usePublicTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
 
@@ -156,8 +156,8 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 max-w-6xl mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-primary-foreground/50 text-sm">
           <span>&copy; {new Date().getFullYear()} {settings?.resortName || "Ośrodek Nadmorski"}. Wszelkie prawa zastrzeżone.</span>
           <a
-            href={typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "1"
-              ? "/admin/login?demo=1"
+            href={isDemo
+              ? `/admin/login?demo=1${activeTheme ? `&theme=${activeTheme}` : ""}`
               : "/admin"}
             className="text-primary-foreground/30 hover:text-primary-foreground/60 transition-colors text-xs tracking-wide"
           >

@@ -39,7 +39,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       const demoParam = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "1"
         ? "?demo=1"
         : "";
-      setLocation(`/admin/login${demoParam}`);
+      // wouter nested context: setLocation is relative to /admin base
+      setLocation(`/login${demoParam}`);
     }
   }, [userError, isLoginPage, setLocation]);
 
