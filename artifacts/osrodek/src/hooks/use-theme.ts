@@ -80,7 +80,9 @@ export function usePublicTheme() {
 }
 
 export function useAdminTheme() {
+  const { data: settings } = useGetSettings();
   useEffect(() => {
-    applyTheme("professional");
-  }, []);
+    // Admin panel uses the same theme as the public site
+    applyTheme(settings?.theme ?? "professional");
+  }, [settings?.theme]);
 }

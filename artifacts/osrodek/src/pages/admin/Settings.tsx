@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw } from "lucide-react";
+import { Save, Globe, Palette, Phone, Lock, Image, Clock, CalendarArrowDown, ExternalLink, RefreshCw, MessageCircle } from "lucide-react";
 
 const THEMES = [
   { value: "professional", label: "Professional — Morski profesjonalizm" },
@@ -66,9 +66,13 @@ export default function AdminSettings() {
     address: "",
     phone: "",
     email: "",
+    website: "",
+    whatsapp: "",
     facebook: "",
     logoUrl: "",
     heroImageUrl: "",
+    heroImageUrl2: "",
+    heroImageUrl3: "",
     theme: "professional",
     bookingMode: "both",
     checkInTime: "14:00",
@@ -91,9 +95,13 @@ export default function AdminSettings() {
         address: settings.address || "",
         phone: settings.phone || "",
         email: settings.email || "",
+        website: settings.website || "",
+        whatsapp: settings.whatsapp || "",
         facebook: settings.facebook || "",
         logoUrl: settings.logoUrl || "",
         heroImageUrl: settings.heroImageUrl || "",
+        heroImageUrl2: settings.heroImageUrl2 || "",
+        heroImageUrl3: settings.heroImageUrl3 || "",
         theme: settings.theme || "professional",
         bookingMode: settings.bookingMode || "both",
         checkInTime: settings.checkInTime || "14:00",
@@ -126,9 +134,13 @@ export default function AdminSettings() {
       address: form.address || undefined,
       phone: form.phone || undefined,
       email: form.email || undefined,
+      website: form.website || undefined,
+      whatsapp: form.whatsapp || undefined,
       facebook: form.facebook || undefined,
       logoUrl: form.logoUrl || undefined,
       heroImageUrl: form.heroImageUrl || undefined,
+      heroImageUrl2: form.heroImageUrl2 || undefined,
+      heroImageUrl3: form.heroImageUrl3 || undefined,
       theme: form.theme,
       bookingMode: form.bookingMode,
       checkInTime: form.checkInTime || undefined,
@@ -204,8 +216,17 @@ export default function AdminSettings() {
         <Field label="Adres">
           <Input value={form.address} onChange={handleChange("address")} placeholder="ul. Nadmorska 42, 84-100 Puck" />
         </Field>
-        <Field label="Facebook (URL)">
-          <Input value={form.facebook} onChange={handleChange("facebook")} placeholder="https://facebook.com/mojosrodek" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Facebook (URL)">
+            <Input value={form.facebook} onChange={handleChange("facebook")} placeholder="https://facebook.com/mojosrodek" />
+          </Field>
+          <Field label="Strona WWW (URL)">
+            <Input value={form.website} onChange={handleChange("website")} placeholder="https://mojosrodek.pl" />
+          </Field>
+        </div>
+        <Field label="WhatsApp (numer telefonu)">
+          <Input value={form.whatsapp} onChange={handleChange("whatsapp")} placeholder="+48 500 123 456" />
+          <p className="text-xs text-muted-foreground pt-1">Numer w formacie międzynarodowym — pojawi się jako przycisk WhatsApp na stronie.</p>
         </Field>
       </FieldGroup>
 
@@ -216,14 +237,21 @@ export default function AdminSettings() {
             <img src={form.logoUrl} alt="Logo" className="mt-2 h-12 object-contain rounded border p-1 bg-muted" />
           )}
         </Field>
-        <Field label="URL zdjęcia hero (baner główny)">
-          <Input value={form.heroImageUrl} onChange={handleChange("heroImageUrl")} placeholder="https://..." />
-          {form.heroImageUrl && (
-            <div className="mt-2 aspect-video w-full max-w-sm overflow-hidden rounded-lg border bg-muted">
-              <img src={form.heroImageUrl} alt="Hero" className="w-full h-full object-cover" />
-            </div>
-          )}
-        </Field>
+        <p className="text-xs text-muted-foreground -mt-2">Wklej URL zdjęcia (np. z Unsplash, Google Drive, własnego serwera). Slider pokazuje do 3 slajdów — zostaw puste żeby użyć domyślnego zdjęcia morskiego.</p>
+        {[
+          { key: "heroImageUrl" as const, label: "Slajd 1 — URL zdjęcia (główny baner)" },
+          { key: "heroImageUrl2" as const, label: "Slajd 2 — URL zdjęcia" },
+          { key: "heroImageUrl3" as const, label: "Slajd 3 — URL zdjęcia" },
+        ].map(({ key, label }) => (
+          <Field key={key} label={label}>
+            <Input value={form[key]} onChange={handleChange(key)} placeholder="https://images.unsplash.com/..." />
+            {form[key] && (
+              <div className="mt-2 aspect-video w-full max-w-sm overflow-hidden rounded-lg border bg-muted">
+                <img src={form[key]} alt={label} className="w-full h-full object-cover" />
+              </div>
+            )}
+          </Field>
+        ))}
       </FieldGroup>
 
       <FieldGroup title="Wygląd strony" icon={<Palette className="w-5 h-5 text-primary" />}>

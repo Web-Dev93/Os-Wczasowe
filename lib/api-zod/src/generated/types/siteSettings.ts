@@ -31,6 +31,10 @@ export interface SiteSettings {
   logoUrl?: string | null;
   /** @nullable */
   heroImageUrl?: string | null;
+  /** @nullable */
+  heroImageUrl2?: string | null;
+  /** @nullable */
+  heroImageUrl3?: string | null;
   theme: SiteSettingsTheme;
   bookingMode: SiteSettingsBookingMode;
   /** @nullable */

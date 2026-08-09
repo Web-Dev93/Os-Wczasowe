@@ -55,6 +55,8 @@ export default function Home() {
         tagline={settings?.tagline}
         description={settings?.description}
         heroImageUrl={settings?.heroImageUrl}
+        heroImageUrl2={settings?.heroImageUrl2}
+        heroImageUrl3={settings?.heroImageUrl3}
       />
 
       {/* ════════════════════════════════ STATS BAR ══ */}

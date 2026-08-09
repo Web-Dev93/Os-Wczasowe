@@ -22,18 +22,22 @@ interface Props {
   tagline?: string | null;
   description?: string | null;
   heroImageUrl?: string | null;
+  heroImageUrl2?: string | null;
+  heroImageUrl3?: string | null;
 }
 
-export function HeroSlider({ tagline, description, heroImageUrl }: Props) {
+export function HeroSlider({ tagline, description, heroImageUrl, heroImageUrl2, heroImageUrl3 }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   // key changes every slide-switch so hero-text animations restart
   const [textKey, setTextKey] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const slides = heroImageUrl
-    ? [{ img: heroImageUrl, kb: "a" as const }, ...DEFAULT_SLIDES.slice(1)]
-    : DEFAULT_SLIDES;
+  const slides = [
+    { img: heroImageUrl || DEFAULT_SLIDES[0].img, kb: "a" as const },
+    { img: heroImageUrl2 || DEFAULT_SLIDES[1].img, kb: "b" as const },
+    { img: heroImageUrl3 || DEFAULT_SLIDES[2].img, kb: "c" as const },
+  ];
 
   const goTo = useCallback(
     (idx: number) => {

@@ -21,6 +21,8 @@ export interface SiteSettingsInput {
   facebook?: string;
   logoUrl?: string;
   heroImageUrl?: string;
+  heroImageUrl2?: string;
+  heroImageUrl3?: string;
   theme?: SiteSettingsInputTheme;
   bookingMode?: SiteSettingsInputBookingMode;
   checkInTime?: string;

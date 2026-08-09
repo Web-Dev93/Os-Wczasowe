@@ -15,6 +15,8 @@ export const settingsTable = pgTable("settings", {
   facebook: text("facebook"),
   logoUrl: text("logo_url"),
   heroImageUrl: text("hero_image_url"),
+  heroImageUrl2: text("hero_image_url_2"),
+  heroImageUrl3: text("hero_image_url_3"),
   theme: text("theme").notNull().default("professional"),
   bookingMode: text("booking_mode").notNull().default("both"),
   checkInTime: text("check_in_time").default("14:00"),
