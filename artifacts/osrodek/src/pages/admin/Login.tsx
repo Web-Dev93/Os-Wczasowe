@@ -34,7 +34,10 @@ export default function AdminLogin() {
 
     setDemoLoading(true);
     fetch("/api/admin/demo-login", { method: "POST", credentials: "include" })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("demo login unavailable");
+        return r.json();
+      })
       .then(() => setLocation("/"))
       .catch(() => setDemoLoading(false));
   }, [setLocation]);
