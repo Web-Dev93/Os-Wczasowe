@@ -195,7 +195,7 @@ export function StylesShowcase() {
           </a>
           <a
             href="#kontakt"
-            className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
+            className="btn-ocean inline-block bg-primary text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/25"
           >
             Kup teraz — ten styl jest mój!
           </a>

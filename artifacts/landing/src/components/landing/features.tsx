@@ -52,7 +52,7 @@ export function Features() {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true }}
-                  className="flex items-start gap-3 p-4 bg-card border border-border rounded-2xl"
+                  className="flex items-start gap-3 p-4 bg-card border border-border rounded-2xl feature-chip"
                 >
                   <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-4 h-4" />
@@ -96,7 +96,7 @@ export function Features() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl overflow-hidden border border-border shadow-2xl bg-card"
+            className="rounded-2xl overflow-hidden border border-border shadow-2xl bg-card admin-mock"
           >
             {/* Browser chrome */}
             <div className="bg-muted px-4 py-3 border-b border-border flex items-center gap-2">

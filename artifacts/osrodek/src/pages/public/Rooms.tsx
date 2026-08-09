@@ -16,7 +16,7 @@ export default function Rooms() {
   return (
     <div className="w-full pb-24">
       {/* Header */}
-      <section className="bg-primary text-primary-foreground py-16 md:py-24">
+      <section className="page-banner bg-primary text-primary-foreground py-16 md:py-24 pb-24">
         <div className="container mx-auto px-4 max-w-6xl text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -45,10 +45,10 @@ export default function Rooms() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="flex flex-col md:flex-row gap-8 bg-card rounded-3xl overflow-hidden border shadow-sm hover:shadow-md transition-shadow"
+              className="flex flex-col md:flex-row gap-8 bg-card rounded-3xl overflow-hidden border shadow-sm room-card-hover"
             >
               {/* Image */}
-              <div className="md:w-2/5 lg:w-1/2 relative">
+              <div className="md:w-2/5 lg:w-1/2 relative img-zoom-wrap">
                 <img 
                   src={room.coverPhotoUrl || roomImg1} 
                   alt={room.name} 

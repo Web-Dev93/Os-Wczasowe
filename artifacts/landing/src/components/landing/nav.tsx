@@ -18,7 +18,7 @@ export function Nav() {
 
         <a
           href="#kontakt"
-          className="bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-lg"
+          className="btn-ocean bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-lg"
         >
           Kup teraz
         </a>

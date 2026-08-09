@@ -70,7 +70,7 @@ export default function Contact() {
 
   return (
     <div className="w-full pb-24">
-      <section className="bg-primary text-primary-foreground py-16 md:py-24 mb-16">
+      <section className="page-banner bg-primary text-primary-foreground py-16 md:py-24 pb-24 mb-20">
         <div className="container mx-auto px-4 max-w-6xl text-center">
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Kontakt</h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto">

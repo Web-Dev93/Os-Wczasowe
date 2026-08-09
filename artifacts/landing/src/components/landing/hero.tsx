@@ -30,7 +30,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 text-white/90 text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-8">
+          <div className="hero-badge inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 text-white/90 text-xs uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-8">
             <Waves className="w-3.5 h-3.5" />
             Dla pensjonatów i ośrodków nad morzem
           </div>
@@ -55,7 +55,7 @@ export function Hero() {
             </a>
             <a
               href="#kontakt"
-              className="bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105"
+              className="btn-ocean bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105"
             >
               Kup teraz
             </a>

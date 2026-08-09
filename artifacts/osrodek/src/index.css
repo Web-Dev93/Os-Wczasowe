@@ -626,3 +626,238 @@ html.theme-modern body {
   transform: translateY(-6px);
   box-shadow: 0 24px 48px rgba(0,0,0,0.14);
 }
+
+/* ═══════════════════════════════════════════════════════
+   HAND-CRAFTED DETAILS — wakacyjny, żywy, unikalny
+   ═══════════════════════════════════════════════════════ */
+
+/* ── GLOBAL ──────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+::selection {
+  background: hsl(var(--primary) / 0.22);
+  color: hsl(var(--foreground));
+}
+
+/* Thin ocean scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.55); }
+
+/* Subtle page fade-in */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+main { animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── TOP INFO BAR — moving light sweep ───────────────── */
+.topbar-shine {
+  position: relative;
+  overflow: hidden;
+}
+.topbar-shine::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,0.10),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: topbarSweep 7s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes topbarSweep {
+  0%   { left: -60%; }
+  60%  { left: 160%; }
+  100% { left: 160%; }
+}
+
+/* ── PAGE BANNER (Pokoje / Galeria / Kontakt) ────────── */
+/* Textured navy header with wave transition into page bg */
+.page-banner {
+  position: relative;
+  overflow: visible;
+  /* subtle diagonal light rays */
+  background-image:
+    radial-gradient(ellipse 90% 70% at 15% 55%, rgba(255,255,255,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 90% at 88% 10%, rgba(255,255,255,0.05) 0%, transparent 60%);
+}
+/* Dot-grid overlay for depth */
+.page-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-banner > div { position: relative; z-index: 1; }
+/* Organic wave cutting into bg below the banner */
+.page-banner::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 72px;
+  background: hsl(var(--background));
+  clip-path: ellipse(58% 100% at 50% 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── FOOTER WAVE TOP ─────────────────────────────────── */
+.footer-wave {
+  position: relative;
+  margin-top: 4rem;
+}
+.footer-wave::before {
+  content: "";
+  position: absolute;
+  top: -56px;
+  left: 0; right: 0;
+  height: 56px;
+  background: hsl(var(--primary));
+  clip-path: ellipse(58% 100% at 50% 0%);
+  pointer-events: none;
+}
+
+/* ── HEADER NAV LINK — animated underline ────────────── */
+header nav a {
+  position: relative;
+  padding-bottom: 2px;
+}
+header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 0;
+  height: 1.5px;
+  background: hsl(var(--primary));
+  border-radius: 2px;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+header nav a:hover::after  { width: 100%; }
+/* Keep underline on active link */
+header nav a.text-primary::after { width: 100%; }
+
+/* ── REZERWACJA BUTTON — hover glow ──────────────────── */
+@keyframes btnGlow {
+  0%, 100% { box-shadow: 0 4px 14px hsl(var(--primary) / 0.35); }
+  50%       { box-shadow: 0 4px 28px hsl(var(--primary) / 0.60); }
+}
+.btn-cta-glow {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.btn-cta-glow:hover {
+  animation: btnGlow 1.6s ease-in-out infinite;
+  transform: translateY(-1px);
+}
+
+/* ── ROOM CARD IMAGE — zoom on hover ─────────────────── */
+.img-zoom-wrap {
+  overflow: hidden;
+}
+.img-zoom-wrap img {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.img-zoom-wrap:hover img,
+.img-zoom-wrap:focus-within img {
+  transform: scale(1.06);
+}
+
+/* ── ROOM CARD — subtle sea shadow on hover ──────────── */
+.room-card-hover {
+  transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.room-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px hsl(var(--primary) / 0.15);
+}
+
+/* ── GALLERY — ocean tint on hover ───────────────────── */
+.gallery-item-tint {
+  position: relative;
+}
+.gallery-item-tint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    transparent 55%,
+    hsl(var(--primary) / 0.4) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.gallery-item-tint:hover::after { opacity: 1; }
+
+/* ── STATS BAR — wave top separator ─────────────────── */
+.stats-bar-wave {
+  position: relative;
+}
+.stats-bar-wave::before {
+  content: "";
+  position: absolute;
+  top: -48px;
+  left: 0; right: 0;
+  height: 48px;
+  background: hsl(var(--primary));
+  clip-path: ellipse(52% 100% at 50% 0%);
+  pointer-events: none;
+}
+
+/* ── SECTION DIVIDER LINE with gradient ─────────────── */
+.section-rule {
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary) / 0.2));
+  margin: 0.75rem 0 1.5rem;
+}
+.section-rule--center {
+  margin: 0.75rem auto 1.5rem;
+}
+
+/* ── CONTACT INFO ICON — float ───────────────────────── */
+.contact-icon-float {
+  animation: floatY 4s ease-in-out infinite;
+}
+.contact-icon-float:nth-child(2) { animation-delay: 0.6s; }
+.contact-icon-float:nth-child(3) { animation-delay: 1.2s; }
+
+/* ── WHY-US CARDS — staggered micro-lift on scroll ───── */
+.why-card {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.why-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px hsl(var(--primary) / 0.12);
+}
+
+/* ── FOCUS RINGS — ocean blue ────────────────────────── */
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.7);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── SMOOTH IMAGE LOAD ───────────────────────────────── */
+img {
+  transition: opacity 0.3s ease;
+}
+img[loading] { opacity: 0; }
+img.loaded   { opacity: 1; }

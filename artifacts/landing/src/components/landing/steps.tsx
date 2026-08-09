@@ -51,7 +51,7 @@ export function Steps() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 flex flex-col items-center text-center"
+              className="step-card relative z-10 flex flex-col items-center text-center"
             >
               <div className="w-24 h-24 rounded-full bg-white/10 border-2 border-white/25 flex items-center justify-center mb-6 backdrop-blur-sm">
                 <step.icon className="w-9 h-9 text-white" />
@@ -66,7 +66,7 @@ export function Steps() {
         <div className="text-center mt-16">
           <a
             href="#kontakt"
-            className="inline-block bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 shadow-2xl"
+            className="btn-ocean inline-block bg-white text-[hsl(199,88%,36%)] hover:bg-white/90 px-10 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 shadow-2xl"
           >
             Kup teraz — masz stronę w 24 h
           </a>

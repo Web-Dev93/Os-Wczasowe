@@ -23,7 +23,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background selection:bg-primary selection:text-primary-foreground">
       {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground py-2 px-4 text-sm hidden md:block">
+      <div className="topbar-shine bg-primary text-primary-foreground py-2 px-4 text-sm hidden md:block">
         <div className="container mx-auto flex justify-between items-center max-w-6xl">
           <div className="flex items-center gap-6">
             {settings?.phone && (
@@ -68,7 +68,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
-            <Button asChild size="lg" className="rounded-full px-8 shadow-md">
+            <Button asChild size="lg" className="rounded-full px-8 shadow-md btn-cta-glow">
               <Link href="/rezerwacja">Rezerwacja</Link>
             </Button>
           </nav>
@@ -104,7 +104,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-12 md:py-16 mt-auto">
+      <footer className="footer-wave bg-primary text-primary-foreground py-12 md:py-16 mt-auto">
         <div className="container mx-auto px-4 max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <h3 className="font-serif text-2xl font-bold mb-4">{settings?.resortName || "Nasz Ośrodek"}</h3>

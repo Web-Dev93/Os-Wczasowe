@@ -77,7 +77,7 @@ export function Contact() {
               </div>
             ))}
 
-            <div className="mt-8 p-5 rounded-2xl border border-primary/20 bg-primary/5">
+            <div className="price-glow mt-8 p-5 rounded-2xl border border-primary/20 bg-primary/5">
               <div className="text-3xl font-bold text-primary mb-1">1 200 zł</div>
               <div className="text-sm text-muted-foreground">jednorazowo, brutto</div>
               <div className="text-sm text-muted-foreground mt-1">Domena i hosting — Twoje, nie nasze.</div>
@@ -170,7 +170,7 @@ export function Contact() {
                     )}
                   />
 
-                  <Button type="submit" className="w-full text-base py-6 gap-2">
+                  <Button type="submit" className="btn-ocean w-full text-base py-6 gap-2">
                     <ShoppingCart className="w-5 h-5" />
                     Kup teraz — 1 200 zł
                   </Button>

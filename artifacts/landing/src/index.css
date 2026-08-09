@@ -126,9 +126,162 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
-  
-  /* Smooth scroll for anchor links */
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   WAKACYJNY CHARAKTER — drobne detale, mikrointerakcje
+   ═══════════════════════════════════════════════════════ */
+
+/* ── SAND GRAIN TEXTURE ──────────────────────────────── */
+/* Subtelna ziarnistość jak piasek — body::before fixed overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ── CUSTOM SCROLLBAR — cienki turkus ────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(199 88% 36% / 0.32);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(199 88% 36% / 0.58); }
+
+/* ── GOLDEN SUN SELECTION ────────────────────────────── */
+::selection {
+  background: hsl(38 88% 55% / 0.28);
+  color: hsl(30 50% 15%);
+}
+
+/* ── SHIMMER CTA BUTTON (.btn-ocean) ─────────────────── */
+/* Świetlisty przebłysk jak promień słońca na wodzie */
+.btn-ocean {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-ocean::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -80%;
+  width: 50%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.btn-ocean:hover::before {
+  animation: sunRay 0.6s ease-out forwards;
+}
+@keyframes sunRay {
+  from { left: -80%; }
+  to   { left: 140%; }
+}
+
+/* ── FEATURE CARDS — micro-lift + border glow ────────── */
+.feature-chip {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.feature-chip:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px hsl(199 88% 36% / 0.11);
+  border-color: hsl(var(--primary) / 0.38);
+}
+
+/* ── HERO BADGE — subtle ocean pulse ─────────────────── */
+.hero-badge {
+  animation: badgePulse 4s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(199 88% 36% / 0.2); }
+  50%       { box-shadow: 0 0 0 10px hsl(199 88% 36% / 0); }
+}
+
+/* ── PRICE BLOCK — glowing border ────────────────────── */
+.price-glow {
+  animation: priceGlow 3.5s ease-in-out infinite;
+}
+@keyframes priceGlow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(199 88% 36% / 0.18); }
+  50%       { box-shadow: 0 0 24px 4px hsl(199 88% 36% / 0.10); }
+}
+
+/* ── NAV LINKS — underline hover ─────────────────────── */
+nav a[href^="#"] {
+  position: relative;
+  padding-bottom: 2px;
+}
+nav a[href^="#"]::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 0; height: 1.5px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+nav a[href^="#"]:hover::after { width: 100%; }
+
+/* ── SECTION HEADING ORNAMENT ────────────────────────── */
+/* Mini wave underline pod h2 w sections informacyjnych */
+.section-ornament {
+  position: relative;
+  display: inline-block;
+}
+.section-ornament::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,
+    hsl(var(--primary)),
+    hsl(38 88% 55%)
+  );
+  margin: 0.7rem auto 0;
+}
+
+/* ── FOCUS RING — ocean ──────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid hsl(199 88% 36% / 0.65);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── PAGE FADE-IN ────────────────────────────────────── */
+@keyframes landingIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#root > div { animation: landingIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── STEPS SECTION — wave card separation ────────────── */
+.step-card {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.step-card:hover { transform: translateY(-6px); }
+
+/* ── ADMIN PANEL MOCK — hover lift ───────────────────── */
+.admin-mock:hover {
+  transform: perspective(800px) rotateX(1deg) rotateY(-1deg) translateY(-4px);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.18);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }

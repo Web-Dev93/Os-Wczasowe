@@ -22,7 +22,7 @@ export default function Gallery() {
 
   return (
     <div className="w-full pb-24">
-      <section className="bg-primary text-primary-foreground py-16 md:py-24 mb-16">
+      <section className="page-banner bg-primary text-primary-foreground py-16 md:py-24 pb-24 mb-20">
         <div className="container mx-auto px-4 max-w-6xl text-center">
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Galeria</h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto">
@@ -40,7 +40,7 @@ export default function Gallery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: (i % 3) * 0.1 }}
-              className="break-inside-avoid relative group cursor-pointer rounded-2xl overflow-hidden shadow-sm"
+              className="break-inside-avoid relative group cursor-pointer rounded-2xl overflow-hidden shadow-sm gallery-item-tint"
               onClick={() => setActiveImage(photo.url)}
             >
               <img 
