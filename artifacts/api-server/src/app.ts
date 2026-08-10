@@ -1,3 +1,4 @@
+import path from "node:path";
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
@@ -8,6 +9,10 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
+
+// Behind a reverse proxy (Caddy) that terminates TLS, Express otherwise sees
+// a plain HTTP connection and express-session refuses to set `secure` cookies.
+app.set("trust proxy", 1);
 
 app.use(
   pinoHttp({
@@ -56,5 +61,24 @@ app.use(
 );
 
 app.use("/api", router);
+
+// Self-hosted deployments (outside Replit's multi-artifact router) serve the
+// built frontends directly from this process when STATIC_ROOT is set.
+const staticRoot = process.env.STATIC_ROOT;
+
+if (staticRoot) {
+  const osrodekDir = path.join(staticRoot, "osrodek");
+  const landingDir = path.join(staticRoot, "landing");
+
+  app.use("/osrodek", express.static(osrodekDir));
+  app.get(/^\/osrodek(\/.*)?$/, (_req, res) => {
+    res.sendFile(path.join(osrodekDir, "index.html"));
+  });
+
+  app.use(express.static(landingDir));
+  app.get(/^(?!\/api).*/, (_req, res) => {
+    res.sendFile(path.join(landingDir, "index.html"));
+  });
+}
 
 export default app;

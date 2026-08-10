@@ -92,7 +92,15 @@ export function useAdminTheme() {
 
   // Use authenticated admin endpoint for reliability in secured context
   const { data: settings } = useAdminGetSettings({
-    query: { retry: 1, enabled: !forcedTheme } as never,
+    query: {
+      retry: false,
+      enabled: !forcedTheme,
+      staleTime: Infinity,
+      gcTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    } as never,
   });
   useEffect(() => {
     applyTheme(forcedTheme ?? settings?.theme ?? "professional");

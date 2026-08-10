@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useAdminLogin, useAdminGetMe } from "@workspace/api-client-react";
+import { useAdminLogin } from "@workspace/api-client-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,26 @@ const loginSchema = z.object({
 
 export default function AdminLogin() {
   const [, setLocation] = useLocation();
-  const { data: user, isLoading } = useAdminGetMe({ query: { retry: false } as never });
+  // Plain fetch (not useAdminGetMe/useQuery) — see AdminLayout.tsx for why.
+  const [user, setUser] = React.useState<unknown>(undefined);
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/me", { credentials: "include" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled) setUser(data);
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const loginMutation = useAdminLogin();
   const { toast } = useToast();
   const [demoLoading, setDemoLoading] = React.useState(false);

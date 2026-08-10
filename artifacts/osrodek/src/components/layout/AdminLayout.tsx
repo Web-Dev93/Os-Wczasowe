@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAdminTheme } from "../../hooks/use-theme";
-import { useAdminGetMe, useAdminLogout } from "@workspace/api-client-react";
+import { useAdminLogout, type AdminUser } from "@workspace/api-client-react";
 import { 
   LayoutDashboard, 
   BedDouble, 
@@ -22,11 +22,37 @@ import { QuickThemeSwitcher } from "@/components/ui/theme-picker";
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   useAdminTheme(); // Apply site theme to admin panel
   const [location, setLocation] = useLocation();
-  const { data: user, isLoading: isUserLoading, error: userError } = useAdminGetMe({
-    query: {
-      retry: false,
-    } as never,
-  });
+
+  // Auth check runs exactly once per real mount — a plain fetch instead of
+  // useQuery, since the generated useAdminGetMe hook was re-subscribing (and
+  // re-fetching) in a tight loop here for reasons unrelated to retry/staleTime
+  // config (ruled out: no retry, no refetchOnMount/Focus/Reconnect, infinite
+  // staleTime all still looped). See docker logs holiday_flowquest_pl_app.
+  const [user, setUser] = useState<AdminUser | undefined>(undefined);
+  const [isUserLoading, setIsUserLoading] = useState(true);
+  const [userError, setUserError] = useState<unknown>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch("/api/admin/me", { credentials: "include" })
+      .then((r) => {
+        if (!r.ok) throw new Error(`admin/me failed: ${r.status}`);
+        return r.json();
+      })
+      .then((data) => {
+        if (!cancelled) setUser(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setUserError(err);
+      })
+      .finally(() => {
+        if (!cancelled) setIsUserLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const logout = useAdminLogout();
   const { toast } = useToast();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
