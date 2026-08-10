@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,47 +8,28 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Loader2 } from "lucide-react";
+import { AdminAuthContext } from "@/components/layout/AdminLayout";
 
 const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
 export default function AdminLogin() {
-  const [, setLocation] = useLocation();
-  // Plain fetch (not useAdminGetMe/useQuery) — see AdminLayout.tsx for why.
-  const [user, setUser] = React.useState<unknown>(undefined);
-  const [isLoading, setIsLoading] = React.useState(true);
-  React.useEffect(() => {
-    let cancelled = false;
-    fetch("/api/admin/me", { credentials: "include" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (!cancelled) setUser(data);
-      })
-      .catch(() => {
-        if (!cancelled) setUser(null);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  // Auth state comes from AdminLayout (single fetch, no duplicate/racing
+  // /api/admin/me calls) — refreshAuth() re-checks it after login succeeds,
+  // and AdminLayout's own effect navigates away once `user` is set.
+  const { refreshAuth } = React.useContext(AdminAuthContext);
   const loginMutation = useAdminLogin();
   const { toast } = useToast();
   const [demoLoading, setDemoLoading] = React.useState(false);
-
-  // Redirect if already logged in
-  // wouter nested context (base /admin): "/" maps to /admin dashboard
-  React.useEffect(() => {
-    if (user) setLocation("/");
-  }, [user, setLocation]);
+  const demoAttempted = React.useRef(false);
 
   // Auto-login in demo mode (?demo=1 in URL)
   React.useEffect(() => {
+    if (demoAttempted.current) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get("demo") !== "1") return;
+    demoAttempted.current = true;
 
     setDemoLoading(true);
     fetch("/api/admin/demo-login", { method: "POST", credentials: "include" })
@@ -57,9 +37,9 @@ export default function AdminLogin() {
         if (!r.ok) throw new Error("demo login unavailable");
         return r.json();
       })
-      .then(() => setLocation("/"))
+      .then(() => refreshAuth())
       .catch(() => setDemoLoading(false));
-  }, [setLocation]);
+  }, [refreshAuth]);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -70,7 +50,7 @@ export default function AdminLogin() {
     loginMutation.mutate({ data: { password: values.password } }, {
       onSuccess: () => {
         toast({ title: "Zalogowano pomyślnie" });
-        setLocation("/");
+        refreshAuth();
       },
       onError: () => {
         toast({ title: "Błędne hasło", variant: "destructive" });
@@ -79,7 +59,7 @@ export default function AdminLogin() {
     });
   };
 
-  if (isLoading || demoLoading) {
+  if (demoLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

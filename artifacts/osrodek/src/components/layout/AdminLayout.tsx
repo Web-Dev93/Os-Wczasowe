@@ -19,11 +19,20 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { QuickThemeSwitcher } from "@/components/ui/theme-picker";
 
+// Single source of truth for admin auth state, shared with AdminLogin so it
+// doesn't run its own separate /api/admin/me fetch (that duplication was a
+// source of races — see AdminAuthContext usage in Login.tsx).
+export const AdminAuthContext = React.createContext<{
+  user: AdminUser | undefined;
+  refreshAuth: () => void;
+}>({ user: undefined, refreshAuth: () => {} });
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   useAdminTheme(); // Apply site theme to admin panel
   const [location, setLocation] = useLocation();
 
-  // Auth check runs exactly once per real mount — a plain fetch instead of
+  // Auth check runs once per real mount, plus whenever refreshAuth() is
+  // called (e.g. right after a successful login) — a plain fetch instead of
   // useQuery, since the generated useAdminGetMe hook was re-subscribing (and
   // re-fetching) in a tight loop here for reasons unrelated to retry/staleTime
   // config (ruled out: no retry, no refetchOnMount/Focus/Reconnect, infinite
@@ -31,6 +40,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AdminUser | undefined>(undefined);
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [userError, setUserError] = useState<unknown>(null);
+  const [authVersion, setAuthVersion] = useState(0);
+  const refreshAuth = React.useCallback(() => setAuthVersion((v) => v + 1), []);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -40,10 +51,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         return r.json();
       })
       .then((data) => {
-        if (!cancelled) setUser(data);
+        if (!cancelled) {
+          setUser(data);
+          setUserError(null);
+        }
       })
       .catch((err) => {
-        if (!cancelled) setUserError(err);
+        if (!cancelled) {
+          setUser(undefined);
+          setUserError(err);
+        }
       })
       .finally(() => {
         if (!cancelled) setIsUserLoading(false);
@@ -51,7 +68,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [authVersion]);
 
   const logout = useAdminLogout();
   const { toast } = useToast();
@@ -72,6 +89,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   }, [userError, isLoginPage, setLocation]);
 
+  // Already logged in but sitting on the login page (e.g. right after
+  // demo-login/password login succeeded) — move on to the dashboard.
+  React.useEffect(() => {
+    if (user && isLoginPage) {
+      setLocation("/");
+    }
+  }, [user, isLoginPage, setLocation]);
+
   if (isUserLoading) {
     return <div className="min-h-screen bg-muted/20 flex flex-col items-center justify-center p-4">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
@@ -82,10 +107,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   // If login page, don't show layout
   if (isLoginPage) {
     return (
-      <div className="min-h-screen bg-muted/20">
-        {children}
-        <Toaster />
-      </div>
+      <AdminAuthContext.Provider value={{ user, refreshAuth }}>
+        <div className="min-h-screen bg-muted/20">
+          {children}
+          <Toaster />
+        </div>
+      </AdminAuthContext.Provider>
     );
   }
 
