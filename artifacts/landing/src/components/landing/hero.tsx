@@ -35,24 +35,29 @@ export function Hero() {
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
-            Kompletny system z panelem zarządzania, kalendarzem i integracją z Booking.com. 
-            Gotowy w 24 godziny. Jednorazowa opłata, żadnych ukrytych kosztów.
+            Kompletny system rezerwacji z panelem zarządzania i synchronizacją z Booking.com.
+            Gotowy w 24 godziny. Płacisz raz — 1 200 zł — i strona jest Twoja.
+            Chcesz coś po swojemu? Robimy też indywidualne zmiany.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
             <a
-              href="#cennik"
+              href="#kontakt"
               className="w-full sm:w-auto px-8 py-4 bg-accent text-accent-foreground rounded text-sm font-semibold hover:bg-accent/90 shadow-[0_0_30px_-5px_rgba(255,180,80,0.4)] transition-all duration-300"
             >
-              Zamów za 1 200 zł
+              Zamów teraz — 1 200 zł
             </a>
             <a
               href="#demo"
               className="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/40 text-white rounded text-sm font-semibold hover:bg-white/10 hover:border-white/60 transition-all duration-300"
             >
-              Zobacz szablony
+              Zobacz stronę na żywo
             </a>
           </div>
+
+          <p className="mt-6 text-xs text-white/60 tracking-wide">
+            Bez ryzyka: jeśli nie dowieziemy strony w 24 h od przesłania materiałów — zwracamy całą kwotę.
+          </p>
         </motion.div>
       </div>
 

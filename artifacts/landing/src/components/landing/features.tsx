@@ -2,22 +2,43 @@ import { motion } from "framer-motion";
 import { Check, Lock } from "lucide-react";
 
 const SITE_FEATURES = [
-  "Strona główna z eleganckim sliderem zdjęć",
-  "Katalog pokoi z cennikiem i udogodnieniami",
-  "Formularz rezerwacji i zapytań online",
-  "Galeria zdjęć z powiększeniem (lightbox)",
-  "Sekcja kontaktowa z mapą dojazdu",
-  "Moduł aktualności dla gości",
-  "Pełna responsywność na telefony i tablety",
-  "6 dopracowanych stylów wizualnych",
+  {
+    t: "Formularz rezerwacji z kalkulatorem ceny",
+    d: "Gość od razu widzi koszt pobytu (noce × cena), a zajęte terminy są blokowane automatycznie. Mniej telefonów z pytaniami, więcej pewnych rezerwacji.",
+  },
+  {
+    t: "Katalog pokoi, który sprzedaje za Ciebie",
+    d: "Duże zdjęcia, cennik, udogodnienia i kalendarz dostępności przy każdym pokoju. Gość podejmuje decyzję bez dzwonienia.",
+  },
+  {
+    t: "Strona główna z sliderem zdjęć",
+    d: "Pierwsze wrażenie w 3 sekundy — pełnoekranowe kadry Twojego obiektu zamiast ściany tekstu.",
+  },
+  {
+    t: "Galeria z powiększeniem (lightbox)",
+    d: "Plaża, ogród, wnętrza — goście oglądają jak w folderze premium.",
+  },
+  {
+    t: "Kontakt z mapą dojazdu i WhatsApp",
+    d: "Telefon, mail, mapa Google i przycisk WhatsApp — gość pisze do Ciebie jednym kliknięciem.",
+  },
+  {
+    t: "Aktualności dla gości",
+    d: "Promocje, wolne terminy, wydarzenia — publikujesz w minutę, strona żyje i wraca w Google.",
+  },
+  {
+    t: "Perfekcyjna na telefonie",
+    d: "Ponad 70% gości szuka noclegu na komórce. Każdy z 6 motywów jest w pełni responsywny.",
+  },
 ];
 
 const ADMIN_FEATURES = [
-  "Zarządzaj pokojami, cenami i zdjęciami",
-  "Przeglądaj napływające rezerwacje",
-  "Blokuj terminy z Booking.com",
-  "Zmieniaj teksty i dane kontaktowe",
-  "Publikuj nowe informacje dla gości",
+  "Potwierdzasz rezerwację 1 kliknięciem — termin blokuje się sam",
+  "Zmieniasz ceny, opisy i zdjęcia bez informatyka",
+  "Eksportujesz rezerwacje do Excela (CSV) dla księgowości",
+  "Zmieniasz cały wygląd strony jednym kliknięciem (6 motywów)",
+  "Publikujesz aktualności i promocje dla gości",
+  "Widzisz statystyki rezerwacji na dashboardzie",
 ];
 
 const INTEGRATIONS = [
@@ -48,11 +69,12 @@ export function Features() {
             Co otrzymujesz
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-medium mb-6">
-            Jeden kompletny system.
+            Jeden kompletny system, który pracuje na Ciebie 24/7.
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Zaprojektowaliśmy rozwiązanie, które ma wszystko, czego potrzebuje nowoczesny ośrodek wypoczynkowy. 
-            Bez komplikacji, bez dobierania modułów.
+            To nie jest „wizytówka". To narzędzie sprzedaży: przyjmuje zapytania, pilnuje kalendarza
+            i wygląda tak, że goście chcą u Ciebie zostać. Wszystko w cenie — bez dobierania modułów.
+            A jeśli potrzebujesz czegoś więcej, <a href="#kontakt" className="underline underline-offset-4 hover:text-primary transition-colors">robimy też zmiany na indywidualne zamówienie</a>.
           </p>
         </div>
 
@@ -62,13 +84,16 @@ export function Features() {
           <div className="lg:col-span-5 space-y-16">
             <div>
               <h3 className="text-2xl font-serif font-medium mb-8">Dla Twoich gości</h3>
-              <ul className="space-y-4">
+              <ul className="space-y-6">
                 {SITE_FEATURES.map((f, i) => (
                   <li key={i} className="flex items-start gap-4">
                     <div className="mt-1 w-5 h-5 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                       <Check className="w-3 h-3 text-accent-foreground/80" />
                     </div>
-                    <span className="text-foreground/80">{f}</span>
+                    <div>
+                      <div className="font-medium text-foreground mb-1">{f.t}</div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{f.d}</p>
+                    </div>
                   </li>
                 ))}
               </ul>

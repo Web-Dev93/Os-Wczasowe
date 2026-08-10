@@ -3,13 +3,15 @@ import { Check, X } from "lucide-react";
 
 const INCLUDED = [
   "Strona internetowa (6 motywów do wyboru)",
-  "Panel administratora (własny CMS)",
-  "Synchronizacja z Booking.com i Google Calendar",
-  "Google Analytics i Google Maps",
-  "Formularz zapytań online",
-  "Galeria zdjęć, pokoje, aktualności",
-  "Wdrożenie w 24 godziny",
-  "Hosting i certyfikat SSL",
+  "System rezerwacji z kalkulatorem ceny i kalendarzem dostępności",
+  "Panel administratora — obsłużysz go z telefonu",
+  "Synchronizacja z Booking.com i Google Calendar (koniec podwójnych rezerwacji)",
+  "Google Analytics, Google Maps i przycisk WhatsApp",
+  "Galeria zdjęć, katalog pokoi, aktualności",
+  "Eksport rezerwacji do Excela (CSV)",
+  "Wypełniamy stronę Twoimi treściami i zdjęciami",
+  "Wdrożenie w 24 godziny od przesłania materiałów",
+  "Hosting z certyfikatem SSL na pierwszy rok w cenie",
   "Wsparcie techniczne przez e-mail",
 ];
 
@@ -74,8 +76,11 @@ export function Pricing() {
                 href="#kontakt"
                 className="flex items-center justify-center w-full px-8 py-4 bg-accent text-accent-foreground font-semibold rounded transition-colors hover:bg-accent/90 shadow-sm"
               >
-                Zamów swoją stronę
+                Zamawiam — przejdź do formularza
               </a>
+              <p className="text-center text-xs text-muted-foreground mt-4">
+                Zamówienie przez formularz — odpowiadamy tego samego dnia roboczego.
+              </p>
             </div>
           </motion.div>
 
@@ -105,6 +110,15 @@ export function Pricing() {
               <h4 className="font-medium mb-2">Gwarancja zwrotu</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Jeśli strona nie będzie gotowa do działania w 24 godziny od przesłania materiałów, zwracamy całą kwotę. Gramy w otwarte karty.
+              </p>
+            </div>
+
+            <div className="p-6 bg-accent/10 border-l-2 border-accent">
+              <h4 className="font-medium mb-2">Potrzebujesz czegoś więcej?</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Dodatkowa podstrona, własne logo i kolory, inna funkcja w panelu — robimy
+                indywidualne zmiany na zamówienie. Napisz w formularzu, czego potrzebujesz,
+                a bezpłatnie wycenimy.
               </p>
             </div>
           </motion.div>

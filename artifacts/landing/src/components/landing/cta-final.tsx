@@ -17,9 +17,9 @@ export function CtaFinal() {
             Czas na rezerwacje bez prowizji.
           </h2>
           <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-            Przestań polegać wyłącznie na portalach i oddawać im swój zysk. 
-            Własna, profesjonalna strona z systemem rezerwacji to inwestycja, 
-            która zwraca się najczęściej już przy pierwszych dwóch gościach.
+            Przestań oddawać portalom 15–20% od każdej rezerwacji. Przy dwóch gościach
+            strona już się zwraca — a należy do Ciebie na zawsze. Zamów przez formularz,
+            a szczegóły (motyw, treści, indywidualne zmiany) ustalimy wspólnie.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -27,13 +27,13 @@ export function CtaFinal() {
               href="#kontakt"
               className="w-full sm:w-auto px-10 py-5 bg-accent text-accent-foreground font-semibold rounded hover:bg-accent/90 shadow-[0_0_30px_-5px_rgba(255,180,80,0.4)] transition-all duration-300"
             >
-              Zamów za 1 200 zł
+              Zamów teraz — 1 200 zł
             </a>
             <a
               href="#demo"
               className="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/30 text-white font-semibold rounded hover:bg-white/10 transition-all duration-300"
             >
-              Przeglądaj style
+              Najpierw zobacz demo
             </a>
           </div>
         </motion.div>

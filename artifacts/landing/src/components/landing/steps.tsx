@@ -9,7 +9,7 @@ const STEPS = [
   {
     num: "02",
     title: "Przesyłasz materiały",
-    desc: "Wysyłasz nam cennik, opisy i zdjęcia (wystarczą takie z telefonu). My uzupełniamy i konfigurujemy stronę za Ciebie.",
+    desc: "Wysyłasz nam cennik, opisy i zdjęcia (wystarczą takie z telefonu). My uzupełniamy i konfigurujemy stronę za Ciebie. Chcesz coś niestandardowego? Indywidualne zmiany wyceniamy bezpłatnie.",
   },
   {
     num: "03",
