@@ -16,6 +16,18 @@ const VALID_THEMES = new Set([
 
 const SESSION_THEME_KEY = "osrodek_theme";
 const SESSION_DEMO_KEY  = "osrodek_demo";
+/** Ręczny wybór motywu w panelu — osobny klucz, żeby nie przestawiał strony publicznej */
+const SESSION_ADMIN_THEME_KEY = "osrodek_admin_theme";
+
+/** Ustawia motyw panelu na czas sesji (przetrwa nawigację, zniknie po zamknięciu karty) */
+export function setAdminSessionTheme(theme: string) {
+  try { sessionStorage.setItem(SESSION_ADMIN_THEME_KEY, theme); } catch { /* noop */ }
+  applyTheme(theme);
+}
+
+export function getAdminSessionTheme(): string | null {
+  try { return sessionStorage.getItem(SESSION_ADMIN_THEME_KEY); } catch { return null; }
+}
 
 /** Czyta ?theme= z URL — używane przez landing page do podglądu na żywo */
 function getUrlTheme(): string | null {
@@ -88,7 +100,10 @@ export function useAdminTheme() {
   const storedTheme = (() => {
     try { return sessionStorage.getItem(SESSION_THEME_KEY); } catch { return null; }
   })();
-  const forcedTheme = urlTheme ?? storedTheme;
+  // Kolejność: ręczny wybór w panelu → motyw szablonu (URL/sesja) → ustawienia z bazy.
+  // Dzięki temu panel domyślnie wygląda jak strona, ale można go przestawić na sesję.
+  const adminOverride = getAdminSessionTheme();
+  const forcedTheme = adminOverride ?? urlTheme ?? storedTheme;
 
   // Use authenticated admin endpoint for reliability in secured context
   const { data: settings } = useAdminGetSettings({

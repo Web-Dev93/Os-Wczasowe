@@ -47,6 +47,9 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
 
   const closeMenu = () => setIsMobileMenuOpen(false);
 
+  // Baza aplikacji ("/osrodek") — potrzebna do linków poza routerem
+  const adminBase = import.meta.env.BASE_URL.replace(/\/$/, "");
+
   const navLinks = [
     { href: "/", label: "Strona główna" },
     { href: "/pokoje", label: "Pokoje" },
@@ -190,9 +193,11 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 max-w-6xl mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-primary-foreground/50 text-sm">
           <span>&copy; {new Date().getFullYear()} {settings?.resortName || "Ośrodek Nadmorski"}. Wszelkie prawa zastrzeżone.</span>
           <a
-            href={isDemo
-              ? `/admin/login?demo=1${activeTheme ? `&theme=${activeTheme}` : ""}`
-              : "/admin"}
+            /* Pełny adres z bazą aplikacji — sam "/admin/..." trafiłby na
+               stronę sprzedażową, bo ośrodek działa pod /osrodek/.
+               demo=1 wpuszcza zwiedzających bez hasła, theme przenosi
+               styl szablonu do panelu. */
+            href={`${adminBase}/admin/login?demo=1${activeTheme ? `&theme=${activeTheme}` : ""}`}
             className="text-primary-foreground/30 hover:text-primary-foreground/60 transition-colors text-xs tracking-wide"
           >
             Panel administratora →

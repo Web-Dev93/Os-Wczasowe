@@ -10,7 +10,7 @@ const INCLUDED = [
   "Galeria zdjęć, katalog pokoi, aktualności",
   "Eksport rezerwacji do Excela (CSV)",
   "Wypełniamy stronę Twoimi treściami i zdjęciami",
-  "Wdrożenie w 24 godziny od przesłania materiałów",
+  "Wdrożenie w terminie ustalonym przy zamówieniu",
   "Hosting z certyfikatem SSL na pierwszy rok w cenie",
   "Wsparcie techniczne przez e-mail",
 ];
@@ -76,10 +76,10 @@ export function Pricing() {
                 href="#kontakt"
                 className="flex items-center justify-center w-full px-8 py-4 bg-accent text-accent-foreground font-semibold rounded transition-colors hover:bg-accent/90 shadow-sm"
               >
-                Zamawiam — przejdź do formularza
+                Napisz do nas
               </a>
               <p className="text-center text-xs text-muted-foreground mt-4">
-                Zamówienie przez formularz — odpowiadamy tego samego dnia roboczego.
+                Wypełnij formularz — odpiszemy z wyceną i możliwym terminem.
               </p>
             </div>
           </motion.div>
@@ -107,9 +107,10 @@ export function Pricing() {
             </div>
 
             <div className="p-6 bg-border/20 border-l-2 border-foreground">
-              <h4 className="font-medium mb-2">Gwarancja zwrotu</h4>
+              <h4 className="font-medium mb-2">Bez zobowiązań na starcie</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Jeśli strona nie będzie gotowa do działania w 24 godziny od przesłania materiałów, zwracamy całą kwotę. Gramy w otwarte karty.
+                Najpierw piszesz przez formularz, my odpowiadamy z wyceną i terminem.
+                Płacisz dopiero wtedy, gdy zaakceptujesz szczegóły — nic z góry.
               </p>
             </div>
 

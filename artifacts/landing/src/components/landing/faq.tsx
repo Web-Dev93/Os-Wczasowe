@@ -28,8 +28,8 @@ const FAQS = [
     a: "Tak. Własne logo i kolory, dodatkowa podstrona (np. cennik atrakcji, regulamin), wersja językowa czy dodatkowa funkcja w panelu — napisz w formularzu, czego potrzebujesz, a bezpłatnie to wycenimy. Podstawowy pakiet za 1 200 zł w zupełności wystarcza większości obiektów.",
   },
   {
-    q: "Jak wygląda zamówienie krok po kroku?",
-    a: "1) Wysyłasz formularz na dole strony (niezobowiązująco). 2) Odzywamy się, ustalamy motyw, treści i ewentualne zmiany. 3) Po Twojej akceptacji przesyłasz materiały i płatność. 4) W 24 godziny odbierasz działającą stronę i dostęp do panelu.",
+    q: "Jak to wygląda krok po kroku?",
+    a: "1) Piszesz do nas przez formularz na dole strony (niezobowiązująco). 2) Odpowiadamy z wyceną i możliwym terminem, ustalamy motyw, treści i ewentualne zmiany. 3) Po Twojej akceptacji przesyłasz materiały i płatność. 4) Odbierasz działającą stronę i dostęp do panelu.",
   },
   {
     q: "Czy strona jest naprawdę moja?",

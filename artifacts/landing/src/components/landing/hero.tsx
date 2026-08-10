@@ -36,7 +36,7 @@ export function Hero() {
 
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
             Kompletny system rezerwacji z panelem zarządzania i synchronizacją z Booking.com.
-            Gotowy w 24 godziny. Płacisz raz — 1 200 zł — i strona jest Twoja.
+            Płacisz raz — 1 200 zł — i strona jest Twoja, bez abonamentu i prowizji.
             Chcesz coś po swojemu? Robimy też indywidualne zmiany.
           </p>
 
@@ -45,7 +45,7 @@ export function Hero() {
               href="#kontakt"
               className="w-full sm:w-auto px-8 py-4 bg-accent text-accent-foreground rounded text-sm font-semibold hover:bg-accent/90 shadow-[0_0_30px_-5px_rgba(255,180,80,0.4)] transition-all duration-300"
             >
-              Zamów teraz — 1 200 zł
+              Napisz do nas
             </a>
             <a
               href="#demo"
@@ -56,7 +56,7 @@ export function Hero() {
           </div>
 
           <p className="mt-6 text-xs text-white/60 tracking-wide">
-            Bez ryzyka: jeśli nie dowieziemy strony w 24 h od przesłania materiałów — zwracamy całą kwotę.
+            Napisz przez formularz — odpowiemy z wyceną i terminem. Nic nie płacisz z góry.
           </p>
         </motion.div>
       </div>
@@ -66,10 +66,10 @@ export function Hero() {
         <div className="container mx-auto px-6 py-6">
           <div className="grid grid-cols-4 gap-8 divide-x divide-white/10 text-center">
             {[
-              { value: "24 h", label: "Czas wdrożenia" },
+              { value: "6", label: "Gotowych stylów" },
               { value: "1 200 zł", label: "Jednorazowy koszt" },
               { value: "0 zł", label: "Miesięczny abonament" },
-              { value: "6", label: "Gotowych stylów" },
+              { value: "0 %", label: "Prowizji od rezerwacji" },
             ].map(({ value, label }) => (
               <div key={label} className="px-4">
                 <div className="text-white font-serif text-2xl mb-1">{value}</div>

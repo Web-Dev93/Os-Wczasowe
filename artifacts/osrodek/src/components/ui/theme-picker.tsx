@@ -1,6 +1,8 @@
+import React from "react";
 import { useAdminGetSettings, useAdminUpdateSettings, getAdminGetSettingsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check } from "lucide-react";
+import { setAdminSessionTheme, getAdminSessionTheme } from "@/hooks/use-theme";
 
 export const THEMES = [
   {
@@ -131,24 +133,23 @@ export function ThemePicker({ value, onChange, immediate }: ThemePickerProps) {
   );
 }
 
-/** Compact dot switcher for the sidebar footer */
+/** Compact dot switcher for the sidebar footer.
+ *  Zmienia wygląd samego panelu na czas sesji — nie zapisuje do bazy,
+ *  więc nie przestawia strony publicznej (od tego jest Ustawienia → Motyw). */
 export function QuickThemeSwitcher() {
   const { data: settings } = useAdminGetSettings();
-  const queryClient = useQueryClient();
-  const updateSettings = useAdminUpdateSettings();
+  const [sessionTheme, setSessionTheme] = React.useState<string | null>(() => getAdminSessionTheme());
 
-  const current = settings?.theme ?? "professional";
+  const current = sessionTheme ?? settings?.theme ?? "professional";
 
   const handleSwitch = (theme: ThemeValue) => {
-    updateSettings.mutate(
-      { data: { theme } as never },
-      { onSuccess: () => queryClient.invalidateQueries({ queryKey: getAdminGetSettingsQueryKey() }) }
-    );
+    setAdminSessionTheme(theme);
+    setSessionTheme(theme);
   };
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <span className="text-xs text-muted-foreground mr-1 whitespace-nowrap">Motyw:</span>
+      <span className="text-xs text-muted-foreground mr-1 whitespace-nowrap">Motyw panelu:</span>
       {THEMES.map((t) => (
         <button
           key={t.value}

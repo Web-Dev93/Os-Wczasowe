@@ -32,16 +32,17 @@ const formSchema = z.object({
   message: z.string().optional(),
 });
 
-const API_BASE = (() => {
-  const base = import.meta.env.BASE_URL ?? "/";
-  return base.replace(/\/[^/]+\/?$/, "/api").replace(/\/\/$/, "/api");
-})();
+// API jest zamontowane w korzeniu domeny (app.use("/api", ...)), niezależnie
+// od tego, pod jaką ścieżką serwowany jest frontend. Wcześniejsze wyliczanie
+// z BASE_URL dawało dla landingu "//landing/contact" — czyli adres innego
+// hosta (URL protokołowo-względny) i fetch kończył się "Failed to fetch".
+const API_BASE = "/api";
 
 const TRUST_POINTS = [
-  "Odpowiadamy tego samego dnia roboczego",
-  "Strona gotowa w 24 h od przesłania materiałów",
+  "Odpowiadamy na każdą wiadomość",
+  "Wycena i termin ustalane indywidualnie",
   "Indywidualne zmiany możliwe — bezpłatna wycena",
-  "Gwarancja zwrotu, jeśli nie dotrzymamy terminu",
+  "Nic nie płacisz, dopóki nie ustalimy szczegółów",
 ];
 
 export function Contact() {
@@ -91,12 +92,13 @@ export function Contact() {
 
           <div className="max-w-md">
             <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">
-              Zamówienie
+              Kontakt
             </div>
-            <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">Zamów swoją stronę.</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">Napisz do nas.</h2>
             <p className="text-muted-foreground leading-relaxed mb-10">
-              Wypełnij formularz — to niezobowiązujące zamówienie. Odezwiemy się, ustalimy szczegóły
-              (motyw, treści, ewentualne indywidualne zmiany) i po Twoim „tak" ruszamy z wdrożeniem.
+              Podoba Ci się to, co widzisz? Zostaw wiadomość — wróci do nas mailem.
+              Odpiszemy z wyceną i możliwym terminem, ustalimy szczegóły (motyw, treści,
+              ewentualne indywidualne zmiany) i dopiero po Twoim „tak" ruszamy.
             </p>
 
             <ul className="space-y-4 mb-12">
@@ -119,9 +121,9 @@ export function Contact() {
           <div className="bg-background border border-border p-8 rounded shadow-sm">
             {submitted ? (
               <div className="py-12 text-center">
-                <h3 className="text-2xl font-serif font-medium mb-4">Dziękujemy za zamówienie</h3>
+                <h3 className="text-2xl font-serif font-medium mb-4">Dziękujemy za wiadomość</h3>
                 <p className="text-muted-foreground mb-8">
-                  Wiadomość dotarła. Odezwiemy się tego samego dnia roboczego, żeby ustalić szczegóły.
+                  Wiadomość do nas dotarła. Odezwiemy się mailem lub telefonicznie, żeby ustalić szczegóły.
                 </p>
                 <button
                   onClick={() => { setSubmitted(false); form.reset(); }}
@@ -225,10 +227,10 @@ export function Contact() {
                     disabled={loading}
                     className="w-full bg-accent text-accent-foreground py-4 font-semibold uppercase tracking-wider text-xs transition-colors hover:bg-accent/90 disabled:opacity-50 shadow-sm"
                   >
-                    {loading ? "Wysyłanie..." : "Zamawiam stronę — 1 200 zł"}
+                    {loading ? "Wysyłanie..." : "Wyślij wiadomość"}
                   </button>
                   <p className="text-center text-[11px] text-muted-foreground">
-                    Wysłanie formularza nie zobowiązuje do zapłaty — najpierw ustalimy wszystkie szczegóły.
+                    Wysłanie wiadomości do niczego nie zobowiązuje — najpierw ustalimy wszystkie szczegóły.
                   </p>
                 </form>
               </Form>

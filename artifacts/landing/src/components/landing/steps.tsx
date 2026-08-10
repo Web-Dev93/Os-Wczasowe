@@ -14,7 +14,7 @@ const STEPS = [
   {
     num: "03",
     title: "Odbierasz klucze",
-    desc: "W ciągu 24 godzin dostajesz gotową, działającą stronę i dostęp do panelu. Od teraz rezerwacje należą tylko do Ciebie.",
+    desc: "Dostajesz gotową, działającą stronę i dostęp do panelu — termin ustalamy indywidualnie przy zamówieniu. Od teraz rezerwacje należą tylko do Ciebie.",
   },
 ];
 
@@ -59,7 +59,7 @@ export function Steps() {
             href="#kontakt"
             className="inline-flex items-center justify-center px-8 py-4 rounded bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors shadow-sm"
           >
-            Rozpocznij teraz
+            Napisz do nas
           </a>
         </div>
       </div>

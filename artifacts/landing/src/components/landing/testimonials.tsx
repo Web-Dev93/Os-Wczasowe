@@ -67,7 +67,7 @@ export function Testimonials() {
         >
           {[
             { val: "40+", label: "Aktywnych ośrodków" },
-            { val: "24 h", label: "Czas wdrożenia" },
+            { val: "0 %", label: "Prowizji od rezerwacji" },
             { val: "0 zł", label: "Miesięczny abonament" },
           ].map(({ val, label }) => (
             <div key={label}>

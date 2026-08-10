@@ -4,3 +4,4 @@ export * from "./gallery";
 export * from "./bookings";
 export * from "./availability";
 export * from "./posts";
+export * from "./leads";

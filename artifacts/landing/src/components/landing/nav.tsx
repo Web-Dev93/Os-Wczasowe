@@ -56,7 +56,7 @@ export function Nav() {
               : "bg-white text-foreground hover:bg-white/90 shadow-[0_0_15px_-3px_rgba(255,255,255,0.4)]"
           }`}
         >
-          Kup teraz
+          Napisz do nas
         </a>
 
         {/* Mobile menu toggle */}
@@ -95,7 +95,7 @@ export function Nav() {
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center w-full bg-accent text-accent-foreground py-3.5 rounded font-semibold text-sm shadow-sm"
                 >
-                  Kup teraz — 1 200 zł
+                  Napisz do nas
                 </a>
               </div>
             </div>
