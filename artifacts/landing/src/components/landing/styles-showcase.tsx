@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 
 const STYLES = [
   { id: "nadmorski", themeKey: "professional", name: "Nadmorski", desc: "Klasyczny klimat polskiego wybrzeża. Błękit, biel i przestrzeń." },
@@ -124,6 +125,15 @@ export function StylesShowcase() {
               <div className="mx-auto bg-background border border-border/50 rounded px-4 py-1.5 text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
                 {view === "site" ? `twojosrodek.pl — ${s.name}` : `twojosrodek.pl/admin`}
               </div>
+              <a
+                href={iframeSrc}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute right-4 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Otwórz w nowej karcie
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
 
             {/* Viewport */}
