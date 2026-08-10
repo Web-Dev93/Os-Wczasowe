@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { 
   CalendarClock, CheckCircle2, XCircle, Trash2, Check, X,
-  MessageSquare, User, Phone, Mail, Calendar, Search
+  MessageSquare, User, Phone, Mail, Calendar, Search, Download
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -142,9 +142,16 @@ export default function AdminBookings() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-serif font-bold tracking-tight">Rezerwacje</h1>
-        <p className="text-muted-foreground mt-1">Zarządzaj zapytaniami i potwierdzonymi rezerwacjami</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-serif font-bold tracking-tight">Rezerwacje</h1>
+          <p className="text-muted-foreground mt-1">Zarządzaj zapytaniami i potwierdzonymi rezerwacjami</p>
+        </div>
+        <Button variant="outline" asChild>
+          <a href="/api/admin/bookings/export.csv" download>
+            <Download className="w-4 h-4 mr-2" /> Eksport CSV
+          </a>
+        </Button>
       </div>
 
       <Tabs defaultValue="pending" className="w-full">

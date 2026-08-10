@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { useListRooms, useSubmitInquiry, useGetSettings } from "@workspace/api-client-react";
+import { useListRooms, useSubmitInquiry, useGetSettings, useGetAvailability } from "@workspace/api-client-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -64,13 +64,51 @@ export default function Reservation() {
     },
   });
 
+  // Ustawiamy pokój z URL dopiero gdy lista pokoi jest załadowana — Radix
+  // Select nie dopasuje wartości do itemu, który jeszcze nie istnieje.
   useEffect(() => {
-    if (roomIdFromUrl) {
+    if (roomIdFromUrl && rooms?.some((r) => r.id.toString() === roomIdFromUrl)) {
       form.setValue("roomId", roomIdFromUrl);
     }
-  }, [roomIdFromUrl, form]);
+  }, [roomIdFromUrl, rooms, form]);
+
+  // ── Podsumowanie ceny i walidacja terminu ──────────────────────────────────
+  const watchedRoomId = form.watch("roomId");
+  const watchedCheckIn = form.watch("checkIn");
+  const watchedCheckOut = form.watch("checkOut");
+
+  const selectedRoom = useMemo(
+    () => rooms?.find((r) => r.id.toString() === watchedRoomId),
+    [rooms, watchedRoomId],
+  );
+
+  const { data: availabilityBlocks } = useGetAvailability(
+    selectedRoom ? { roomId: selectedRoom.id } : undefined,
+    { query: { enabled: !!selectedRoom } as never },
+  );
+
+  const nights = useMemo(() => {
+    if (!watchedCheckIn || !watchedCheckOut) return 0;
+    const ms = new Date(watchedCheckOut).getTime() - new Date(watchedCheckIn).getTime();
+    return ms > 0 ? Math.round(ms / 86_400_000) : 0;
+  }, [watchedCheckIn, watchedCheckOut]);
+
+  // Zakres [checkIn, checkOut) nachodzi na blokadę [dateFrom, dateTo)?
+  const dateConflict = useMemo(() => {
+    if (!selectedRoom || !watchedCheckIn || !watchedCheckOut || !availabilityBlocks) return false;
+    return availabilityBlocks.some(
+      (b) => b.status === "blocked" && watchedCheckIn < b.dateTo && watchedCheckOut > b.dateFrom,
+    );
+  }, [selectedRoom, watchedCheckIn, watchedCheckOut, availabilityBlocks]);
+
+  const minNightsUnmet =
+    !!selectedRoom && nights > 0 && nights < (selectedRoom.minNights ?? 1);
+
+  const totalPrice = selectedRoom && nights > 0 ? nights * selectedRoom.pricePerNight : null;
+  const blockSubmit = dateConflict || minNightsUnmet;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (blockSubmit) return;
     submitInquiry.mutate({
       data: {
         roomId: values.roomId ? parseInt(values.roomId, 10) : undefined,
@@ -227,6 +265,40 @@ export default function Reservation() {
                     </p>
                   </div>
                 )}
+
+                {dateConflict && (
+                  <div className="rounded-xl bg-destructive/10 border border-destructive/30 px-4 py-3 text-sm text-destructive">
+                    Wybrany termin jest już zajęty dla tego pokoju. Zmień daty lub wybierz inny pokój —
+                    dostępność sprawdzisz w kalendarzu na stronie pokoju.
+                  </div>
+                )}
+
+                {!dateConflict && minNightsUnmet && selectedRoom && (
+                  <div className="rounded-xl bg-destructive/10 border border-destructive/30 px-4 py-3 text-sm text-destructive">
+                    Minimalna długość pobytu w pokoju „{selectedRoom.name}" to {selectedRoom.minNights}{" "}
+                    {selectedRoom.minNights === 2 ? "noce" : "nocy"} — wybrano {nights}.
+                  </div>
+                )}
+
+                {!blockSubmit && totalPrice !== null && selectedRoom && (
+                  <div className="rounded-xl bg-primary/5 border border-primary/20 px-5 py-4">
+                    <div className="flex items-baseline justify-between text-sm">
+                      <span className="text-muted-foreground">
+                        {selectedRoom.name} · {nights} {nights === 1 ? "noc" : nights < 5 ? "noce" : "nocy"} ×{" "}
+                        {selectedRoom.pricePerNight} zł
+                      </span>
+                      <span className="text-xl font-bold text-primary whitespace-nowrap">{totalPrice} zł</span>
+                    </div>
+                    {settings?.petsAllowed === "yes" && settings?.petPrice && (
+                      <p className="text-xs text-muted-foreground mt-1.5">
+                        + ewentualna opłata za zwierzę: {settings.petPrice}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                      Cena orientacyjna — ostateczną potwierdzimy w odpowiedzi na zapytanie.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-6 pb-6">
@@ -291,8 +363,12 @@ export default function Reservation() {
                 </div>
               </div>
 
-              <Button type="submit" size="lg" className="w-full h-14 rounded-xl text-lg font-bold" disabled={submitInquiry.isPending}>
-                {submitInquiry.isPending ? "Wysyłanie..." : "Wyślij zapytanie o rezerwację"}
+              <Button type="submit" size="lg" className="w-full h-14 rounded-xl text-lg font-bold" disabled={submitInquiry.isPending || blockSubmit}>
+                {submitInquiry.isPending
+                  ? "Wysyłanie..."
+                  : dateConflict
+                    ? "Termin zajęty — zmień daty"
+                    : "Wyślij zapytanie o rezerwację"}
               </Button>
               <p className="text-center text-xs text-muted-foreground mt-4">
                 Wysłanie formularza nie jest równoznaczne z rezerwacją. 

@@ -838,6 +838,9 @@ components:
           type: ["string", "null"]
         checkOutTime:
           type: ["string", "null"]
+        isDefaultAdminPassword:
+          type: boolean
+          description: Czy hasło administratora to nadal domyślne "admin123" (steruje podpowiedzią na ekranie logowania)
 
     AdminSiteSettings:
       allOf:

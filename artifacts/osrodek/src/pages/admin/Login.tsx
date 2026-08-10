@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useAdminLogin } from "@workspace/api-client-react";
+import { useAdminLogin, useGetSettings } from "@workspace/api-client-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ export default function AdminLogin() {
   // /api/admin/me calls) — refreshAuth() re-checks it after login succeeds,
   // and AdminLayout's own effect navigates away once `user` is set.
   const { refreshAuth } = React.useContext(AdminAuthContext);
+  const { data: siteSettings } = useGetSettings();
   const loginMutation = useAdminLogin();
   const { toast } = useToast();
   const [demoLoading, setDemoLoading] = React.useState(false);
@@ -99,9 +100,11 @@ export default function AdminLogin() {
           </form>
         </Form>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
-          Domyślne hasło: <span className="font-mono font-semibold select-all">admin123</span>
-        </p>
+        {(siteSettings as { isDefaultAdminPassword?: boolean } | undefined)?.isDefaultAdminPassword && (
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Domyślne hasło: <span className="font-mono font-semibold select-all">admin123</span>
+          </p>
+        )}
       </div>
     </div>
   );

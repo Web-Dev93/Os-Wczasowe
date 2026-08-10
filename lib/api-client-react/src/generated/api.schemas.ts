@@ -81,6 +81,8 @@ export interface SiteSettings {
   checkInTime?: string | null;
   /** @nullable */
   checkOutTime?: string | null;
+  /** Czy hasło administratora to nadal domyślne "admin123" (steruje podpowiedzią na ekranie logowania) */
+  isDefaultAdminPassword?: boolean;
 }
 
 export type AdminSiteSettings = SiteSettings & ({

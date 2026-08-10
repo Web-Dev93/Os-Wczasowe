@@ -43,7 +43,8 @@ export const GetSettingsResponse = zod.object({
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish()
+  "checkOutTime": zod.string().nullish(),
+  "isDefaultAdminPassword": zod.boolean().optional().describe('Czy hasło administratora to nadal domyślne \"admin123\" (steruje podpowiedzią na ekranie logowania)')
 })
 
 
@@ -229,7 +230,8 @@ export const AdminGetSettingsResponse = zod.object({
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish()
+  "checkOutTime": zod.string().nullish(),
+  "isDefaultAdminPassword": zod.boolean().optional().describe('Czy hasło administratora to nadal domyślne \"admin123\" (steruje podpowiedzią na ekranie logowania)')
 }).and(zod.object({
   "bookingComIcalUrl": zod.string().nullish()
 }))
@@ -294,7 +296,8 @@ export const AdminUpdateSettingsResponse = zod.object({
   "theme": zod.enum(['professional', 'exclusive', 'fun', 'family', 'rustic', 'modern']),
   "bookingMode": zod.enum(['inquiry', 'online', 'both']),
   "checkInTime": zod.string().nullish(),
-  "checkOutTime": zod.string().nullish()
+  "checkOutTime": zod.string().nullish(),
+  "isDefaultAdminPassword": zod.boolean().optional().describe('Czy hasło administratora to nadal domyślne \"admin123\" (steruje podpowiedzią na ekranie logowania)')
 }).and(zod.object({
   "bookingComIcalUrl": zod.string().nullish()
 }))

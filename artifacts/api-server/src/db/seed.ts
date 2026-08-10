@@ -3,7 +3,7 @@
  * Uruchom: pnpm --filter @workspace/api-server run seed
  */
 
-import { db, pool, roomsTable, roomPhotosTable, galleryPhotosTable, bookingsTable, availabilityTable } from "@workspace/db";
+import { db, pool, roomsTable, roomPhotosTable, galleryPhotosTable, bookingsTable, availabilityTable, postsTable } from "@workspace/db";
 import { sql } from "drizzle-orm";
 
 async function main() {
@@ -12,6 +12,7 @@ async function main() {
   // Wyczyść istniejące dane (kolejność: FK-safe)
   await db.delete(availabilityTable);
   await db.delete(bookingsTable);
+  await db.delete(postsTable);
   await db.delete(roomPhotosTable);
   await db.delete(galleryPhotosTable);
   await db.delete(roomsTable);
@@ -35,7 +36,7 @@ async function main() {
         isActive: true,
         sortOrder: 1,
         coverPhotoUrl:
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+          "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
         amenities: [
           "Widok na morze",
           "Balkon",
@@ -94,7 +95,7 @@ async function main() {
         isActive: true,
         sortOrder: 4,
         coverPhotoUrl:
-          "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+          "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
         amenities: [
           "Dwie sypialnie",
           "Taras",
@@ -115,7 +116,7 @@ async function main() {
         isActive: true,
         sortOrder: 5,
         coverPhotoUrl:
-          "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
+          "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&q=80",
         amenities: [
           "Panoramiczny widok",
           "Jacuzzi",
@@ -139,7 +140,7 @@ async function main() {
 
   await db.insert(roomPhotosTable).values([
     // Apartament Morski
-    { roomId: morski.id, url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80", caption: "Widok na morze z balkonu", sortOrder: 0 },
+    { roomId: morski.id, url: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&q=80", caption: "Widok na morze z balkonu", sortOrder: 0 },
     { roomId: morski.id, url: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=80", caption: "Salon z wygodną sofą", sortOrder: 1 },
     { roomId: morski.id, url: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&q=80", caption: "Elegancka sypialnia", sortOrder: 2 },
     // Pokój Plażowy
@@ -149,10 +150,10 @@ async function main() {
     { roomId: studio.id, url: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80", caption: "Jasne studio", sortOrder: 0 },
     { roomId: studio.id, url: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=80", caption: "Aneks kuchenny", sortOrder: 1 },
     // Pokój Rodzinny
-    { roomId: rodzinny.id, url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", caption: "Taras z widokiem", sortOrder: 0 },
+    { roomId: rodzinny.id, url: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=1200&q=80", caption: "Taras z widokiem", sortOrder: 0 },
     { roomId: rodzinny.id, url: "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=1200&q=80", caption: "Sypialnia dla dzieci", sortOrder: 1 },
     // Penthouse
-    { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1200&q=80", caption: "Panoramiczny widok", sortOrder: 0 },
+    { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80", caption: "Panoramiczny widok", sortOrder: 0 },
     { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80", caption: "Taras penthouse", sortOrder: 1 },
     { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=1200&q=80", caption: "Luksusowe jacuzzi", sortOrder: 2 },
   ]);
@@ -164,7 +165,7 @@ async function main() {
   await db.insert(galleryPhotosTable).values([
     { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80", caption: "Plaża o wschodzie słońca", sortOrder: 0 },
     { url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80", caption: "Słoneczny dzień na Bałtyku", sortOrder: 1 },
-    { url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", caption: "Klify nad morzem", sortOrder: 2 },
+    { url: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=1200&q=80", caption: "Klify nad morzem", sortOrder: 2 },
     { url: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=1200&q=80", caption: "Zachód słońca nad Bałtykiem", sortOrder: 3 },
     { url: "https://images.unsplash.com/photo-1534008757030-27299c4371b6?w=1200&q=80", caption: "Spokojna plaża", sortOrder: 4 },
     { url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80", caption: "Molo o zmierzchu", sortOrder: 5 },
@@ -260,8 +261,36 @@ async function main() {
 
   console.log("  🔒 Dodano blokady dostępności");
 
+  // ── AKTUALNOŚCI ─────────────────────────────────────────────────────────────
+
+  await db.insert(postsTable).values([
+    {
+      title: "Sezon letni 2026 — rezerwacje otwarte!",
+      content:
+        "Ruszyły rezerwacje na sezon letni. Polecamy wczesną rezerwację — lipiec i sierpień zapełniają się najszybciej. Przy pobytach powyżej 7 nocy oferujemy 10% rabatu.",
+      imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80",
+      isPublished: true,
+    },
+    {
+      title: "Nowość: rowery dla gości bezpłatnie",
+      content:
+        "Od tego sezonu każdy gość może bezpłatnie wypożyczyć rower. Nadmorska ścieżka rowerowa zaczyna się 100 m od ośrodka — idealna na poranną przejażdżkę wzdłuż wybrzeża.",
+      imageUrl: "https://images.unsplash.com/photo-1468413253725-0d5181091126?w=1200&q=80",
+      isPublished: true,
+    },
+    {
+      title: "Majówka nad morzem — zostały ostatnie pokoje",
+      content:
+        "Na długi weekend majowy zostały już tylko dwa wolne pokoje. Śniadania w cenie, a dla dzieci plac zabaw i sala gier. Zapraszamy do rezerwacji!",
+      imageUrl: "https://images.unsplash.com/photo-1414073875831-b47709631146?w=1200&q=80",
+      isPublished: true,
+    },
+  ]);
+
+  console.log("  📰 Dodano 3 aktualności");
+
   console.log("\n✅ Seedowanie zakończone pomyślnie!");
-  console.log("   5 pokoi | 12 zdjęć pokoi | 9 zdjęć galerii | 5 rezerwacji | 5 blokad");
+  console.log("   5 pokoi | 12 zdjęć pokoi | 9 zdjęć galerii | 5 rezerwacji | 5 blokad | 3 aktualności");
 }
 
 main()

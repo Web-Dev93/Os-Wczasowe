@@ -71,11 +71,7 @@ export function Contact() {
             <div className="space-y-6">
               <div>
                 <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">Email</div>
-                <a href="mailto:kontakt@stronydlaosrodkow.pl" className="text-lg hover:text-primary transition-colors">kontakt@stronydlaosrodkow.pl</a>
-              </div>
-              <div>
-                <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">Telefon</div>
-                <a href="tel:+48500000000" className="text-lg hover:text-primary transition-colors">+48 500 000 000</a>
+                <a href="mailto:www.osrodki.wczasowe@gmail.com" className="text-lg hover:text-primary transition-colors break-all">www.osrodki.wczasowe@gmail.com</a>
               </div>
             </div>
           </div>

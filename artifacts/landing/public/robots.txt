@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /osrodek/admin/
+
+Sitemap: https://holiday.flowquest.pl/sitemap.xml

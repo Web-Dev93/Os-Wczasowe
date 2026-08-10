@@ -22,7 +22,13 @@ async function getOrCreateSettings() {
 // Public
 router.get("/settings", async (req, res): Promise<void> => {
   const settings = await getOrCreateSettings();
-  res.json(GetSettingsResponse.parse(settings));
+  res.json(
+    GetSettingsResponse.parse({
+      ...settings,
+      // Ekran logowania pokazuje podpowiedź "admin123" tylko dopóki hasło nie zostało zmienione.
+      isDefaultAdminPassword: settings.adminPassword === "admin123",
+    }),
+  );
 });
 
 // Admin

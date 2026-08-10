@@ -18,8 +18,10 @@ export const bookingsTable = pgTable("bookings", {
   type: text("type").notNull().default("inquiry"),
   adminNotes: text("admin_notes"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  // Soft delete: usunięte rezerwacje pozostają w bazie (odzyskiwalne), listy je pomijają.
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });
 
-export const insertBookingSchema = createInsertSchema(bookingsTable).omit({ id: true, createdAt: true });
+export const insertBookingSchema = createInsertSchema(bookingsTable).omit({ id: true, createdAt: true, deletedAt: true });
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type Booking = typeof bookingsTable.$inferSelect;
