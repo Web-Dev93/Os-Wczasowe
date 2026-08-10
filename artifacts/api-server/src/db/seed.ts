@@ -36,7 +36,7 @@ async function main() {
         isActive: true,
         sortOrder: 1,
         coverPhotoUrl:
-          "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
+          "/osrodek/demo/pokoj-widok-morze.jpg",
         amenities: [
           "Widok na morze",
           "Balkon",
@@ -116,7 +116,7 @@ async function main() {
         isActive: true,
         sortOrder: 5,
         coverPhotoUrl:
-          "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&q=80",
+          "/osrodek/demo/pokoj-taras.jpg",
         amenities: [
           "Panoramiczny widok",
           "Jacuzzi",
@@ -140,22 +140,22 @@ async function main() {
 
   await db.insert(roomPhotosTable).values([
     // Apartament Morski
-    { roomId: morski.id, url: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&q=80", caption: "Widok na morze z balkonu", sortOrder: 0 },
+    { roomId: morski.id, url: "/osrodek/demo/plaza-swit.jpg", caption: "Widok na morze z balkonu", sortOrder: 0 },
     { roomId: morski.id, url: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=80", caption: "Salon z wygodną sofą", sortOrder: 1 },
     { roomId: morski.id, url: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&q=80", caption: "Elegancka sypialnia", sortOrder: 2 },
     // Pokój Plażowy
     { roomId: plazowy.id, url: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1200&q=80", caption: "Przytulne wnętrze", sortOrder: 0 },
-    { roomId: plazowy.id, url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80", caption: "Wyjście na plażę", sortOrder: 1 },
+    { roomId: plazowy.id, url: "/osrodek/demo/pomost-wydmy.jpg", caption: "Wyjście na plażę", sortOrder: 1 },
     // Studio Słoneczne
     { roomId: studio.id, url: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80", caption: "Jasne studio", sortOrder: 0 },
     { roomId: studio.id, url: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=80", caption: "Aneks kuchenny", sortOrder: 1 },
     // Pokój Rodzinny
-    { roomId: rodzinny.id, url: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=1200&q=80", caption: "Taras z widokiem", sortOrder: 0 },
+    { roomId: rodzinny.id, url: "/osrodek/demo/pokoj-taras.jpg", caption: "Taras z widokiem", sortOrder: 0 },
     { roomId: rodzinny.id, url: "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=1200&q=80", caption: "Sypialnia dla dzieci", sortOrder: 1 },
     // Penthouse
-    { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80", caption: "Panoramiczny widok", sortOrder: 0 },
-    { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80", caption: "Taras penthouse", sortOrder: 1 },
-    { roomId: penthouse.id, url: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=1200&q=80", caption: "Luksusowe jacuzzi", sortOrder: 2 },
+    { roomId: penthouse.id, url: "/osrodek/demo/nadmorska-miejscowosc.jpg", caption: "Panoramiczny widok", sortOrder: 0 },
+    { roomId: penthouse.id, url: "/osrodek/demo/nadmorska-miejscowosc.jpg", caption: "Widok z tarasu", sortOrder: 1 },
+    { roomId: penthouse.id, url: "/osrodek/demo/plaza-swit.jpg", caption: "Poranek nad morzem", sortOrder: 2 },
   ]);
 
   console.log("  📸 Dodano zdjęcia pokoi");
@@ -163,15 +163,15 @@ async function main() {
   // ── GALERIA ─────────────────────────────────────────────────────────────────
 
   await db.insert(galleryPhotosTable).values([
-    { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80", caption: "Plaża o wschodzie słońca", sortOrder: 0 },
-    { url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80", caption: "Słoneczny dzień na Bałtyku", sortOrder: 1 },
-    { url: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=1200&q=80", caption: "Klify nad morzem", sortOrder: 2 },
-    { url: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=1200&q=80", caption: "Zachód słońca nad Bałtykiem", sortOrder: 3 },
-    { url: "https://images.unsplash.com/photo-1534008757030-27299c4371b6?w=1200&q=80", caption: "Spokojna plaża", sortOrder: 4 },
-    { url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80", caption: "Molo o zmierzchu", sortOrder: 5 },
-    { url: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?w=1200&q=80", caption: "Falochron i morze", sortOrder: 6 },
-    { url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=80", caption: "Plaża po letniej burzy", sortOrder: 7 },
-    { url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80", caption: "Ośrodek od strony ogrodu", sortOrder: 8 },
+    { url: "/osrodek/demo/plaza-swit.jpg", caption: "Plaża o wschodzie słońca", sortOrder: 0 },
+    { url: "/osrodek/demo/plaza-wydmy.jpg", caption: "Wydmy i trawa nadmorska", sortOrder: 1 },
+    { url: "/osrodek/demo/nadmorska-miejscowosc.jpg", caption: "Nasza miejscowość o zachodzie", sortOrder: 2 },
+    { url: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=1200&q=80", caption: "Mewy nad brzegiem", sortOrder: 3 },
+    { url: "/osrodek/demo/pomost-wydmy.jpg", caption: "Zejście na plażę", sortOrder: 4 },
+    { url: "https://images.unsplash.com/photo-1439405326854-014607f694d7?w=1200&q=80", caption: "Zachód słońca nad Bałtykiem", sortOrder: 5 },
+    { url: "/osrodek/demo/pokoj-widok-morze.jpg", caption: "Pokój z widokiem na morze", sortOrder: 6 },
+    { url: "/osrodek/demo/pokoj-taras.jpg", caption: "Wieczór na tarasie", sortOrder: 7 },
+    { url: "/osrodek/demo/domek-kominek.jpg", caption: "Kominek w domku", sortOrder: 8 },
   ]);
 
   console.log("  🖼️  Dodano 9 zdjęć galerii");
@@ -268,21 +268,21 @@ async function main() {
       title: "Sezon letni 2026 — rezerwacje otwarte!",
       content:
         "Ruszyły rezerwacje na sezon letni. Polecamy wczesną rezerwację — lipiec i sierpień zapełniają się najszybciej. Przy pobytach powyżej 7 nocy oferujemy 10% rabatu.",
-      imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80",
+      imageUrl: "/osrodek/demo/plaza-wydmy.jpg",
       isPublished: true,
     },
     {
       title: "Nowość: rowery dla gości bezpłatnie",
       content:
         "Od tego sezonu każdy gość może bezpłatnie wypożyczyć rower. Nadmorska ścieżka rowerowa zaczyna się 100 m od ośrodka — idealna na poranną przejażdżkę wzdłuż wybrzeża.",
-      imageUrl: "https://images.unsplash.com/photo-1468413253725-0d5181091126?w=1200&q=80",
+      imageUrl: "/osrodek/demo/pomost-wydmy.jpg",
       isPublished: true,
     },
     {
       title: "Majówka nad morzem — zostały ostatnie pokoje",
       content:
         "Na długi weekend majowy zostały już tylko dwa wolne pokoje. Śniadania w cenie, a dla dzieci plac zabaw i sala gier. Zapraszamy do rezerwacji!",
-      imageUrl: "https://images.unsplash.com/photo-1414073875831-b47709631146?w=1200&q=80",
+      imageUrl: "/osrodek/demo/nadmorska-miejscowosc.jpg",
       isPublished: true,
     },
   ]);

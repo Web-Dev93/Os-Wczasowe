@@ -61,7 +61,8 @@
 }
 
 :root, html.theme-professional {
-  --background: 0 0% 100%;
+  /* Tło z ledwo wyczuwalnym chłodem morza — karty (czysta biel) delikatnie się odcinają */
+  --background: 210 40% 99%;
   --foreground: 222.2 84% 4.9%;
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
@@ -141,7 +142,8 @@ html.theme-exclusive {
 }
 
 html.theme-fun {
-  --background: 0 0% 100%;
+  /* Kremowa biel — cieplejsza, plażowa; czysta biel zostaje na kartach */
+  --background: 46 60% 99%;
   --foreground: 20 14.3% 4.1%;
   --border: 20 5.9% 90%;
   --input: 20 5.9% 90%;
@@ -187,7 +189,7 @@ html.theme-family {
   --foreground: 220 20% 20%;
   --border: 40 20% 90%;
   --input: 40 20% 90%;
-  --ring: 200 80% 50%;
+  --ring: 200 74% 45%;
   --card: 0 0% 100%;
   --card-foreground: 220 20% 20%;
   --card-border: 40 20% 90%;
@@ -195,10 +197,10 @@ html.theme-family {
   --popover-foreground: 220 20% 20%;
   --popover-border: 40 20% 90%;
   
-  /* Sky Blue */
-  --primary: 200 80% 50%;
+  /* Sky Blue — odrobinę głębszy dla lepszego kontrastu na białych przyciskach */
+  --primary: 200 74% 45%;
   --primary-foreground: 0 0% 100%;
-  
+
   /* Warm Sand */
   --secondary: 40 60% 70%;
   --secondary-foreground: 220 20% 20%;
@@ -213,11 +215,11 @@ html.theme-family {
   --sidebar: 40 33% 98%;
   --sidebar-foreground: 220 20% 20%;
   --sidebar-border: 40 20% 90%;
-  --sidebar-primary: 200 80% 50%;
+  --sidebar-primary: 200 74% 45%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 40 20% 94%;
   --sidebar-accent-foreground: 220 20% 20%;
-  --sidebar-ring: 200 80% 50%;
+  --sidebar-ring: 200 74% 45%;
 
   --radius: 1rem;
   --app-font-sans: 'Plus Jakarta Sans', sans-serif;
@@ -229,7 +231,7 @@ html.theme-rustic {
   --foreground: 20 25% 25%;
   --border: 30 15% 85%;
   --input: 30 15% 85%;
-  --ring: 25 30% 40%;
+  --ring: 24 34% 37%;
   --card: 30 30% 99%;
   --card-foreground: 20 25% 25%;
   --card-border: 30 15% 85%;
@@ -237,8 +239,8 @@ html.theme-rustic {
   --popover-foreground: 20 25% 25%;
   --popover-border: 30 15% 85%;
   
-  /* Wood / Earthy */
-  --primary: 25 30% 40%;
+  /* Wood / Earthy — cieplejszy, głębszy odcień drewna */
+  --primary: 24 34% 37%;
   --primary-foreground: 30 30% 99%;
   
   --secondary: 35 20% 80%;
@@ -254,11 +256,11 @@ html.theme-rustic {
   --sidebar: 30 20% 96%;
   --sidebar-foreground: 20 25% 25%;
   --sidebar-border: 30 15% 85%;
-  --sidebar-primary: 25 30% 40%;
+  --sidebar-primary: 24 34% 37%;
   --sidebar-primary-foreground: 30 30% 99%;
   --sidebar-accent: 30 15% 90%;
   --sidebar-accent-foreground: 20 25% 25%;
-  --sidebar-ring: 25 30% 40%;
+  --sidebar-ring: 24 34% 37%;
 
   --radius: 0.25rem;
   --app-font-sans: 'DM Sans', sans-serif;
@@ -359,6 +361,8 @@ html.theme-exclusive {
   --muted: 25 6% 9%;
   --muted-foreground: 38 8% 55%;
   --primary: 38 52% 50%;
+  /* Ring w kolorze złota — spójny z primary (bazowy blok zostawiał 43 74% 49%) */
+  --ring: 38 52% 50%;
   /* Ciemny primary-foreground — złote przyciski (bg-primary) mają ciemny tekst */
   --primary-foreground: 25 8% 4%;
 }
@@ -1149,4 +1153,105 @@ header nav a.text-primary::after { width: 100%; }
 /* ── SMOOTH IMAGE LOAD ───────────────────────────────── */
 img {
   transition: opacity 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SUBTLE REFINEMENTS 2025 — dopracowanie bez zmiany układów
+   Miękkie szkło, warstwowe cienie, spokojniejsze hovery,
+   nowoczesna typografia (text-wrap), reduced-motion.
+   ═══════════════════════════════════════════════════════ */
+
+/* — Typografia: zrównoważone łamanie nagłówków i akapitów — */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* — Nagłówek: dopracowane szkło (mocniejszy blur + nasycenie,
+     włoskowata linia zamiast pełnej ramki) — */
+header.sticky {
+  background: hsl(var(--background) / 0.68);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  border-bottom-color: hsl(var(--border) / 0.55);
+}
+
+/* — Hero: drugi (konturowy) przycisk jako tafla szkła — */
+.hero-actions a:last-child {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* — Cienie kart: warstwowe i miękkie, z odcieniem koloru motywu;
+     mniejszy skok (-3px zamiast -6px) = spokojniejszy ruch — */
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 12px 28px hsl(var(--primary) / 0.10),
+    0 24px 56px rgba(15, 23, 42, 0.08);
+}
+.room-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 14px 32px hsl(var(--primary) / 0.12);
+}
+.why-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 12px 28px hsl(var(--primary) / 0.10);
+}
+
+/* — CTA: delikatne "wciśnięcie" przy kliknięciu — */
+.btn-cta-glow:active { transform: translateY(0.5px) scale(0.995); }
+
+/* — RUSTIC: papierowa faktura tła, ledwie wyczuwalna — */
+html.theme-rustic body {
+  background-image: radial-gradient(hsl(20 25% 25% / 0.028) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* — MODERN: galeria w cichej skali szarości, ożywa pod kursorem;
+     bez pulsującego glow na CTA (flat = spokój) — */
+html.theme-modern .gallery-item-tint img,
+html.theme-modern .img-zoom-wrap img {
+  filter: grayscale(0.35) contrast(1.02);
+  transition: filter 0.5s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.theme-modern .gallery-item-tint:hover img,
+html.theme-modern .img-zoom-wrap:hover img {
+  filter: grayscale(0) contrast(1);
+}
+html.theme-modern .btn-cta-glow:hover {
+  animation: none;
+  box-shadow: none;
+  transform: none;
+}
+html.theme-modern .topbar-shine::after { display: none; }
+
+/* — FUN: cień z odcieniem turkusu już przez --primary;
+     korálowe podkreślenie linków nawigacji — */
+html.theme-fun header nav a::after {
+  background: hsl(var(--secondary));
+}
+
+/* — FAMILY: bazowy, ciepły cień na kartach pokoi (zanim najedziesz) — */
+html.theme-family .room-card-hover,
+html.theme-family .card-lift {
+  box-shadow: 0 1px 2px hsl(220 20% 20% / 0.04), 0 6px 18px hsl(220 20% 20% / 0.05);
+}
+
+/* — PROFESSIONAL: chłodny, morski cień pod nagłówkiem przy scrollu — */
+html.theme-professional header.sticky {
+  box-shadow: 0 1px 0 hsl(214 32% 91% / 0.6), 0 8px 24px hsl(222 47% 25% / 0.04);
+}
+
+/* — Dostępność: szanuj preferencję ograniczonego ruchu — */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
 }
