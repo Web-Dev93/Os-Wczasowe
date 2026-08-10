@@ -18,11 +18,30 @@ function useFavicon(faviconUrl: string | null | undefined, theme: string | undef
   }, [faviconUrl, theme]);
 }
 
+function useGoogleAnalytics(measurementId: string | null | undefined) {
+  useEffect(() => {
+    const id = measurementId?.trim();
+    if (!id || document.querySelector(`script[data-ga-id="${id}"]`)) return;
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    script.dataset.gaId = id;
+    document.head.appendChild(script);
+
+    const inline = document.createElement("script");
+    inline.dataset.gaId = id;
+    inline.textContent = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');`;
+    document.head.appendChild(inline);
+  }, [measurementId]);
+}
+
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const { settings, isLoading, isDemo, activeTheme } = usePublicTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
   useFavicon((settings as { faviconUrl?: string | null } | undefined)?.faviconUrl, activeTheme);
+  useGoogleAnalytics((settings as { googleAnalyticsId?: string | null } | undefined)?.googleAnalyticsId);
 
   if (isLoading && !settings) return <div className="min-h-screen bg-background flex items-center justify-center">Ładowanie...</div>;
 

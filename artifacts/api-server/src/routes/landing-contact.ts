@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
 import { ReplitConnectors } from "@replit/connectors-sdk";
+import { publicFormLimiter } from "../middlewares/rateLimit";
 
 const router: IRouter = Router();
 
@@ -20,7 +21,7 @@ function buildEmail(to: string, subject: string, htmlBody: string): string {
 }
 
 // Public: contact form from landing page → sends Gmail notification
-router.post("/landing/contact", async (req, res): Promise<void> => {
+router.post("/landing/contact", publicFormLimiter, async (req, res): Promise<void> => {
   const { name, email, phone, message } = req.body as {
     name?: string;
     email?: string;

@@ -3,17 +3,51 @@ import {
   RequestUploadUrlBody,
   RequestUploadUrlResponse,
 } from '@workspace/api-zod';
-import { Router, type IRouter, type Request, type Response } from 'express';
+import express, { Router, type IRouter, type Request, type Response } from 'express';
 
-import { ObjectPermission } from '../lib/objectAcl';
 import {
   ObjectNotFoundError,
+  ObjectPermission,
   ObjectStorageService,
 } from '../lib/objectStorage';
 import { requireAdmin } from '../middlewares/auth';
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
+
+/**
+ * PUT /storage/local-uploads/:id
+ *
+ * Receives the raw file bytes for an upload URL minted by request-url below.
+ * This stands in for the direct-to-bucket PUT that a real presigned URL
+ * would normally target — self-hosted storage has no external bucket, so
+ * the upload lands on this server instead.
+ */
+router.put(
+  '/storage/local-uploads/:id',
+  requireAdmin,
+  express.raw({ type: '*/*', limit: '25mb' }),
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id || /[/.]/.test(id)) {
+      res.status(400).json({ error: 'Invalid upload id' });
+      return;
+    }
+    if (!Buffer.isBuffer(req.body) || req.body.length === 0) {
+      res.status(400).json({ error: 'Empty request body' });
+      return;
+    }
+    try {
+      await objectStorageService.writeUpload(id, req.body, {
+        contentType: req.headers['content-type'] || 'application/octet-stream',
+      });
+      res.status(200).end();
+    } catch (error) {
+      req.log.error({ err: error }, 'Error writing local upload');
+      res.status(500).json({ error: 'Failed to store upload' });
+    }
+  },
+);
 
 /**
  * POST /storage/uploads/request-url

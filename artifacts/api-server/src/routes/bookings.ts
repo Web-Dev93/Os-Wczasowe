@@ -14,6 +14,7 @@ import {
   AdminDeleteBookingParams,
 } from "@workspace/api-zod";
 import { requireAdmin } from "../middlewares/auth";
+import { publicFormLimiter } from "../middlewares/rateLimit";
 
 const router: IRouter = Router();
 
@@ -41,7 +42,7 @@ async function enrichBookings(bookings: (typeof bookingsTable.$inferSelect)[]) {
 }
 
 // Public
-router.post("/inquiries", async (req, res): Promise<void> => {
+router.post("/inquiries", publicFormLimiter, async (req, res): Promise<void> => {
   const parsed = SubmitInquiryBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
