@@ -15,7 +15,7 @@ function esc(v: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function buildHtml(d: { name: string; email: string; phone: string; message?: string }): string {
+function buildHtml(d: { name: string; email: string; phone: string; message?: string | null }): string {
   const row = (label: string, value: string) => `
     <tr>
       <td style="padding:12px 16px;font-weight:600;color:#475569;width:150px;border-bottom:1px solid #e2e8f0;vertical-align:top;">${label}</td>

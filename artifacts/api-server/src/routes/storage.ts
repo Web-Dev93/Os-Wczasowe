@@ -28,7 +28,7 @@ router.put(
   requireAdmin,
   express.raw({ type: '*/*', limit: '25mb' }),
   async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     if (!id || /[/.]/.test(id)) {
       res.status(400).json({ error: 'Invalid upload id' });
       return;
@@ -39,7 +39,10 @@ router.put(
     }
     try {
       await objectStorageService.writeUpload(id, req.body, {
-        contentType: req.headers['content-type'] || 'application/octet-stream',
+        contentType:
+          (Array.isArray(req.headers['content-type'])
+            ? req.headers['content-type'][0]
+            : req.headers['content-type']) || 'application/octet-stream',
       });
       res.status(200).end();
     } catch (error) {
